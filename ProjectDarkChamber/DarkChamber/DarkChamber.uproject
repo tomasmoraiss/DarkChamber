@@ -1,13 +1,16 @@
 {
 	"FileVersion": 3,
-	"EngineAssociation": "",
+	"EngineAssociation": "{85631F23-4BC1-EE60-39CC-4485B81A2695}",
 	"Category": "",
 	"Description": "",
 	"Modules": [
 		{
 			"Name": "DarkChamber",
 			"Type": "Runtime",
-			"LoadingPhase": "Default"
+			"LoadingPhase": "Default",
+			"AdditionalDependencies": [
+				"Engine"
+			]
 		}
 	],
 	"Plugins": [
