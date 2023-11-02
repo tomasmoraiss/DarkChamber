@@ -45,6 +45,9 @@ public:
 
 protected:
 	virtual void BeginPlay();
+	UFUNCTION(BlueprintCallable,Category="Interact")
+	void InteractWithActor();
+	
 
 public:
 		

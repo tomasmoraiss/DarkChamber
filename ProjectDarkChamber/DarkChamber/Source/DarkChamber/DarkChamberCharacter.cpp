@@ -1,5 +1,5 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
-
+#include"InteractInterface.h"
 #include "DarkChamberCharacter.h"
 #include "DarkChamberProjectile.h"
 #include "Animation/AnimInstance.h"
@@ -51,6 +51,24 @@ void ADarkChamberCharacter::BeginPlay()
 		}
 	}
 
+}
+
+void ADarkChamberCharacter::InteractWithActor()
+{
+	FVector Start = GetFirstPersonCameraComponent()->GetComponentLocation();
+	FVector End = Start+GetFirstPersonCameraComponent()->GetComponentRotation().Vector()*500.0f;
+
+	FHitResult HitResult;
+	FCollisionQueryParams Params;
+	Params.AddIgnoredActor(this);
+	if(GetWorld()->LineTraceSingleByChannel(HitResult,Start,End,ECC_Visibility,Params))
+	{
+		if(IInteractInterface* InteractInterface=Cast<IInteractInterface>(HitResult.GetActor()))
+		{
+			InteractInterface->Interact();
+		}
+	}
+	DrawDebugLine(GetWorld(),Start,End,FColor::Red,false,3.0f,0,2.0f);
 }
 
 //////////////////////////////////////////////////////////////////////////// Input
