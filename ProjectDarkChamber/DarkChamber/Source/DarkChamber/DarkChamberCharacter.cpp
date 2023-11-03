@@ -1,5 +1,5 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
-#include"InteractInterface.h"
+
 #include "DarkChamberCharacter.h"
 #include "DarkChamberProjectile.h"
 #include "Animation/AnimInstance.h"
@@ -9,6 +9,7 @@
 #include "EnhancedInputSubsystems.h"
 #include "InputMappingContext.h"
 #include "EnhancedInputSubsystems.h"
+#include"InteractInterface.h"
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -115,12 +116,11 @@ void ADarkChamberCharacter::SetupPlayerInputComponent(class UInputComponent* Pla
 
 void ADarkChamberCharacter::InteractTriggered(const FInputActionValue& Value)
 {
-<<<<<<< Updated upstream
-=======
+
 	UE_LOG(LogTemp, Warning,TEXT("STA"));
 	InteractWithActor();
 	canMove = true;
->>>>>>> Stashed changes
+
 	
 	if(InteractInterface.IsValid())
 		InteractInterface->Interact();
