@@ -74,7 +74,7 @@ bool ADarkChamberCharacter::InteractWithActor()
 		InteractInterface = Cast<IInteractInterface>(HitResult.GetActor());
 		if(InteractInterface.IsValid())
 		{
-			InteractInterface->Interact();
+			//InteractInterface->Interact();
 			return true;
 		}
 		else

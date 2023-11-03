@@ -2,7 +2,7 @@
 
 #pragma once
 
-
+#include"InteractInterface.h"
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
 #include "InputActionValue.h"
@@ -19,7 +19,7 @@ class UAnimMontage;
 class USoundBase;
 
 UCLASS(config=Game)
-class ADarkChamberCharacter : public ACharacter
+class ADarkChamberCharacter : public ACharacter,public IInteractInterface
 {
 	GENERATED_BODY()
 
@@ -68,7 +68,7 @@ public:
 	bool canMove;
 
 	//Store actor Interface to activate later
-	TWeakInterfacePtr<IInteractInterface> InteractInterface = nullptr;
+	TWeakInterfacePtr<IInteractInterface> InteractInterface ;
 	
 	/** Bool for AnimBP to switch to another animation set */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Weapon)
