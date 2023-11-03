@@ -7,7 +7,7 @@
 #include "InteractInterface.generated.h"
 
 // This class does not need to be modified.
-UINTERFACE(MinimalAPI)
+UINTERFACE( MinimalAPI, BlueprintType )
 class UInteractInterface : public UInterface
 {
 	GENERATED_BODY()
@@ -22,6 +22,7 @@ class DARKCHAMBER_API IInteractInterface
 
 	// Add interface functions to this class. This is the class that will be inherited to implement this interface.
 public:
+<<<<<<< Updated upstream
 
 // Interactor = some component that tracks with a raycast the object that you want to interact with, should live on a character
 	// this should all be basically called from the interactor component, that fires a ray and keeps track the current target object that implements this interface
@@ -40,4 +41,8 @@ public:
 	// inverse mirrored function so when you stop targeting this object you remove anything you added in the other (like context mappings)
 	virtual void OnInteracthoverEnd();
 	
+=======
+	UFUNCTION()
+	virtual void Interact(){};
+>>>>>>> Stashed changes
 };

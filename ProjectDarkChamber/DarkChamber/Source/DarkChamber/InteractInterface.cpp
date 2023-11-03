@@ -12,6 +12,7 @@ void IInteractInterface::OnInteractStart()
 }
 
 // Add default functionality here for any IInteractInterface functions that are not pure virtual.
+<<<<<<< Updated upstream
 void IInteractInterface::Interact()
 {
 	
@@ -24,3 +25,9 @@ void IInteractInterface::OnInteractEnd()
 void IInteractInterface::OnInteracthoverEnd()
 {
 }
+=======
+//void IInteractInterface::Interact()
+//{
+//	
+//}
+>>>>>>> Stashed changes

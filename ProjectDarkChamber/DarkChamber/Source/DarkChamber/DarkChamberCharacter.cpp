@@ -115,6 +115,12 @@ void ADarkChamberCharacter::SetupPlayerInputComponent(class UInputComponent* Pla
 
 void ADarkChamberCharacter::InteractTriggered(const FInputActionValue& Value)
 {
+<<<<<<< Updated upstream
+=======
+	UE_LOG(LogTemp, Warning,TEXT("STA"));
+	InteractWithActor();
+	canMove = true;
+>>>>>>> Stashed changes
 	
 	if(InteractInterface.IsValid())
 		InteractInterface->Interact();

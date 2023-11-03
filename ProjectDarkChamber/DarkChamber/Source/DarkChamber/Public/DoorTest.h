@@ -3,11 +3,12 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "DarkChamber/InteractInterface.h"
 #include "GameFramework/Actor.h"
 #include "DoorTest.generated.h"
 
 UCLASS()
-class DARKCHAMBER_API ADoorTest : public AActor
+class DARKCHAMBER_API ADoorTest : public AActor, public IInteractInterface
 {
 	GENERATED_BODY()
 	
@@ -22,5 +23,11 @@ protected:
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+
+	UFUNCTION(BlueprintNativeEvent)
+	void Interact(); 
+	
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	 bool isOpen;
 
 };
