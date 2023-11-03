@@ -2,10 +2,13 @@
 
 #pragma once
 
+
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
 #include "InputActionValue.h"
 #include "DarkChamberCharacter.generated.h"
+
+
 
 class UInputComponent;
 class USkeletalMeshComponent;
@@ -39,7 +42,6 @@ class ADarkChamberCharacter : public ACharacter
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=Input, meta=(AllowPrivateAccess = "true"))
 	class UInputAction* MoveAction;
 
-	
 public:
 	ADarkChamberCharacter();
 
@@ -50,11 +52,21 @@ protected:
 	
 
 public:
+	
 		
 	/** Look Input Action */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	class UInputAction* LookAction;
+	//** Interact Input Action*/
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta=(AllowPrivateAccess = "true"))
+	class UInputAction* InteractAction;
 
+	//Lock the look function
+	
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta=(AllowPrivateAccess = "true"))
+	bool canMove;
+	
+	
 	/** Bool for AnimBP to switch to another animation set */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Weapon)
 	bool bHasRifle;
@@ -74,6 +86,8 @@ protected:
 	/** Called for looking input */
 	void Look(const FInputActionValue& Value);
 
+	
+
 protected:
 	// APawn interface
 	virtual void SetupPlayerInputComponent(UInputComponent* InputComponent) override;
@@ -85,6 +99,11 @@ public:
 	/** Returns FirstPersonCameraComponent subobject **/
 	UCameraComponent* GetFirstPersonCameraComponent() const { return FirstPersonCameraComponent; }
 
-
+	/** Called for Interact input */
+	void InteractTriggered(const FInputActionValue& Value);
+	void InteractCanceledOrCompleted(const FInputActionValue& Value);
+	void InteractStarted(const FInputActionValue& Value);
+	
+	
 };
 

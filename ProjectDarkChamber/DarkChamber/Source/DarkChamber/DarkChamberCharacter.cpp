@@ -7,6 +7,8 @@
 #include "Components/CapsuleComponent.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
+#include "InputMappingContext.h"
+#include "EnhancedInputSubsystems.h"
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -16,7 +18,7 @@ ADarkChamberCharacter::ADarkChamberCharacter()
 {
 	// Character doesnt have a rifle at start
 	bHasRifle = false;
-	
+	canMove = +true;
 	// Set size for collision capsule
 	GetCapsuleComponent()->InitCapsuleSize(55.f, 96.0f);
 		
@@ -55,6 +57,7 @@ void ADarkChamberCharacter::BeginPlay()
 
 void ADarkChamberCharacter::InteractWithActor()
 {
+	UE_LOG(LogTemp, Warning,TEXT("OLA"));
 	FVector Start = GetFirstPersonCameraComponent()->GetComponentLocation();
 	FVector End = Start+GetFirstPersonCameraComponent()->GetComponentRotation().Vector()*500.0f;
 
@@ -87,20 +90,50 @@ void ADarkChamberCharacter::SetupPlayerInputComponent(class UInputComponent* Pla
 
 		//Looking
 		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &ADarkChamberCharacter::Look);
+		//interact
+		EnhancedInputComponent->BindAction(InteractAction, ETriggerEvent::Started, this, &ADarkChamberCharacter::InteractStarted);
+		EnhancedInputComponent->BindAction(InteractAction, ETriggerEvent::Canceled, this, &ADarkChamberCharacter::InteractCanceledOrCompleted);
+		EnhancedInputComponent->BindAction(InteractAction, ETriggerEvent::Completed, this, &ADarkChamberCharacter::InteractCanceledOrCompleted);
+		EnhancedInputComponent->BindAction(InteractAction, ETriggerEvent::Triggered, this, &ADarkChamberCharacter::InteractTriggered);
+	
+		
 	}
+}
+
+void ADarkChamberCharacter::InteractTriggered(const FInputActionValue& Value)
+{
+	InteractWithActor();
+	canMove = true;
+	
+	
+}
+
+void ADarkChamberCharacter::InteractCanceledOrCompleted(const FInputActionValue& Value)
+{
+	canMove = true;
+}
+
+void ADarkChamberCharacter::InteractStarted(const FInputActionValue& Value)
+{
+	UE_LOG(LogTemp, Warning,TEXT("STARTED"));
+	canMove = false;
+	
 }
 
 
 void ADarkChamberCharacter::Move(const FInputActionValue& Value)
 {
-	// input is a Vector2D
-	FVector2D MovementVector = Value.Get<FVector2D>();
-
-	if (Controller != nullptr)
+	if(canMove)
 	{
-		// add movement 
-		AddMovementInput(GetActorForwardVector(), MovementVector.Y);
-		AddMovementInput(GetActorRightVector(), MovementVector.X);
+		// input is a Vector2D
+		FVector2D MovementVector = Value.Get<FVector2D>();
+
+		if (Controller != nullptr)
+		{
+			// add movement 
+			AddMovementInput(GetActorForwardVector(), MovementVector.Y);
+			AddMovementInput(GetActorRightVector(), MovementVector.X);
+		}
 	}
 }
 
@@ -115,6 +148,8 @@ void ADarkChamberCharacter::Look(const FInputActionValue& Value)
 		AddControllerYawInput(LookAxisVector.X);
 		AddControllerPitchInput(LookAxisVector.Y);
 	}
+
+	
 }
 
 void ADarkChamberCharacter::SetHasRifle(bool bNewHasRifle)
