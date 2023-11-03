@@ -24,6 +24,6 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-	virtual void Interact() override;
+	void Interact() override;
 
 };

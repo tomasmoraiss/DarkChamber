@@ -6,6 +6,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
 #include "InputActionValue.h"
+#include "UObject/WeakInterfacePtr.h"
 #include "DarkChamberCharacter.generated.h"
 
 
@@ -48,7 +49,7 @@ public:
 protected:
 	virtual void BeginPlay();
 	UFUNCTION(BlueprintCallable,Category="Interact")
-	void InteractWithActor();
+	bool InteractWithActor();
 	
 
 public:
@@ -65,7 +66,9 @@ public:
 	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta=(AllowPrivateAccess = "true"))
 	bool canMove;
-	
+
+	//Store actor Interface to activate later
+	TWeakInterfacePtr<IInteractInterface> InteractInterface = nullptr;
 	
 	/** Bool for AnimBP to switch to another animation set */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Weapon)
@@ -103,7 +106,7 @@ public:
 	void InteractTriggered(const FInputActionValue& Value);
 	void InteractCanceledOrCompleted(const FInputActionValue& Value);
 	void InteractStarted(const FInputActionValue& Value);
-	
+
 	
 };
 

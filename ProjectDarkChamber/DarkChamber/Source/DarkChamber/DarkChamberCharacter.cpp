@@ -18,7 +18,12 @@ ADarkChamberCharacter::ADarkChamberCharacter()
 {
 	// Character doesnt have a rifle at start
 	bHasRifle = false;
-	canMove = +true;
+	//character can move at start
+	canMove = true;
+
+	//Last interacted actor
+	
+	
 	// Set size for collision capsule
 	GetCapsuleComponent()->InitCapsuleSize(55.f, 96.0f);
 		
@@ -55,23 +60,31 @@ void ADarkChamberCharacter::BeginPlay()
 
 }
 
-void ADarkChamberCharacter::InteractWithActor()
+bool ADarkChamberCharacter::InteractWithActor()
 {
 	UE_LOG(LogTemp, Warning,TEXT("OLA"));
 	FVector Start = GetFirstPersonCameraComponent()->GetComponentLocation();
 	FVector End = Start+GetFirstPersonCameraComponent()->GetComponentRotation().Vector()*500.0f;
-
+	DrawDebugLine(GetWorld(),Start,End,FColor::Red,false,3.0f,0,2.0f);
 	FHitResult HitResult;
 	FCollisionQueryParams Params;
 	Params.AddIgnoredActor(this);
 	if(GetWorld()->LineTraceSingleByChannel(HitResult,Start,End,ECC_Visibility,Params))
 	{
-		if(IInteractInterface* InteractInterface=Cast<IInteractInterface>(HitResult.GetActor()))
+		InteractInterface = Cast<IInteractInterface>(HitResult.GetActor());
+		if(InteractInterface.IsValid())
 		{
 			InteractInterface->Interact();
+			return true;
+		}
+		else
+		{
+			return false;
 		}
 	}
-	DrawDebugLine(GetWorld(),Start,End,FColor::Red,false,3.0f,0,2.0f);
+	return false;
+	
+	
 }
 
 //////////////////////////////////////////////////////////////////////////// Input
@@ -102,9 +115,10 @@ void ADarkChamberCharacter::SetupPlayerInputComponent(class UInputComponent* Pla
 
 void ADarkChamberCharacter::InteractTriggered(const FInputActionValue& Value)
 {
-	InteractWithActor();
-	canMove = true;
 	
+	if(InteractInterface.IsValid())
+		InteractInterface->Interact();
+	canMove = true;
 	
 }
 
@@ -115,8 +129,9 @@ void ADarkChamberCharacter::InteractCanceledOrCompleted(const FInputActionValue&
 
 void ADarkChamberCharacter::InteractStarted(const FInputActionValue& Value)
 {
-	UE_LOG(LogTemp, Warning,TEXT("STARTED"));
 	canMove = false;
+
+	InteractWithActor();
 	
 }
 
