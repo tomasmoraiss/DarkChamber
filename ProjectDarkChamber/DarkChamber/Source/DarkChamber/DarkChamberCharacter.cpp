@@ -79,6 +79,7 @@ bool ADarkChamberCharacter::InteractWithActor()
 			return false;
 		}
 	}
+	InteractInterface = nullptr;
 	return false;
 }
 
@@ -144,8 +145,7 @@ void ADarkChamberCharacter::SetupPlayerInputComponent(class UInputComponent* Pla
 
 void ADarkChamberCharacter::InteractTriggered(const FInputActionValue& Value)
 {
-
-	UE_LOG(LogTemp, Warning,TEXT("STA"));
+	
 	InteractWithActor();
 	canMove = true;
 
@@ -163,7 +163,7 @@ void ADarkChamberCharacter::InteractCanceledOrCompleted(const FInputActionValue&
 
 void ADarkChamberCharacter::InteractStarted(const FInputActionValue& Value)
 {
-	canMove = false;
+	//canMove = false;
 
 	InteractWithActor();
 	

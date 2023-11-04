@@ -25,9 +25,9 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 	UFUNCTION(BlueprintNativeEvent)
-	void Interact(); 
+	void Interact();
 	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
-	 bool isOpen;
+	bool isOpen;
 
 };
