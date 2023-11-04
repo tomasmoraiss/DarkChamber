@@ -24,6 +24,7 @@ void IInteractInterface::OnInteractEnd()
 
 void IInteractInterface::OnInteracthoverEnd()
 {
+	
 }
 
 
