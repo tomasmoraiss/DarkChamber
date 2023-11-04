@@ -8,7 +8,6 @@
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "InputMappingContext.h"
-#include "EnhancedInputSubsystems.h"
 #include"InteractInterface.h"
 
 
@@ -58,12 +57,10 @@ void ADarkChamberCharacter::BeginPlay()
 			Subsystem->AddMappingContext(DefaultMappingContext, 0);
 		}
 	}
-
 }
 
 bool ADarkChamberCharacter::InteractWithActor()
 {
-	UE_LOG(LogTemp, Warning,TEXT("OLA"));
 	FVector Start = GetFirstPersonCameraComponent()->GetComponentLocation();
 	FVector End = Start+GetFirstPersonCameraComponent()->GetComponentRotation().Vector()*500.0f;
 	DrawDebugLine(GetWorld(),Start,End,FColor::Red,false,3.0f,0,2.0f);
@@ -75,7 +72,6 @@ bool ADarkChamberCharacter::InteractWithActor()
 		InteractInterface = Cast<IInteractInterface>(HitResult.GetActor());
 		if(InteractInterface.IsValid())
 		{
-			//InteractInterface->Interact();
 			return true;
 		}
 		else
@@ -84,9 +80,41 @@ bool ADarkChamberCharacter::InteractWithActor()
 		}
 	}
 	return false;
-	
-	
 }
+
+void ADarkChamberCharacter::ConstantLineTraceToCheckObjectsForward()
+{
+	FVector Start = GetFirstPersonCameraComponent()->GetComponentLocation();
+	FVector End = Start+GetFirstPersonCameraComponent()->GetComponentRotation().Vector()*500.0f;
+	DrawDebugLine(GetWorld(),Start,End,FColor::Purple,false,0.1f,0,2.0f);
+	FHitResult HitResult;
+	FCollisionQueryParams Params;
+	Params.AddIgnoredActor(this);
+	if(GetWorld()->LineTraceSingleByChannel(HitResult,Start,End,ECC_Visibility,Params))
+	{
+		InteractInterface = Cast<IInteractInterface>(HitResult.GetActor());
+		if(InteractInterface.IsValid())
+		{
+			if(currentInteractableActor!=HitResult.GetActor())
+			{
+				currentInteractableActor = HitResult.GetActor();
+				InteractInterface = Cast<IInteractInterface>(HitResult.GetActor());
+				InteractInterface->OnInteractHoverBegin();
+			}
+		}
+		else
+		{
+			currentInteractableActor = nullptr;
+			InteractInterface = nullptr;
+		}
+	}
+}
+
+void ADarkChamberCharacter::Tick(float DeltaSeconds)
+{
+	//ConstantLineTraceToCheckObjectsForward();
+}
+
 
 //////////////////////////////////////////////////////////////////////////// Input
 

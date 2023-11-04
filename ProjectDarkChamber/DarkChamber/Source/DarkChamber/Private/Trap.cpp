@@ -2,6 +2,9 @@
 
 
 #include "Trap.h"
+#include "EnhancedInputSubsystems.h"
+#include "InputMappingContext.h"
+#include "EnhancedInputComponent.h"
 
 // Sets default values
 ATrap::ATrap()
@@ -15,7 +18,6 @@ ATrap::ATrap()
 void ATrap::BeginPlay()
 {
 	Super::BeginPlay();
-	
 }
 
 // Called every frame
@@ -27,5 +29,10 @@ void ATrap::Tick(float DeltaTime)
 void ATrap::Interact()
 {
 	this->Destroy();
+}
+
+void ATrap::OnInteractHoverBegin()
+{
+	UE_LOG(LogTemp,Warning,TEXT("ffwfewjbjgwhfwefkewbfehkbwhgw"))
 }
 

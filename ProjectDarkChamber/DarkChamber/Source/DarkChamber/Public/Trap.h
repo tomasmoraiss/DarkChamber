@@ -12,6 +12,9 @@ class DARKCHAMBER_API ATrap : public AActor,public IInteractInterface
 {
 	GENERATED_BODY()
 	
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=Input, meta=(AllowPrivateAccess = "true"))
+	class UInputMappingContext* InteractDelayedMappingContext;
+
 public:	
 	// Sets default values for this actor's properties
 	ATrap();
@@ -25,5 +28,9 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 	void Interact() override;
+
+	void OnInteractHoverBegin() override;
+
+	
 
 };

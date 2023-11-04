@@ -19,7 +19,7 @@ class UAnimMontage;
 class USoundBase;
 
 UCLASS(config=Game)
-class ADarkChamberCharacter : public ACharacter,public IInteractInterface
+class ADarkChamberCharacter : public ACharacter
 {
 	GENERATED_BODY()
 
@@ -50,11 +50,13 @@ protected:
 	virtual void BeginPlay();
 	UFUNCTION(BlueprintCallable,Category="Interact")
 	bool InteractWithActor();
+	UFUNCTION(BlueprintCallable,Category="Interact")
+	void ConstantLineTraceToCheckObjectsForward();
 	
 
 public:
 	
-		
+	virtual void Tick(float DeltaSeconds) override;
 	/** Look Input Action */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	class UInputAction* LookAction;
@@ -69,6 +71,8 @@ public:
 
 	//Store actor Interface to activate later
 	TWeakInterfacePtr<IInteractInterface> InteractInterface ;
+
+	AActor* currentInteractableActor;
 	
 	/** Bool for AnimBP to switch to another animation set */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Weapon)

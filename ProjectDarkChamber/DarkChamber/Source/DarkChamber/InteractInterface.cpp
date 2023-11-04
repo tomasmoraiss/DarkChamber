@@ -3,12 +3,16 @@
 
 #include "InteractInterface.h"
 
+
+
 void IInteractInterface::OnInteractHoverBegin()
 {
+	
 }
 
 void IInteractInterface::OnInteractStart()
 {
+	
 }
 
 // Add default functionality here for any IInteractInterface functions that are not pure virtual.
