@@ -26,6 +26,11 @@ public:
 
 	UFUNCTION(BlueprintNativeEvent)
 	void Interact();
+	UFUNCTION()
+	void OnInteractHoverBegin(AActor* ActorToInteractWith) override;
+	UFUNCTION()
+	void OnInteractHoverEnd(AActor* ActorToInteractWith) override;
+	
 	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	bool isOpen;

@@ -49,7 +49,7 @@ public:
 protected:
 	virtual void BeginPlay();
 	UFUNCTION(BlueprintCallable,Category="Interact")
-	bool InteractWithActor();
+	void InteractWithActor();
 	UFUNCTION(BlueprintCallable,Category="Interact")
 	void ConstantLineTraceToCheckObjectsForward();
 	
@@ -63,6 +63,8 @@ public:
 	//** Interact Input Action*/
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta=(AllowPrivateAccess = "true"))
 	class UInputAction* InteractAction;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta=(AllowPrivateAccess = "true"))
+	class UInputAction* DelayedInteractAction;
 
 	//Lock the look function
 	

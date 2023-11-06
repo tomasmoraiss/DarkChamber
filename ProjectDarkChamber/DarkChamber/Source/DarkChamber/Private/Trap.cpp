@@ -28,18 +28,36 @@ void ATrap::Tick(float DeltaTime)
 
 void ATrap::Interact()
 {
-	this->Destroy();
+	GEngine->AddOnScreenDebugMessage(-1,1,FColor::Green,"Interacted");
 }
 
-void ATrap::OnInteractHoverBegin()
+void ATrap::OnInteractHoverBegin(AActor* ActorToInteractWith)
  {
- 	// UE_LOG(LogTemp,Warning,TEXT("ffwfewjbjgwhfwefkewbfehkbwhgw"))
- 	// if (APlayerController* PlayerController = Cast<APlayerController>(ActorThatIsInteracting->GetInstigatorController()))
- 	// {
- 	// 	if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer()))
- 	// 	{
- 	// 		Subsystem->AddMappingContext(DefaultMappingContext, 0);
- 	// 	}
- 	// }
+	GEngine->AddOnScreenDebugMessage(-1,1,FColor::Green,"begin");
+	APawn* InteractPawn= Cast<APawn>(ActorToInteractWith);
+	 if (APlayerController* PlayerController = Cast<APlayerController>(InteractPawn->Controller))
+	 {
+	 	if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer()))
+	 	{
+	 		Subsystem->AddMappingContext(InteractDelayedMappingContext, 0);
+	 	}
+	 }
  }
 
+void ATrap::OnInteractHoverEnd(AActor* ActorToInteractWith)
+{
+	GEngine->AddOnScreenDebugMessage(-1,1,FColor::Red,"ENDED");
+	APawn* InteractPawn= Cast<APawn>(ActorToInteractWith);
+	// UE_LOG(LogTemp,Warning,TEXT("ffwfewjbjgwhfwefkewbfehkbwhgw"))
+	if (APlayerController* PlayerController = Cast<APlayerController>(InteractPawn->Controller))
+	{
+		if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer()))
+		{
+			Subsystem->RemoveMappingContext(InteractDelayedMappingContext);
+			//Subsystem->AddMappingContext(InteractDefaultMappingContext,1);
+			
+		}
+	}
+}
+
+	

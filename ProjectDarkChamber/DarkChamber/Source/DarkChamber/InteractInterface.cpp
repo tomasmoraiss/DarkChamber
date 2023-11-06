@@ -5,7 +5,7 @@
 
 
 
-void IInteractInterface::OnInteractHoverBegin()
+void IInteractInterface::OnInteractHoverBegin(AActor* ActorToInteractWith)
 {
 	
 }
@@ -26,7 +26,7 @@ void IInteractInterface::OnInteractEnd()
 {
 }
 
-void IInteractInterface::OnInteracthoverEnd()
+void IInteractInterface::OnInteractHoverEnd(AActor* ActorToInteractWith)
 {
 	
 }

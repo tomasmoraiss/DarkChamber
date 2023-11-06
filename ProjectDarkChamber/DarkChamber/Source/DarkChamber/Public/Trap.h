@@ -14,6 +14,9 @@ class DARKCHAMBER_API ATrap : public AActor,public IInteractInterface
 	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=Input, meta=(AllowPrivateAccess = "true"))
 	class UInputMappingContext* InteractDelayedMappingContext;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=Input, meta=(AllowPrivateAccess = "true"))
+	class UInputMappingContext* InteractDefaultMappingContext;
 
 public:	
 	// Sets default values for this actor's properties
@@ -29,7 +32,9 @@ public:
 
 	void Interact() override;
 
-	void OnInteractHoverBegin() override;
+	void OnInteractHoverBegin(AActor* ActorToInteractWith) override;
+
+	void OnInteractHoverEnd(AActor* ActorToInteractWith) override;
 
 	
 

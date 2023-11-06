@@ -59,15 +59,15 @@ void ADarkChamberCharacter::BeginPlay()
 	}
 }
 
-bool ADarkChamberCharacter::InteractWithActor()
+void ADarkChamberCharacter::InteractWithActor()
 {
 	FVector Start = GetFirstPersonCameraComponent()->GetComponentLocation();
 	FVector End = Start+GetFirstPersonCameraComponent()->GetComponentRotation().Vector()*500.0f;
-	//DrawDebugLine(GetWorld(),Start,End,FColor::Red,false,3.0f,0,2.0f);
+	DrawDebugLine(GetWorld(),Start,End,FColor::Red,false,3.0f,0,2.0f);
 	FHitResult HitResult;
 	FCollisionQueryParams Params;
 	Params.AddIgnoredActor(this);
-	if(GetWorld()->LineTraceSingleByChannel(HitResult,Start,End,ECC_Visibility,Params))
+	/*if(GetWorld()->LineTraceSingleByChannel(HitResult,Start,End,ECC_Visibility,Params))
 	{
 		InteractInterface = Cast<IInteractInterface>(HitResult.GetActor());
 		if(InteractInterface.IsValid())
@@ -80,31 +80,51 @@ bool ADarkChamberCharacter::InteractWithActor()
 		}
 	}
 	InteractInterface = nullptr;
-	return false;
+	return false;*/
 }
 
 void ADarkChamberCharacter::ConstantLineTraceToCheckObjectsForward()
 {
 	FVector Start = GetFirstPersonCameraComponent()->GetComponentLocation();
 	FVector End = Start+GetFirstPersonCameraComponent()->GetComponentRotation().Vector()*500.0f;
-	DrawDebugLine(GetWorld(),Start,End,FColor::Purple,false,0.1f,0,2.0f);
+	//DrawDebugLine(GetWorld(),Start,End,FColor::Purple,false,0.1f,0,2.0f);
 	FHitResult HitResult;
 	FCollisionQueryParams Params;
 	Params.AddIgnoredActor(this);
+	TWeakInterfacePtr<IInteractInterface> InteractInterfaceTemp;
 	if(GetWorld()->LineTraceSingleByChannel(HitResult,Start,End,ECC_Visibility,Params))
 	{
-		InteractInterface = Cast<IInteractInterface>(HitResult.GetActor());
-		if(InteractInterface.IsValid())
+		InteractInterfaceTemp = Cast<IInteractInterface>(HitResult.GetActor());
+		if(InteractInterfaceTemp.IsValid())
 		{
 			if(currentInteractableActor!=HitResult.GetActor())
 			{
+				// crreutn ne to onhover end
+				//InteractInterface->OnInteracthoverEnd(this);
 				currentInteractableActor = HitResult.GetActor();
 				InteractInterface = Cast<IInteractInterface>(HitResult.GetActor());
-				InteractInterface->OnInteractHoverBegin();
+				InteractInterface->OnInteractHoverBegin(this);
 			}
 		}
 		else
 		{
+			if(InteractInterface!=nullptr)
+			{
+				GEngine->AddOnScreenDebugMessage(-1,1,FColor::Red,"INTERATEND1");
+				InteractInterface->OnInteractHoverEnd(this);
+				currentInteractableActor = nullptr;
+				InteractInterface = nullptr;
+			}
+		}
+	}
+	else
+	{
+		// hoverned if i have an interaface
+		// set interface to null
+		if(InteractInterface!=nullptr)
+		{
+			GEngine->AddOnScreenDebugMessage(-1,1,FColor::Red,"INTERATEND2");
+			InteractInterface->OnInteractHoverEnd(this);
 			currentInteractableActor = nullptr;
 			InteractInterface = nullptr;
 		}
@@ -138,6 +158,8 @@ void ADarkChamberCharacter::SetupPlayerInputComponent(class UInputComponent* Pla
 		EnhancedInputComponent->BindAction(InteractAction, ETriggerEvent::Canceled, this, &ADarkChamberCharacter::InteractCanceledOrCompleted);
 		EnhancedInputComponent->BindAction(InteractAction, ETriggerEvent::Completed, this, &ADarkChamberCharacter::InteractCanceledOrCompleted);
 		EnhancedInputComponent->BindAction(InteractAction, ETriggerEvent::Triggered, this, &ADarkChamberCharacter::InteractTriggered);
+
+		EnhancedInputComponent->BindAction(DelayedInteractAction, ETriggerEvent::Triggered, this, &ADarkChamberCharacter::InteractTriggered);
 	
 		
 	}
@@ -145,13 +167,11 @@ void ADarkChamberCharacter::SetupPlayerInputComponent(class UInputComponent* Pla
 
 void ADarkChamberCharacter::InteractTriggered(const FInputActionValue& Value)
 {
+	GEngine->AddOnScreenDebugMessage(-1,1,FColor::Red,"TRIGGERED");
 	
-	InteractWithActor();
+	//InteractWithActor();
 	canMove = true;
-
-	
-	if(InteractInterface.IsValid())
-		InteractInterface->Interact();
+	if(InteractInterface.IsValid())InteractInterface->Interact();
 	canMove = true;
 	
 }
@@ -165,7 +185,7 @@ void ADarkChamberCharacter::InteractStarted(const FInputActionValue& Value)
 {
 	//canMove = false;
 
-	InteractWithActor();
+	//InteractWithActor();
 	
 }
 

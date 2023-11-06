@@ -28,7 +28,7 @@ public:
 // Interactor = some component that tracks with a raycast the object that you want to interact with, should live on a character
 	// this should all be basically called from the interactor component, that fires a ray and keeps track the current target object that implements this interface
 	// this should be called when the raycast first hits this target, to get anything to setup the interaction like a context mapping for input (delayed vs immediate button presses)
-	virtual void OnInteractHoverBegin();
+	virtual void OnInteractHoverBegin(AActor* ActorToInteractWith);
 
 	// abstraction for when you start interacting in case there are components you want to search for specifically when youre starting the interaction
 	virtual void OnInteractStart();
@@ -40,7 +40,7 @@ public:
 	virtual void OnInteractEnd();
 
 	// inverse mirrored function so when you stop targeting this object you remove anything you added in the other (like context mappings)
-	virtual void OnInteracthoverEnd();
+	virtual void OnInteractHoverEnd(AActor* ActorToInteractWith);
 	
 	
 };

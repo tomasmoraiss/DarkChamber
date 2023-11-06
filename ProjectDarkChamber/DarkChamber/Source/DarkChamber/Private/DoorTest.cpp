@@ -26,6 +26,16 @@ void ADoorTest::Tick(float DeltaTime)
 
 }
 
+void ADoorTest::OnInteractHoverBegin(AActor* ActorToInteractWith)
+{
+	IInteractInterface::OnInteractHoverBegin(ActorToInteractWith);
+}
+
+void ADoorTest::OnInteractHoverEnd(AActor* ActorToInteractWith)
+{
+	IInteractInterface::OnInteractHoverEnd(ActorToInteractWith);
+}
+
 void ADoorTest::Interact_Implementation()
 {
 	isOpen = !isOpen;
