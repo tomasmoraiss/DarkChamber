@@ -63,7 +63,7 @@ bool ADarkChamberCharacter::InteractWithActor()
 {
 	FVector Start = GetFirstPersonCameraComponent()->GetComponentLocation();
 	FVector End = Start+GetFirstPersonCameraComponent()->GetComponentRotation().Vector()*500.0f;
-	DrawDebugLine(GetWorld(),Start,End,FColor::Red,false,3.0f,0,2.0f);
+	//DrawDebugLine(GetWorld(),Start,End,FColor::Red,false,3.0f,0,2.0f);
 	FHitResult HitResult;
 	FCollisionQueryParams Params;
 	Params.AddIgnoredActor(this);
@@ -87,7 +87,7 @@ void ADarkChamberCharacter::ConstantLineTraceToCheckObjectsForward()
 {
 	FVector Start = GetFirstPersonCameraComponent()->GetComponentLocation();
 	FVector End = Start+GetFirstPersonCameraComponent()->GetComponentRotation().Vector()*500.0f;
-	//DrawDebugLine(GetWorld(),Start,End,FColor::purple,false,0.1f,0,2.0f);
+	DrawDebugLine(GetWorld(),Start,End,FColor::Purple,false,0.1f,0,2.0f);
 	FHitResult HitResult;
 	FCollisionQueryParams Params;
 	Params.AddIgnoredActor(this);
@@ -113,7 +113,7 @@ void ADarkChamberCharacter::ConstantLineTraceToCheckObjectsForward()
 
 void ADarkChamberCharacter::Tick(float DeltaSeconds)
 {
-	//ConstantLineTraceToCheckObjectsForward();
+	ConstantLineTraceToCheckObjectsForward();
 }
 
 
