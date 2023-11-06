@@ -3,6 +3,9 @@
 
 #include "Lever.h"
 
+#include "DoorTest.h"
+#include "Kismet/GameplayStatics.h"
+
 // Sets default values
 ALever::ALever()
 {
@@ -28,6 +31,12 @@ void ALever::Tick(float DeltaTime)
 void ALever::Interact_Implementation()
 {
 	isOn  = !isOn;
+	if(DoorReference!=nullptr)
+	{
+		IInteractInterface* InteractInterface = Cast<IInteractInterface>(DoorReference);
+		InteractInterface->Interact();
+	}
+	
 	UE_LOG(LogTemp, Warning, TEXT("Lever Activation"))
 }
 
