@@ -31,15 +31,15 @@ void ATrap::Interact()
 	this->Destroy();
 }
 
-// void ATrap::OnInteractHoverBegin(AActor* ActorThatIsInteracting)
-// {
-// 	UE_LOG(LogTemp,Warning,TEXT("ffwfewjbjgwhfwefkewbfehkbwhgw"))
-// 	if (APlayerController* PlayerController = Cast<APlayerController>(ActorThatIsInteracting->GetInstigatorController()))
-// 	{
-// 		if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer()))
-// 		{
-// 			Subsystem->AddMappingContext(DefaultMappingContext, 0);
-// 		}
-// 	}
-// }
+void ATrap::OnInteractHoverBegin()
+ {
+ 	// UE_LOG(LogTemp,Warning,TEXT("ffwfewjbjgwhfwefkewbfehkbwhgw"))
+ 	// if (APlayerController* PlayerController = Cast<APlayerController>(ActorThatIsInteracting->GetInstigatorController()))
+ 	// {
+ 	// 	if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer()))
+ 	// 	{
+ 	// 		Subsystem->AddMappingContext(DefaultMappingContext, 0);
+ 	// 	}
+ 	// }
+ }
 
