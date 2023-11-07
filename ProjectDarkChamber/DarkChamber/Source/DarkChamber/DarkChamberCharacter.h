@@ -46,6 +46,19 @@ class ADarkChamberCharacter : public ACharacter
 	/** Sprint Input Action */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=Input, meta=(AllowPrivateAccess = "true"))
 	class UInputAction* SprintAction;
+	
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=Input, meta=(AllowPrivateAccess = "true"))
+	float RunningSpeedMultiplier;
+	
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=Input, meta=(AllowPrivateAccess = "true"))
+	float DefaultWalkingSpeed;
+	
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
+	class UInputAction* CrouchAction;
+	
 
 public:
 	ADarkChamberCharacter();
@@ -69,6 +82,8 @@ public:
 	class UInputAction* InteractAction;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta=(AllowPrivateAccess = "true"))
 	class UInputAction* DelayedInteractAction;
+
+	
 
 	//Lock the look function
 	
@@ -100,6 +115,10 @@ protected:
 	void Look(const FInputActionValue& Value);
 
 	void Sprint(const FInputActionValue& Value);
+
+	void StopSprint(const FInputActionValue& Value);
+
+	void Crouchh(const FInputActionValue& Value);
 
 	
 

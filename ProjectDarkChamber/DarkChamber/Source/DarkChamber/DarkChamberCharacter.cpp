@@ -9,6 +9,7 @@
 #include "EnhancedInputSubsystems.h"
 #include "InputMappingContext.h"
 #include"InteractInterface.h"
+#include "GameFramework/CharacterMovementComponent.h"
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -21,6 +22,9 @@ ADarkChamberCharacter::ADarkChamberCharacter()
 	//character can move at start
 	canMove = true;
 
+	RunningSpeedMultiplier =1.5f;
+	DefaultWalkingSpeed=GetCharacterMovement()->MaxWalkSpeed;
+	
 	//Last interacted actor
 	
 	
@@ -134,6 +138,8 @@ void ADarkChamberCharacter::ConstantLineTraceToCheckObjectsForward()
 void ADarkChamberCharacter::Tick(float DeltaSeconds)
 {
 	ConstantLineTraceToCheckObjectsForward();
+	
+	GEngine->AddOnScreenDebugMessage(-10,1.f,FColor::Purple,FString::Printf(TEXT("%f"), RunningSpeedMultiplier));
 }
 
 
@@ -152,10 +158,11 @@ void ADarkChamberCharacter::SetupPlayerInputComponent(class UInputComponent* Pla
 		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &ADarkChamberCharacter::Move);
 
 		//Running
-		EnhancedInputComponent->BindAction(SprintAction, ETriggerEvent::Triggered, this, &ADarkChamberCharacter::Sprint);
+		EnhancedInputComponent->BindAction(SprintAction, ETriggerEvent::Started, this, &ADarkChamberCharacter::Sprint);
+		EnhancedInputComponent->BindAction(SprintAction, ETriggerEvent::Completed, this, &ADarkChamberCharacter::StopSprint);
 
-		//Crouching
-		EnhancedInputComponent->BindAction(CrouchAction, ETriggerEvent::Triggered, this, &ADarkChamberCharacter::Crouch);
+		//Crouching	
+		EnhancedInputComponent->BindAction(CrouchAction, ETriggerEvent::Triggered, this,&ADarkChamberCharacter::Crouchh);
 
 		//Looking
 		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &ADarkChamberCharacter::Look);
@@ -229,19 +236,25 @@ void ADarkChamberCharacter::Look(const FInputActionValue& Value)
 
 void ADarkChamberCharacter::Sprint(const FInputActionValue& Value)
 {
-	if(canMove && !bIsCrouched)
+	//&& !bIsCrouched
+	if(canMove )
 	{
-		// input is a Vector2D
-		FVector2D MovementVector = Value.Get<FVector2D>();
-
-		if (Controller != nullptr)
-		{
-			// add movement 
-			AddMovementInput(GetActorForwardVector(), MovementVector.Y * 2);
-			AddMovementInput(GetActorRightVector(), MovementVector.X * 2);
-		}
+		GEngine->AddOnScreenDebugMessage(-10,1.f,FColor::Red,FString::Printf(TEXT("%f"), RunningSpeedMultiplier));
+		GetCharacterMovement()->MaxWalkSpeed = DefaultWalkingSpeed*1.3f;
 	}
 }
+
+void ADarkChamberCharacter::StopSprint(const FInputActionValue& Value)
+{
+	GEngine->AddOnScreenDebugMessage(-1,1,FColor::Red,"StopSprinting");
+	GetCharacterMovement()->MaxWalkSpeed = DefaultWalkingSpeed;
+}
+
+void ADarkChamberCharacter::Crouchh(const FInputActionValue& Value)
+{
+	
+}
+
 
 void ADarkChamberCharacter::SetHasRifle(bool bNewHasRifle)
 {
