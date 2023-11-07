@@ -17,8 +17,6 @@
 
 ADarkChamberCharacter::ADarkChamberCharacter()
 {
-	// Character doesnt have a rifle at start
-	bHasRifle = false;
 	//character can move at start
 	canMove = true;
 
@@ -253,15 +251,4 @@ void ADarkChamberCharacter::StopSprint(const FInputActionValue& Value)
 void ADarkChamberCharacter::Crouchh(const FInputActionValue& Value)
 {
 	
-}
-
-
-void ADarkChamberCharacter::SetHasRifle(bool bNewHasRifle)
-{
-	bHasRifle = bNewHasRifle;
-}
-
-bool ADarkChamberCharacter::GetHasRifle()
-{
-	return bHasRifle;
 }
