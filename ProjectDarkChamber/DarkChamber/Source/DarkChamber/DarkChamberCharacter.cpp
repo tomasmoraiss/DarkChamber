@@ -151,6 +151,12 @@ void ADarkChamberCharacter::SetupPlayerInputComponent(class UInputComponent* Pla
 		//Moving
 		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &ADarkChamberCharacter::Move);
 
+		//Running
+		EnhancedInputComponent->BindAction(SprintAction, ETriggerEvent::Triggered, this, &ADarkChamberCharacter::Sprint);
+
+		//Crouching
+		EnhancedInputComponent->BindAction(CrouchAction, ETriggerEvent::Triggered, this, &ADarkChamberCharacter::Crouch);
+
 		//Looking
 		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &ADarkChamberCharacter::Look);
 		//interact
@@ -219,6 +225,22 @@ void ADarkChamberCharacter::Look(const FInputActionValue& Value)
 	}
 
 	
+}
+
+void ADarkChamberCharacter::Sprint(const FInputActionValue& Value)
+{
+	if(canMove && !bIsCrouched)
+	{
+		// input is a Vector2D
+		FVector2D MovementVector = Value.Get<FVector2D>();
+
+		if (Controller != nullptr)
+		{
+			// add movement 
+			AddMovementInput(GetActorForwardVector(), MovementVector.Y * 2);
+			AddMovementInput(GetActorRightVector(), MovementVector.X * 2);
+		}
+	}
 }
 
 void ADarkChamberCharacter::SetHasRifle(bool bNewHasRifle)

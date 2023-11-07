@@ -43,6 +43,10 @@ class ADarkChamberCharacter : public ACharacter
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=Input, meta=(AllowPrivateAccess = "true"))
 	class UInputAction* MoveAction;
 
+	/** Sprint Input Action */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=Input, meta=(AllowPrivateAccess = "true"))
+	class UInputAction* SprintAction;
+
 public:
 	ADarkChamberCharacter();
 
@@ -94,6 +98,10 @@ protected:
 
 	/** Called for looking input */
 	void Look(const FInputActionValue& Value);
+
+	void Sprint(const FInputActionValue& Value);
+
+	
 
 	
 
