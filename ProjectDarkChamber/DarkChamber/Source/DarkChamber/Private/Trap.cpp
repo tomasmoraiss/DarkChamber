@@ -28,7 +28,7 @@ void ATrap::Tick(float DeltaTime)
 
 void ATrap::Interact()
 {
-	GEngine->AddOnScreenDebugMessage(-1,1,FColor::Green,"Interacted");
+	GEngine->AddOnScreenDebugMessage(-1,1,FColor::Green,"Interactedd");
 }
 
 void ATrap::OnInteractHoverBegin(AActor* ActorToInteractWith)
