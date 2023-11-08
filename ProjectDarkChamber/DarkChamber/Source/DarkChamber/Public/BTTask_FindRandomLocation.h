@@ -7,7 +7,8 @@
 #include "BTTask_FindRandomLocation.generated.h"
 
 /**
- * 
+ *
+ * a
  */
 UCLASS()
 class DARKCHAMBER_API UBTTask_FindRandomLocation : public UBTTask_BlackboardBase
@@ -18,6 +19,6 @@ public:
 	explicit UBTTask_FindRandomLocation(FObjectInitializer const& ObjectInitializer);
 	virtual EBTNodeResult::Type ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory) override;
 private:
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AI", meta=(AllowPrivateAccess = "true"))
-	float SearchRadius = 1500.0f;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AI", meta = (AllowPrivateAccess = "true"))
+		float SearchRadius = 1500.0f;
 };
