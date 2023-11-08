@@ -15,8 +15,10 @@ AItem::AItem()
 // Called when the game starts or when spawned
 void AItem::BeginPlay()
 {
+	Super::BeginPlay();
 	InteractionRangeSphereComponent = CreateDefaultSubobject<USphereComponent>(TEXT("Attacking Cullusion"));
-	InteractionRangeSphereComponent->InitSphereRadius(50.f);
+	InteractionRangeSphereComponent->InitSphereRadius(150.f);
+	InteractionRangeSphereComponent->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
 	
 }
 
@@ -24,7 +26,7 @@ void AItem::BeginPlay()
 void AItem::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
+	
 }
 
 void AItem::Interact()
