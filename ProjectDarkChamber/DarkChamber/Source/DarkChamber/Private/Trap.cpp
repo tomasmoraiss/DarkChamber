@@ -11,6 +11,8 @@ ATrap::ATrap()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
+	TrapAfterBuild = this->GetClass();
+	
 
 }
 
@@ -29,13 +31,14 @@ void ATrap::Tick(float DeltaTime)
 void ATrap::Interact()
 {
 	GEngine->AddOnScreenDebugMessage(-1,1,FColor::Green,"Interactedd");
+	Build();
 }
 
 void ATrap::OnInteractHoverBegin(AActor* ActorToInteractWith)
  {
-	GEngine->AddOnScreenDebugMessage(-1,1,FColor::Green,"begin");
+	
 	APawn* InteractPawn= Cast<APawn>(ActorToInteractWith);
-	 if (APlayerController* PlayerController = Cast<APlayerController>(InteractPawn->Controller))
+	if (APlayerController* PlayerController = Cast<APlayerController>(InteractPawn->Controller))
 	 {
 	 	if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer()))
 	 	{
@@ -46,7 +49,7 @@ void ATrap::OnInteractHoverBegin(AActor* ActorToInteractWith)
 
 void ATrap::OnInteractHoverEnd(AActor* ActorToInteractWith)
 {
-	GEngine->AddOnScreenDebugMessage(-1,1,FColor::Red,"ENDED");
+	
 	APawn* InteractPawn= Cast<APawn>(ActorToInteractWith);
 	// UE_LOG(LogTemp,Warning,TEXT("ffwfewjbjgwhfwefkewbfehkbwhgw"))
 	if (APlayerController* PlayerController = Cast<APlayerController>(InteractPawn->Controller))
@@ -58,6 +61,15 @@ void ATrap::OnInteractHoverEnd(AActor* ActorToInteractWith)
 			
 		}
 	}
+}
+
+void ATrap::Build()
+{
+	GEngine->AddOnScreenDebugMessage(-1,1,FColor::Red,"BUILT");
+	FVector Location(this->GetActorLocation().X,this->GetActorLocation().Y,this->GetActorLocation().Z+50);
+	FRotator Rotation(0.0f, 0.0f, 0.0f);
+	FActorSpawnParameters SpawnInfo;
+	GetWorld()->SpawnActor<AActor>(TrapAfterBuild,Location, Rotation);
 }
 
 	

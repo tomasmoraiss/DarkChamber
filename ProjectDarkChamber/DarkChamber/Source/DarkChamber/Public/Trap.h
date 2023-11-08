@@ -36,6 +36,13 @@ public:
 
 	void OnInteractHoverEnd(AActor* ActorToInteractWith) override;
 
+	void Build();
+	//Item that will be spawned
+	UPROPERTY(EditDefaultsOnly,BlueprintReadWrite,meta=(MustImplement="ItemToSpawExample"))
+	TSubclassOf<AActor> TrapAfterBuild;
+
+	
+
 	
 
 };
