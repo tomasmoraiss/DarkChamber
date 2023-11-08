@@ -18,7 +18,8 @@ public class DarkChamber : ModuleRules
 			"EnhancedInput",
 			"AIModule",
 			"NavigationSystem",
-			"GameplayTasks"
+			"GameplayTasks",
+			"UMG"
 		});
 	}
 }

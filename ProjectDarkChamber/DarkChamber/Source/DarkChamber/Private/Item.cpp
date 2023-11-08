@@ -2,8 +2,14 @@
 
 
 #include "Item.h"
-#include "Blueprint/UserWidget.h"
+
+#include "DDSFile.h"
+#include "VectorTypes.h"
+#include "VectorUtil.h"
 #include "Components/SphereComponent.h"
+#include "Components/WidgetComponent.h"
+#include "Image/ImageBuilder.h"
+#include "Kismet/KismetMathLibrary.h"
 
 // Sets default values
 AItem::AItem()
@@ -14,31 +20,45 @@ AItem::AItem()
 	ItemMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Static Mesh"));
 	
 	InteractionRangeSphereComponent = CreateDefaultSubobject<USphereComponent>(TEXT("Actor Can Interact Range"));
-	InteractionRangeSphereComponent->InitSphereRadius(500.f);
+	InteractionRangeSphereComponent->InitSphereRadius(2500.f);
 	InteractionRangeSphereComponent->AttachToComponent(ItemMesh, FAttachmentTransformRules::KeepRelativeTransform);
-	
+
+	ItemWidget = CreateDefaultSubobject<UWidgetComponent>(TEXT("Item Widget"));
+	ItemWidget->SetDrawSize(FVector2d(200,200));
+	ItemWidget->AttachToComponent(ItemMesh, FAttachmentTransformRules::KeepRelativeTransform);
+	ItemWidget->SetVisibility(false);
 }
 
-// Called when the game starts or when spawned
+// Called when the game starts or when spawned	
 void AItem::BeginPlay()
 {
 	Super::BeginPlay();
 	
 
-	FScriptDelegate Delegate;
-	Delegate.BindUFunction(this, "OnOverlapBegin");
-	if(Delegate.IsBound() && InteractionRangeSphereComponent)
-	{
-		InteractionRangeSphereComponent->OnComponentBeginOverlap.Add(Delegate);
-	}
-
+	FScriptDelegate DelegateOverlapBegin;
+	FScriptDelegate DelegateOverlapEnd;
 	
+	DelegateOverlapBegin.BindUFunction(this, "OnOverlapBegin");
+	DelegateOverlapEnd.BindUFunction(this, "OnOverlapEnd");
+
+	if(DelegateOverlapBegin.IsBound() && DelegateOverlapEnd.IsBound() && InteractionRangeSphereComponent)
+	{
+		InteractionRangeSphereComponent->OnComponentBeginOverlap.Add(DelegateOverlapBegin);
+		InteractionRangeSphereComponent->OnComponentEndOverlap.Add(DelegateOverlapEnd);
+	}
 }
 
 // Called every frame
 void AItem::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+	if(ItemWidget->IsVisible())
+	{
+		ItemWidget->SetWorldRotation(UKismetMathLibrary::FindLookAtRotation(this->GetActorLocation(), TargetActor->GetActorLocation()));
+		float opacity = 1-(UE::Geometry::Distance(this->GetActorLocation(), TargetActor->GetActorLocation())/InteractionRangeSphereComponent->GetScaledSphereRadius());
+		ItemWidget->GetWidgetClass().GetDefaultObject()->SetRenderOpacity(opacity);
+		//GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, FString::Printf(TEXT("Alpha -> %f"), o));
+	}
 }
 
 void AItem::Interact()
@@ -48,10 +68,19 @@ void AItem::Interact()
 
 void AItem::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp,	int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	GEngine->AddOnScreenDebugMessage(-1,1,FColor::Purple,"Enter Interact Area");
+	if (OtherActor && (OtherActor != this) && OtherComp)
+	{
+		GEngine->AddOnScreenDebugMessage(-1,1,FColor::Purple,"Enter Interact Area");
+		TargetActor = OtherActor;
+		ItemWidget->SetVisibility(true);
+	}
 }
 
 void AItem::OnOverlapEnd(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
 {
-	GEngine->AddOnScreenDebugMessage(-1,1,FColor::Purple,"Exit Interact Area");
+	if (OtherActor && (OtherActor != this) && OtherComp)
+	{
+		GEngine->AddOnScreenDebugMessage(-1,1,FColor::Purple,"Exit Interact Area");
+		ItemWidget->SetVisibility(false);
+	}
 }

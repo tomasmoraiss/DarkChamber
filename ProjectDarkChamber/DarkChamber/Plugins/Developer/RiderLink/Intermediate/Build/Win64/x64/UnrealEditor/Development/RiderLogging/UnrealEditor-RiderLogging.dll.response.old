@@ -33,12 +33,21 @@
 /NODEFAULTLIB:"LIBCD"
 /NODEFAULTLIB:"LIBCPD"
 /FUNCTIONPADMIN:6
-"C:\Users\Bruno\Documents\GitHub\DarkChamber\ProjectDarkChamber\DarkChamber\Plugins\Developer\RiderLink\Intermediate\Build\Win64\x64\UnrealEditor\Development\RiderLogging\Module.RiderLogging.cpp.obj"
+<<<<<<< Updated upstream
+"E:\DarkChamber\ProjectDarkChamber\DarkChamber\Plugins\Developer\RiderLink\Intermediate\Build\Win64\x64\UnrealEditor\Development\RiderLogging\Module.RiderLogging.cpp.obj"
 "..\Intermediate\Build\Win64\x64\UnrealEditor\Development\Default.rc2.res"
 "..\Intermediate\Build\Win64\x64\UnrealEditor\Development\Core\UnrealEditor-Core.lib"
-"C:\Users\Bruno\Documents\GitHub\DarkChamber\ProjectDarkChamber\DarkChamber\Plugins\Developer\RiderLink\Intermediate\Build\Win64\x64\UnrealEditor\Development\RD\UnrealEditor-RD.lib"
-"C:\Users\Bruno\Documents\GitHub\DarkChamber\ProjectDarkChamber\DarkChamber\Plugins\Developer\RiderLink\Intermediate\Build\Win64\x64\UnrealEditor\Development\RiderLink\UnrealEditor-RiderLink.lib"
-"C:\Users\Bruno\Documents\GitHub\DarkChamber\ProjectDarkChamber\DarkChamber\Plugins\Developer\RiderLink\Intermediate\Build\Win64\x64\UnrealEditor\Development\RiderBlueprint\UnrealEditor-RiderBlueprint.lib"
+"E:\DarkChamber\ProjectDarkChamber\DarkChamber\Plugins\Developer\RiderLink\Intermediate\Build\Win64\x64\UnrealEditor\Development\RD\UnrealEditor-RD.lib"
+"E:\DarkChamber\ProjectDarkChamber\DarkChamber\Plugins\Developer\RiderLink\Intermediate\Build\Win64\x64\UnrealEditor\Development\RiderLink\UnrealEditor-RiderLink.lib"
+"E:\DarkChamber\ProjectDarkChamber\DarkChamber\Plugins\Developer\RiderLink\Intermediate\Build\Win64\x64\UnrealEditor\Development\RiderBlueprint\UnrealEditor-RiderBlueprint.lib"
+=======
+"C:\Unreal\DarkChamber\ProjectDarkChamber\DarkChamber\Plugins\Developer\RiderLink\Intermediate\Build\Win64\x64\UnrealEditor\Development\RiderLogging\Module.RiderLogging.cpp.obj"
+"..\Intermediate\Build\Win64\x64\UnrealEditor\Development\Default.rc2.res"
+"..\Intermediate\Build\Win64\x64\UnrealEditor\Development\Core\UnrealEditor-Core.lib"
+"C:\Unreal\DarkChamber\ProjectDarkChamber\DarkChamber\Plugins\Developer\RiderLink\Intermediate\Build\Win64\x64\UnrealEditor\Development\RD\UnrealEditor-RD.lib"
+"C:\Unreal\DarkChamber\ProjectDarkChamber\DarkChamber\Plugins\Developer\RiderLink\Intermediate\Build\Win64\x64\UnrealEditor\Development\RiderLink\UnrealEditor-RiderLink.lib"
+"C:\Unreal\DarkChamber\ProjectDarkChamber\DarkChamber\Plugins\Developer\RiderLink\Intermediate\Build\Win64\x64\UnrealEditor\Development\RiderBlueprint\UnrealEditor-RiderBlueprint.lib"
+>>>>>>> Stashed changes
 "delayimp.lib"
 "wininet.lib"
 "rpcrt4.lib"
@@ -63,7 +72,13 @@
 "setupapi.lib"
 "dwmapi.lib"
 "imm32.lib"
-/OUT:"C:\Users\Bruno\Documents\GitHub\DarkChamber\ProjectDarkChamber\DarkChamber\Plugins\Developer\RiderLink\Binaries\Win64\UnrealEditor-RiderLogging.dll"
-/IMPLIB:"C:\Users\Bruno\Documents\GitHub\DarkChamber\ProjectDarkChamber\DarkChamber\Plugins\Developer\RiderLink\Intermediate\Build\Win64\x64\UnrealEditor\Development\RiderLogging\UnrealEditor-RiderLogging.suppressed.lib"
-/PDB:"C:\Users\Bruno\Documents\GitHub\DarkChamber\ProjectDarkChamber\DarkChamber\Plugins\Developer\RiderLink\Binaries\Win64\UnrealEditor-RiderLogging.pdb"
+<<<<<<< Updated upstream
+/OUT:"E:\DarkChamber\ProjectDarkChamber\DarkChamber\Plugins\Developer\RiderLink\Binaries\Win64\UnrealEditor-RiderLogging.dll"
+/IMPLIB:"E:\DarkChamber\ProjectDarkChamber\DarkChamber\Plugins\Developer\RiderLink\Intermediate\Build\Win64\x64\UnrealEditor\Development\RiderLogging\UnrealEditor-RiderLogging.suppressed.lib"
+/PDB:"E:\DarkChamber\ProjectDarkChamber\DarkChamber\Plugins\Developer\RiderLink\Binaries\Win64\UnrealEditor-RiderLogging.pdb"
+=======
+/OUT:"C:\Unreal\DarkChamber\ProjectDarkChamber\DarkChamber\Plugins\Developer\RiderLink\Binaries\Win64\UnrealEditor-RiderLogging.dll"
+/IMPLIB:"C:\Unreal\DarkChamber\ProjectDarkChamber\DarkChamber\Plugins\Developer\RiderLink\Intermediate\Build\Win64\x64\UnrealEditor\Development\RiderLogging\UnrealEditor-RiderLogging.suppressed.lib"
+/PDB:"C:\Unreal\DarkChamber\ProjectDarkChamber\DarkChamber\Plugins\Developer\RiderLink\Binaries\Win64\UnrealEditor-RiderLogging.pdb"
+>>>>>>> Stashed changes
 /ignore:4078

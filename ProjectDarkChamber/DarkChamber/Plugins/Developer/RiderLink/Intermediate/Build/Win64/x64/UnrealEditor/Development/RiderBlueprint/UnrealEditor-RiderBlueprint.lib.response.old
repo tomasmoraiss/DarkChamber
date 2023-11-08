@@ -6,6 +6,12 @@
 /NAME:"UnrealEditor-RiderBlueprint.dll"
 /IGNORE:4221
 /NODEFAULTLIB
-"C:\Users\Bruno\Documents\GitHub\DarkChamber\ProjectDarkChamber\DarkChamber\Plugins\Developer\RiderLink\Intermediate\Build\Win64\x64\UnrealEditor\Development\RiderBlueprint\Module.RiderBlueprint.cpp.obj"
+<<<<<<< Updated upstream
+"E:\DarkChamber\ProjectDarkChamber\DarkChamber\Plugins\Developer\RiderLink\Intermediate\Build\Win64\x64\UnrealEditor\Development\RiderBlueprint\Module.RiderBlueprint.cpp.obj"
 "..\Intermediate\Build\Win64\x64\UnrealEditor\Development\Default.rc2.res"
-/OUT:"C:\Users\Bruno\Documents\GitHub\DarkChamber\ProjectDarkChamber\DarkChamber\Plugins\Developer\RiderLink\Intermediate\Build\Win64\x64\UnrealEditor\Development\RiderBlueprint\UnrealEditor-RiderBlueprint.lib"
+/OUT:"E:\DarkChamber\ProjectDarkChamber\DarkChamber\Plugins\Developer\RiderLink\Intermediate\Build\Win64\x64\UnrealEditor\Development\RiderBlueprint\UnrealEditor-RiderBlueprint.lib"
+=======
+"C:\Unreal\DarkChamber\ProjectDarkChamber\DarkChamber\Plugins\Developer\RiderLink\Intermediate\Build\Win64\x64\UnrealEditor\Development\RiderBlueprint\Module.RiderBlueprint.cpp.obj"
+"..\Intermediate\Build\Win64\x64\UnrealEditor\Development\Default.rc2.res"
+/OUT:"C:\Unreal\DarkChamber\ProjectDarkChamber\DarkChamber\Plugins\Developer\RiderLink\Intermediate\Build\Win64\x64\UnrealEditor\Development\RiderBlueprint\UnrealEditor-RiderBlueprint.lib"
+>>>>>>> Stashed changes

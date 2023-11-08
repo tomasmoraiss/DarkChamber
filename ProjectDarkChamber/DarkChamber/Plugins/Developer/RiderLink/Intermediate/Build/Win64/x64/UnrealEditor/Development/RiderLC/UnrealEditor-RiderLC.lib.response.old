@@ -6,6 +6,12 @@
 /NAME:"UnrealEditor-RiderLC.dll"
 /IGNORE:4221
 /NODEFAULTLIB
-"C:\Users\Bruno\Documents\GitHub\DarkChamber\ProjectDarkChamber\DarkChamber\Plugins\Developer\RiderLink\Intermediate\Build\Win64\x64\UnrealEditor\Development\RiderLC\RiderLC.cpp.obj"
+<<<<<<< Updated upstream
+"E:\DarkChamber\ProjectDarkChamber\DarkChamber\Plugins\Developer\RiderLink\Intermediate\Build\Win64\x64\UnrealEditor\Development\RiderLC\RiderLC.cpp.obj"
 "..\Intermediate\Build\Win64\x64\UnrealEditor\Development\Default.rc2.res"
-/OUT:"C:\Users\Bruno\Documents\GitHub\DarkChamber\ProjectDarkChamber\DarkChamber\Plugins\Developer\RiderLink\Intermediate\Build\Win64\x64\UnrealEditor\Development\RiderLC\UnrealEditor-RiderLC.lib"
+/OUT:"E:\DarkChamber\ProjectDarkChamber\DarkChamber\Plugins\Developer\RiderLink\Intermediate\Build\Win64\x64\UnrealEditor\Development\RiderLC\UnrealEditor-RiderLC.lib"
+=======
+"C:\Unreal\DarkChamber\ProjectDarkChamber\DarkChamber\Plugins\Developer\RiderLink\Intermediate\Build\Win64\x64\UnrealEditor\Development\RiderLC\RiderLC.cpp.obj"
+"..\Intermediate\Build\Win64\x64\UnrealEditor\Development\Default.rc2.res"
+/OUT:"C:\Unreal\DarkChamber\ProjectDarkChamber\DarkChamber\Plugins\Developer\RiderLink\Intermediate\Build\Win64\x64\UnrealEditor\Development\RiderLC\UnrealEditor-RiderLC.lib"
+>>>>>>> Stashed changes
