@@ -27,4 +27,7 @@ public:
 	UFUNCTION()
 	void Interact();
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	class USphereComponent* InteractionRangeSphereComponent;
+
 };

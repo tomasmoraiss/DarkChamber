@@ -2,6 +2,7 @@
 
 
 #include "Item.h"
+#include "Components/SphereComponent.h"
 
 // Sets default values
 AItem::AItem()
@@ -14,7 +15,8 @@ AItem::AItem()
 // Called when the game starts or when spawned
 void AItem::BeginPlay()
 {
-	Super::BeginPlay();
+	InteractionRangeSphereComponent = CreateDefaultSubobject<USphereComponent>(TEXT("Attacking Cullusion"));
+	InteractionRangeSphereComponent->InitSphereRadius(50.f);
 	
 }
 
