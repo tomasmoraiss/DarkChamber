@@ -45,4 +45,7 @@ public:
 
 	UPROPERTY()
 	AActor* TargetActor;
+
+	UPROPERTY(BlueprintReadOnly)
+	bool IsOwned;
 };
