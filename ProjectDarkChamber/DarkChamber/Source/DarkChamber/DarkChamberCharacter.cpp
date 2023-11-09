@@ -166,8 +166,9 @@ void ADarkChamberCharacter::InteractTriggered(const FInputActionValue& Value)
 		if(Cast<AItem>(currentInteractableActor))
 		{
 			Inventory.Insert(Cast<AItem>(currentInteractableActor),1);
-			currentInteractableActor->AttachToActor(this, FAttachmentTransformRules::SnapToTargetNotIncludingScale);
+			currentInteractableActor->AttachToComponent(ItemPlaceHolderMeshComponent, FAttachmentTransformRules::SnapToTargetNotIncludingScale);
 			currentInteractableActor->SetActorEnableCollision(false);
+			CurrentItemHeld = currentInteractableActor;
 		}
 	}
 	

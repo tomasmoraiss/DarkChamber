@@ -72,7 +72,6 @@ protected:
 	
 
 public:
-	
 	virtual void Tick(float DeltaSeconds) override;
 	/** Look Input Action */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
@@ -82,20 +81,20 @@ public:
 	class UInputAction* InteractAction;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta=(AllowPrivateAccess = "true"))
 	class UInputAction* DelayedInteractAction;
-
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Inventory", meta=(AllowPrivateAccess = "true"))
-	AItem* Item1;
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Inventory", meta=(AllowPrivateAccess = "true"))
-	AItem* Item2;
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Inventory", meta=(AllowPrivateAccess = "true"))
-	AItem* Item3;
 	
 	//Temporary inventory
 	TArray<AItem*> Inventory= { nullptr, nullptr , nullptr };
 	UPROPERTY(EditInstanceOnly,BlueprintReadOnly,meta=(MustImplement="InteractableExample"))
 	int CurrentlySelectedInventoryItem;
 
+	//ItemPlaceHolderStuff
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UStaticMeshComponent* ItemPlaceHolderMeshComponent;
 	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	AActor* CurrentItemHeld;
+
 	
 	//Lock the look function
 	
