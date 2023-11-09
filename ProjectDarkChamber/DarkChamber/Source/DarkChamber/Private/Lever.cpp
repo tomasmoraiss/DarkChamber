@@ -37,6 +37,6 @@ void ALever::Interact_Implementation()
 		InteractInterface->Interact();
 	}
 	
-	UE_LOG(LogTemp, Warning, TEXT("Lever Activation"))
+	UE_LOG(LogTemp, Warning, TEXT("Lever Activation"));
 }
 

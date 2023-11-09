@@ -10,7 +10,7 @@
 #include "DarkChamberCharacter.generated.h"
 
 
-
+class AItem;
 class UInputComponent;
 class USkeletalMeshComponent;
 class USceneComponent;
@@ -83,8 +83,20 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta=(AllowPrivateAccess = "true"))
 	class UInputAction* DelayedInteractAction;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Inventory", meta=(AllowPrivateAccess = "true"))
+	AItem* Item1;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Inventory", meta=(AllowPrivateAccess = "true"))
+	AItem* Item2;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Inventory", meta=(AllowPrivateAccess = "true"))
+	AItem* Item3;
 	
+	//Temporary inventory
+	TArray<AItem*> Inventory= { nullptr, nullptr , nullptr };
+	UPROPERTY(EditInstanceOnly,BlueprintReadOnly,meta=(MustImplement="InteractableExample"))
+	int CurrentlySelectedInventoryItem;
 
+	
+	
 	//Lock the look function
 	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta=(AllowPrivateAccess = "true"))

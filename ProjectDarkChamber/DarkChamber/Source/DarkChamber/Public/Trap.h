@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "DarkChamber/DarkChamberCharacter.h"
 #include "DarkChamber/InteractInterface.h"
 #include "GameFramework/Actor.h"
 #include "Trap.generated.h"
@@ -25,6 +26,7 @@ public:
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+	virtual void PostInitializeComponents() override;
 
 public:	
 	// Called every frame
@@ -37,12 +39,33 @@ public:
 	void OnInteractHoverEnd(AActor* ActorToInteractWith) override;
 
 	void Build();
+	void AddItem();
+	bool IsItemsPlacedFull();
+
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta=(AllowPrivateAccess = "true"))
+	AItem* Item1;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta=(AllowPrivateAccess = "true"))
+	AItem* Item2;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta=(AllowPrivateAccess = "true"))
+	AItem* Item3;
+	
+	//Temporary inventory
+	TArray<AItem*> Inventory = { nullptr, nullptr , nullptr };
+	
+	//boolean to check if its has all the items already
+	UPROPERTY(EditInstanceOnly,BlueprintReadWrite,meta=(MustImplement="ItemToSpawExample"))
+	bool HasAllItems;
+	//array of items in the trap
+	
+	TArray<AItem*> ItemsPlaced= { nullptr, nullptr , nullptr }; 
+	UPROPERTY(EditInstanceOnly,meta=(MustImplement="ItemToSpawExample"))
+	int NumberWhereInventoryIs;
 	//Item that will be spawned
 	UPROPERTY(EditDefaultsOnly,BlueprintReadWrite,meta=(MustImplement="ItemToSpawExample"))
 	TSubclassOf<AActor> TrapAfterBuild;
-
 	
-
+	UPROPERTY(EditDefaultsOnly,BlueprintReadWrite,meta=(MustImplement="CharacterExample"))
+	AActor* Character;
 	
-
 };

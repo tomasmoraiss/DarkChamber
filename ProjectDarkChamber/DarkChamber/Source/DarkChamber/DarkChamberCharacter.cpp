@@ -1,7 +1,6 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "DarkChamberCharacter.h"
-#include "DarkChamberProjectile.h"
 #include "Animation/AnimInstance.h"
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
@@ -9,6 +8,7 @@
 #include "EnhancedInputSubsystems.h"
 #include "InputMappingContext.h"
 #include"InteractInterface.h"
+#include "Item.h"
 #include "GameFramework/CharacterMovementComponent.h"
 
 
@@ -23,8 +23,8 @@ ADarkChamberCharacter::ADarkChamberCharacter()
 	RunningSpeedMultiplier =1.5f;
 	DefaultWalkingSpeed=GetCharacterMovement()->MaxWalkSpeed;
 	
-	//Last interacted actor
-	
+	//Inventory Stuff
+	CurrentlySelectedInventoryItem = 1;
 	
 	// Set size for collision capsule
 	GetCapsuleComponent()->InitCapsuleSize(55.f, 96.0f);
@@ -62,6 +62,7 @@ void ADarkChamberCharacter::BeginPlay()
 	}
 }
 
+
 void ADarkChamberCharacter::InteractWithActor()
 {
 	FVector Start = GetFirstPersonCameraComponent()->GetComponentLocation();
@@ -70,20 +71,6 @@ void ADarkChamberCharacter::InteractWithActor()
 	FHitResult HitResult;
 	FCollisionQueryParams Params;
 	Params.AddIgnoredActor(this);
-	/*if(GetWorld()->LineTraceSingleByChannel(HitResult,Start,End,ECC_Visibility,Params))
-	{
-		InteractInterface = Cast<IInteractInterface>(HitResult.GetActor());
-		if(InteractInterface.IsValid())
-		{
-			return true;
-		}
-		else
-		{
-			return false;
-		}
-	}
-	InteractInterface = nullptr;
-	return false;*/
 }
 
 void ADarkChamberCharacter::ConstantLineTraceToCheckObjectsForward()
@@ -102,8 +89,6 @@ void ADarkChamberCharacter::ConstantLineTraceToCheckObjectsForward()
 		{
 			if(currentInteractableActor!=HitResult.GetActor())
 			{
-				// crreutn ne to onhover end
-				//InteractInterface->OnInteracthoverEnd(this);
 				currentInteractableActor = HitResult.GetActor();
 				InteractInterface = Cast<IInteractInterface>(HitResult.GetActor());
 				InteractInterface->OnInteractHoverBegin(this);
@@ -113,7 +98,6 @@ void ADarkChamberCharacter::ConstantLineTraceToCheckObjectsForward()
 		{
 			if(InteractInterface!=nullptr)
 			{
-				GEngine->AddOnScreenDebugMessage(-1,1,FColor::Red,"INTERATEND1");
 				InteractInterface->OnInteractHoverEnd(this);
 				currentInteractableActor = nullptr;
 				InteractInterface = nullptr;
@@ -122,11 +106,8 @@ void ADarkChamberCharacter::ConstantLineTraceToCheckObjectsForward()
 	}
 	else
 	{
-		// hoverned if i have an interaface
-		// set interface to null
 		if(InteractInterface!=nullptr)
 		{
-			GEngine->AddOnScreenDebugMessage(-1,1,FColor::Red,"INTERATEND2");
 			InteractInterface->OnInteractHoverEnd(this);
 			currentInteractableActor = nullptr;
 			InteractInterface = nullptr;
@@ -137,8 +118,6 @@ void ADarkChamberCharacter::ConstantLineTraceToCheckObjectsForward()
 void ADarkChamberCharacter::Tick(float DeltaSeconds)
 {
 	ConstantLineTraceToCheckObjectsForward();
-	
-	GEngine->AddOnScreenDebugMessage(-10,1.f,FColor::Purple,FString::Printf(TEXT("%f"), RunningSpeedMultiplier));
 }
 
 
@@ -172,8 +151,6 @@ void ADarkChamberCharacter::SetupPlayerInputComponent(class UInputComponent* Pla
 		EnhancedInputComponent->BindAction(InteractAction, ETriggerEvent::Triggered, this, &ADarkChamberCharacter::InteractTriggered);
 
 		EnhancedInputComponent->BindAction(DelayedInteractAction, ETriggerEvent::Triggered, this, &ADarkChamberCharacter::InteractTriggered);
-	
-		
 	}
 }
 
@@ -181,11 +158,20 @@ void ADarkChamberCharacter::InteractTriggered(const FInputActionValue& Value)
 {
 	GEngine->AddOnScreenDebugMessage(-1,1,FColor::Red,"TRIGGERED");
 	
-	//InteractWithActor();
+	InteractWithActor();
 	canMove = true;
-	if(InteractInterface.IsValid())InteractInterface->Interact();
-	canMove = true;
+	if(InteractInterface.IsValid())
+	{
+		InteractInterface->Interact();
+		if(Cast<AItem>(currentInteractableActor))
+		{
+			Inventory.Insert(Cast<AItem>(currentInteractableActor),1);
+			currentInteractableActor->AttachToActor(this, FAttachmentTransformRules::SnapToTargetNotIncludingScale);
+			currentInteractableActor->SetActorEnableCollision(false);
+		}
+	}
 	
+	canMove = true;
 }
 
 void ADarkChamberCharacter::InteractCanceledOrCompleted(const FInputActionValue& Value)
@@ -229,8 +215,6 @@ void ADarkChamberCharacter::Look(const FInputActionValue& Value)
 		AddControllerYawInput(LookAxisVector.X);
 		AddControllerPitchInput(LookAxisVector.Y);
 	}
-
-	
 }
 
 void ADarkChamberCharacter::Sprint(const FInputActionValue& Value)
