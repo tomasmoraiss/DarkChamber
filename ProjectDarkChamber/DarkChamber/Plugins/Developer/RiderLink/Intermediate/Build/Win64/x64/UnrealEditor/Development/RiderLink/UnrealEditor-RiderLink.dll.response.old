@@ -33,17 +33,10 @@
 /NODEFAULTLIB:"LIBCD"
 /NODEFAULTLIB:"LIBCPD"
 /FUNCTIONPADMIN:6
-<<<<<<< Updated upstream
-"E:\DarkChamber\ProjectDarkChamber\DarkChamber\Plugins\Developer\RiderLink\Intermediate\Build\Win64\x64\UnrealEditor\Development\RiderLink\Module.RiderLink.cpp.obj"
-"..\Intermediate\Build\Win64\x64\UnrealEditor\Development\Default.rc2.res"
-"..\Intermediate\Build\Win64\x64\UnrealEditor\Development\Core\UnrealEditor-Core.lib"
-"E:\DarkChamber\ProjectDarkChamber\DarkChamber\Plugins\Developer\RiderLink\Intermediate\Build\Win64\x64\UnrealEditor\Development\RD\UnrealEditor-RD.lib"
-=======
 "C:\Unreal\DarkChamber\ProjectDarkChamber\DarkChamber\Plugins\Developer\RiderLink\Intermediate\Build\Win64\x64\UnrealEditor\Development\RiderLink\Module.RiderLink.cpp.obj"
 "..\Intermediate\Build\Win64\x64\UnrealEditor\Development\Default.rc2.res"
 "..\Intermediate\Build\Win64\x64\UnrealEditor\Development\Core\UnrealEditor-Core.lib"
 "C:\Unreal\DarkChamber\ProjectDarkChamber\DarkChamber\Plugins\Developer\RiderLink\Intermediate\Build\Win64\x64\UnrealEditor\Development\RD\UnrealEditor-RD.lib"
->>>>>>> Stashed changes
 "delayimp.lib"
 "wininet.lib"
 "rpcrt4.lib"
@@ -68,13 +61,7 @@
 "setupapi.lib"
 "dwmapi.lib"
 "imm32.lib"
-<<<<<<< Updated upstream
-/OUT:"E:\DarkChamber\ProjectDarkChamber\DarkChamber\Plugins\Developer\RiderLink\Binaries\Win64\UnrealEditor-RiderLink.dll"
-/IMPLIB:"E:\DarkChamber\ProjectDarkChamber\DarkChamber\Plugins\Developer\RiderLink\Intermediate\Build\Win64\x64\UnrealEditor\Development\RiderLink\UnrealEditor-RiderLink.suppressed.lib"
-/PDB:"E:\DarkChamber\ProjectDarkChamber\DarkChamber\Plugins\Developer\RiderLink\Binaries\Win64\UnrealEditor-RiderLink.pdb"
-=======
 /OUT:"C:\Unreal\DarkChamber\ProjectDarkChamber\DarkChamber\Plugins\Developer\RiderLink\Binaries\Win64\UnrealEditor-RiderLink.dll"
 /IMPLIB:"C:\Unreal\DarkChamber\ProjectDarkChamber\DarkChamber\Plugins\Developer\RiderLink\Intermediate\Build\Win64\x64\UnrealEditor\Development\RiderLink\UnrealEditor-RiderLink.suppressed.lib"
 /PDB:"C:\Unreal\DarkChamber\ProjectDarkChamber\DarkChamber\Plugins\Developer\RiderLink\Binaries\Win64\UnrealEditor-RiderLink.pdb"
->>>>>>> Stashed changes
 /ignore:4078

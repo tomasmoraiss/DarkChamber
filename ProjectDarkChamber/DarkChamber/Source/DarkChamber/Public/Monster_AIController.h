@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "AIController.h"
+#include "Perception/AIPerceptionTypes.h"
 #include "Monster_AIController.generated.h"
 
 /**
@@ -18,4 +19,12 @@ public:
 
 protected:
 	virtual void OnPossess(APawn* InPawn) override;
+	
+private:
+	class UAISenseConfig_Sight* SightConfig;
+
+	void SetupPerceptionSystem();
+
+	UFUNCTION()
+	void OnTargetDetect(AActor* Actor, FAIStimulus const Stimulus);
 };
