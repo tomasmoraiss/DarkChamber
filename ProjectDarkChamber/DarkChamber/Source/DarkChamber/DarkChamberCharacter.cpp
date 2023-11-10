@@ -10,6 +10,8 @@
 #include"InteractInterface.h"
 #include "Item.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "Perception/AIPerceptionStimuliSourceComponent.h"
+#include "Perception/AISense_Sight.h"
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -45,6 +47,7 @@ ADarkChamberCharacter::ADarkChamberCharacter()
 	//Mesh1P->SetRelativeRotation(FRotator(0.9f, -19.19f, 5.2f));
 	Mesh1P->SetRelativeLocation(FVector(-30.f, 0.f, -150.f));
 
+	SetupStimulusSource();
 }
 
 void ADarkChamberCharacter::BeginPlay()
@@ -186,6 +189,16 @@ void ADarkChamberCharacter::InteractStarted(const FInputActionValue& Value)
 
 	//InteractWithActor();
 	
+}
+
+void ADarkChamberCharacter::SetupStimulusSource()
+{
+	StimulusSource = CreateDefaultSubobject<UAIPerceptionStimuliSourceComponent>(TEXT("Stimulus Source"));
+	if(StimulusSource)
+	{
+		StimulusSource->RegisterForSense(TSubclassOf<UAISense_Sight>());
+		StimulusSource->RegisterWithPerceptionSystem();
+	}
 }
 
 

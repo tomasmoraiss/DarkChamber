@@ -139,6 +139,9 @@ public:
 	void InteractCanceledOrCompleted(const FInputActionValue& Value);
 	void InteractStarted(const FInputActionValue& Value);
 
-	
+private:
+	class UAIPerceptionStimuliSourceComponent* StimulusSource;
+
+	void SetupStimulusSource();
 };
 
