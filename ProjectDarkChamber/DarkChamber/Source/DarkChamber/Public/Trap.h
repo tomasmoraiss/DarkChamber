@@ -9,17 +9,17 @@
 #include "Trap.generated.h"
 
 UCLASS()
-class DARKCHAMBER_API ATrap : public AActor,public IInteractInterface
+class DARKCHAMBER_API ATrap : public AActor, public IInteractInterface
 {
 	GENERATED_BODY()
-	
+
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=Input, meta=(AllowPrivateAccess = "true"))
 	class UInputMappingContext* InteractDelayedMappingContext;
-	
+
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=Input, meta=(AllowPrivateAccess = "true"))
 	class UInputMappingContext* InteractDefaultMappingContext;
 
-public:	
+public:
 	// Sets default values for this actor's properties
 	ATrap();
 
@@ -28,7 +28,7 @@ protected:
 	virtual void BeginPlay() override;
 	virtual void PostInitializeComponents() override;
 
-public:	
+public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
@@ -49,23 +49,22 @@ public:
 	AItem* Item2;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta=(AllowPrivateAccess = "true"))
 	AItem* Item3;
-	
+
 	//Temporary inventory
-	TArray<AItem*> Inventory = { nullptr, nullptr , nullptr };
-	
+	TArray<AItem*> Inventory = {nullptr, nullptr, nullptr};
+
 	//boolean to check if its has all the items already
-	UPROPERTY(EditInstanceOnly,BlueprintReadWrite,meta=(MustImplement="ItemToSpawExample"))
+	UPROPERTY(EditInstanceOnly, BlueprintReadWrite, meta=(MustImplement="ItemToSpawExample"))
 	bool HasAllItems;
 	//array of items in the trap
-	
-	TArray<AItem*> ItemsPlaced= { nullptr, nullptr , nullptr }; 
-	UPROPERTY(EditInstanceOnly,meta=(MustImplement="ItemToSpawExample"))
+
+	TArray<AItem*> ItemsPlaced = {nullptr, nullptr, nullptr};
+	UPROPERTY(EditInstanceOnly, meta=(MustImplement="ItemToSpawExample"))
 	int NumberWhereInventoryIs;
 	//Item that will be spawned
-	UPROPERTY(EditDefaultsOnly,BlueprintReadWrite,meta=(MustImplement="ItemToSpawExample"))
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, meta=(MustImplement="ItemToSpawExample"))
 	TSubclassOf<AActor> TrapAfterBuild;
-	
-	UPROPERTY(EditDefaultsOnly,BlueprintReadWrite,meta=(MustImplement="CharacterExample"))
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, meta=(MustImplement="CharacterExample"))
 	AActor* Character;
-	
 };

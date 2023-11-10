@@ -1,6 +1,9 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "DarkChamberCharacter.h"
+
+#include <iostream>
+
 #include "Animation/AnimInstance.h"
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
@@ -22,15 +25,15 @@ ADarkChamberCharacter::ADarkChamberCharacter()
 	//character can move at start
 	canMove = true;
 
-	RunningSpeedMultiplier =1.5f;
-	DefaultWalkingSpeed=GetCharacterMovement()->MaxWalkSpeed;
-	
+	RunningSpeedMultiplier = 1.5f;
+	DefaultWalkingSpeed = GetCharacterMovement()->MaxWalkSpeed;
+
 	//Inventory Stuff
-	CurrentlySelectedInventoryItem = 1;
-	
+	//CurrentlySelectedInventoryItem = 1;
+
 	// Set size for collision capsule
 	GetCapsuleComponent()->InitCapsuleSize(55.f, 96.0f);
-		
+
 	// Create a CameraComponent	
 	FirstPersonCameraComponent = CreateDefaultSubobject<UCameraComponent>(TEXT("FirstPersonCamera"));
 	FirstPersonCameraComponent->SetupAttachment(GetCapsuleComponent());
@@ -58,7 +61,8 @@ void ADarkChamberCharacter::BeginPlay()
 	//Add Input Mapping Context
 	if (APlayerController* PlayerController = Cast<APlayerController>(Controller))
 	{
-		if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer()))
+		if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<
+			UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer()))
 		{
 			Subsystem->AddMappingContext(DefaultMappingContext, 0);
 		}
@@ -69,8 +73,8 @@ void ADarkChamberCharacter::BeginPlay()
 void ADarkChamberCharacter::InteractWithActor()
 {
 	FVector Start = GetFirstPersonCameraComponent()->GetComponentLocation();
-	FVector End = Start+GetFirstPersonCameraComponent()->GetComponentRotation().Vector()*500.0f;
-	DrawDebugLine(GetWorld(),Start,End,FColor::Red,false,3.0f,0,2.0f);
+	FVector End = Start + GetFirstPersonCameraComponent()->GetComponentRotation().Vector() * 500.0f;
+	DrawDebugLine(GetWorld(), Start, End, FColor::Red, false, 3.0f, 0, 2.0f);
 	FHitResult HitResult;
 	FCollisionQueryParams Params;
 	Params.AddIgnoredActor(this);
@@ -79,18 +83,18 @@ void ADarkChamberCharacter::InteractWithActor()
 void ADarkChamberCharacter::ConstantLineTraceToCheckObjectsForward()
 {
 	FVector Start = GetFirstPersonCameraComponent()->GetComponentLocation();
-	FVector End = Start+GetFirstPersonCameraComponent()->GetComponentRotation().Vector()*500.0f;
+	FVector End = Start + GetFirstPersonCameraComponent()->GetComponentRotation().Vector() * 500.0f;
 	//DrawDebugLine(GetWorld(),Start,End,FColor::Purple,false,0.1f,0,2.0f);
 	FHitResult HitResult;
 	FCollisionQueryParams Params;
 	Params.AddIgnoredActor(this);
 	TWeakInterfacePtr<IInteractInterface> InteractInterfaceTemp;
-	if(GetWorld()->LineTraceSingleByChannel(HitResult,Start,End,ECC_Visibility,Params))
+	if (GetWorld()->LineTraceSingleByChannel(HitResult, Start, End, ECC_Visibility, Params))
 	{
 		InteractInterfaceTemp = Cast<IInteractInterface>(HitResult.GetActor());
-		if(InteractInterfaceTemp.IsValid())
+		if (InteractInterfaceTemp.IsValid())
 		{
-			if(currentInteractableActor!=HitResult.GetActor())
+			if (currentInteractableActor != HitResult.GetActor())
 			{
 				currentInteractableActor = HitResult.GetActor();
 				InteractInterface = Cast<IInteractInterface>(HitResult.GetActor());
@@ -99,7 +103,7 @@ void ADarkChamberCharacter::ConstantLineTraceToCheckObjectsForward()
 		}
 		else
 		{
-			if(InteractInterface!=nullptr)
+			if (InteractInterface != nullptr)
 			{
 				InteractInterface->OnInteractHoverEnd(this);
 				currentInteractableActor = nullptr;
@@ -109,7 +113,7 @@ void ADarkChamberCharacter::ConstantLineTraceToCheckObjectsForward()
 	}
 	else
 	{
-		if(InteractInterface!=nullptr)
+		if (InteractInterface != nullptr)
 		{
 			InteractInterface->OnInteractHoverEnd(this);
 			currentInteractableActor = nullptr;
@@ -140,42 +144,83 @@ void ADarkChamberCharacter::SetupPlayerInputComponent(class UInputComponent* Pla
 
 		//Running
 		EnhancedInputComponent->BindAction(SprintAction, ETriggerEvent::Started, this, &ADarkChamberCharacter::Sprint);
-		EnhancedInputComponent->BindAction(SprintAction, ETriggerEvent::Completed, this, &ADarkChamberCharacter::StopSprint);
+		EnhancedInputComponent->BindAction(SprintAction, ETriggerEvent::Completed, this,
+		                                   &ADarkChamberCharacter::StopSprint);
 
 		//Crouching	
-		EnhancedInputComponent->BindAction(CrouchAction, ETriggerEvent::Triggered, this,&ADarkChamberCharacter::Crouchh);
+		EnhancedInputComponent->BindAction(CrouchAction, ETriggerEvent::Triggered, this,
+		                                   &ADarkChamberCharacter::Crouchh);
 
 		//Looking
 		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &ADarkChamberCharacter::Look);
 		//interact
-		EnhancedInputComponent->BindAction(InteractAction, ETriggerEvent::Started, this, &ADarkChamberCharacter::InteractStarted);
-		EnhancedInputComponent->BindAction(InteractAction, ETriggerEvent::Canceled, this, &ADarkChamberCharacter::InteractCanceledOrCompleted);
-		EnhancedInputComponent->BindAction(InteractAction, ETriggerEvent::Completed, this, &ADarkChamberCharacter::InteractCanceledOrCompleted);
-		EnhancedInputComponent->BindAction(InteractAction, ETriggerEvent::Triggered, this, &ADarkChamberCharacter::InteractTriggered);
+		EnhancedInputComponent->BindAction(InteractAction, ETriggerEvent::Started, this,
+		                                   &ADarkChamberCharacter::InteractStarted);
+		EnhancedInputComponent->BindAction(InteractAction, ETriggerEvent::Canceled, this,
+		                                   &ADarkChamberCharacter::InteractCanceledOrCompleted);
+		EnhancedInputComponent->BindAction(InteractAction, ETriggerEvent::Completed, this,
+		                                   &ADarkChamberCharacter::InteractCanceledOrCompleted);
+		EnhancedInputComponent->BindAction(InteractAction, ETriggerEvent::Triggered, this,
+		                                   &ADarkChamberCharacter::InteractTriggered);
 
-		EnhancedInputComponent->BindAction(DelayedInteractAction, ETriggerEvent::Triggered, this, &ADarkChamberCharacter::InteractTriggered);
+		EnhancedInputComponent->BindAction(DelayedInteractAction, ETriggerEvent::Triggered, this,
+		                                   &ADarkChamberCharacter::InteractTriggered);
+		//InventorySelection
+		EnhancedInputComponent->BindAction(InventorySelect1Action, ETriggerEvent::Triggered, this,
+		                                   &ADarkChamberCharacter::SelectInventorySlot, 1);
+		EnhancedInputComponent->BindAction(InventorySelect2Action, ETriggerEvent::Triggered, this,
+		                                   &ADarkChamberCharacter::SelectInventorySlot, 2);
+		EnhancedInputComponent->BindAction(InventorySelect3Action, ETriggerEvent::Triggered, this,
+		                                   &ADarkChamberCharacter::SelectInventorySlot, 3);
+		EnhancedInputComponent->BindAction(InventorySelect4Action, ETriggerEvent::Triggered, this,
+		                                   &ADarkChamberCharacter::SelectInventorySlot, 4);
+		EnhancedInputComponent->BindAction(InventorySelect5Action, ETriggerEvent::Triggered, this,
+		                                   &ADarkChamberCharacter::SelectInventorySlot, 5);
+		EnhancedInputComponent->BindAction(InventorySelect6Action, ETriggerEvent::Triggered, this,
+		                                   &ADarkChamberCharacter::SelectInventorySlot, 6);
 	}
 }
 
 void ADarkChamberCharacter::InteractTriggered(const FInputActionValue& Value)
 {
-	GEngine->AddOnScreenDebugMessage(-1,1,FColor::Red,"TRIGGERED");
-	
+	GEngine->AddOnScreenDebugMessage(-1, 1, FColor::Red, "TRIGGERED");
+
 	InteractWithActor();
 	canMove = true;
-	if(InteractInterface.IsValid())
+	if (InteractInterface.IsValid())
 	{
 		InteractInterface->Interact();
-		if(Cast<AItem>(currentInteractableActor))
+		if (Cast<AItem>(currentInteractableActor))
 		{
-			Inventory.Insert(Cast<AItem>(currentInteractableActor),1);
-			currentInteractableActor->AttachToComponent(ItemPlaceHolderMeshComponent, FAttachmentTransformRules::SnapToTargetNotIncludingScale);
-			currentInteractableActor->SetActorEnableCollision(false);
-			CurrentItemHeld = currentInteractableActor;
+			//HEREE
+			int ItemSlot = GetavailableInventorySlot();
+			if (ItemSlot < 6)
+			{
+				Inventory.Insert(Cast<AItem>(currentInteractableActor), ItemSlot);
+				currentInteractableActor->AttachToComponent(ItemPlaceHolderMeshComponent,
+				                                            FAttachmentTransformRules::SnapToTargetNotIncludingScale);
+				currentInteractableActor->SetActorEnableCollision(false);
+				CurrentItemHeld = currentInteractableActor;
+			}
+			else
+			{
+				GEngine->AddOnScreenDebugMessage(-10, 1.f, FColor::Blue, "iventory is full");
+			}
 		}
 	}
-	
 	canMove = true;
+}
+
+int ADarkChamberCharacter::GetavailableInventorySlot()
+{
+	for (int i = 0; i < Inventory.Num(); i++)
+	{
+		if (Inventory[i] == nullptr)
+		{
+			return i;
+		}
+	}
+	return 6;
 }
 
 void ADarkChamberCharacter::InteractCanceledOrCompleted(const FInputActionValue& Value)
@@ -188,13 +233,19 @@ void ADarkChamberCharacter::InteractStarted(const FInputActionValue& Value)
 	//canMove = false;
 
 	//InteractWithActor();
-	
+}
+
+void ADarkChamberCharacter::SelectInventorySlot(int n)
+{
+	if (Inventory[n - 1] != nullptr)CurrentlySelectedInventoryItem = n;
+	GEngine->AddOnScreenDebugMessage(-10, 1.f, FColor::Red,
+	                                 FString::Printf(TEXT("Current Selected : %i"), CurrentlySelectedInventoryItem));
 }
 
 void ADarkChamberCharacter::SetupStimulusSource()
 {
 	StimulusSource = CreateDefaultSubobject<UAIPerceptionStimuliSourceComponent>(TEXT("Stimulus Source"));
-	if(StimulusSource)
+	if (StimulusSource)
 	{
 		StimulusSource->RegisterForSense(TSubclassOf<UAISense_Sight>());
 		StimulusSource->RegisterWithPerceptionSystem();
@@ -204,11 +255,10 @@ void ADarkChamberCharacter::SetupStimulusSource()
 
 void ADarkChamberCharacter::Move(const FInputActionValue& Value)
 {
-	if(canMove)
+	if (canMove)
 	{
 		// input is a Vector2D
 		FVector2D MovementVector = Value.Get<FVector2D>();
-
 		if (Controller != nullptr)
 		{
 			// add movement 
@@ -234,20 +284,19 @@ void ADarkChamberCharacter::Look(const FInputActionValue& Value)
 void ADarkChamberCharacter::Sprint(const FInputActionValue& Value)
 {
 	//&& !bIsCrouched
-	if(canMove )
+	if (canMove)
 	{
-		GEngine->AddOnScreenDebugMessage(-10,1.f,FColor::Red,FString::Printf(TEXT("%f"), RunningSpeedMultiplier));
-		GetCharacterMovement()->MaxWalkSpeed = DefaultWalkingSpeed*1.3f;
+		GEngine->AddOnScreenDebugMessage(-10, 1.f, FColor::Red, FString::Printf(TEXT("%f"), RunningSpeedMultiplier));
+		GetCharacterMovement()->MaxWalkSpeed = DefaultWalkingSpeed * 1.3f;
 	}
 }
 
 void ADarkChamberCharacter::StopSprint(const FInputActionValue& Value)
 {
-	GEngine->AddOnScreenDebugMessage(-1,1,FColor::Red,"StopSprinting");
+	GEngine->AddOnScreenDebugMessage(-1, 1, FColor::Red, "StopSprinting");
 	GetCharacterMovement()->MaxWalkSpeed = DefaultWalkingSpeed;
 }
 
 void ADarkChamberCharacter::Crouchh(const FInputActionValue& Value)
 {
-	
 }

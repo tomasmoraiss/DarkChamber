@@ -46,30 +46,44 @@ class ADarkChamberCharacter : public ACharacter
 	/** Sprint Input Action */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=Input, meta=(AllowPrivateAccess = "true"))
 	class UInputAction* SprintAction;
-	
+
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=Input, meta=(AllowPrivateAccess = "true"))
 	float RunningSpeedMultiplier;
-	
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=Input, meta=(AllowPrivateAccess = "true"))
 	float DefaultWalkingSpeed;
-	
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	class UInputAction* CrouchAction;
-	
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
+	class UInputAction* InventorySelect1Action;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
+	class UInputAction* InventorySelect2Action;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
+	class UInputAction* InventorySelect3Action;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
+	class UInputAction* InventorySelect4Action;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
+	class UInputAction* InventorySelect5Action;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
+	class UInputAction* InventorySelect6Action;
 
 public:
 	ADarkChamberCharacter();
 
 protected:
 	virtual void BeginPlay();
-	UFUNCTION(BlueprintCallable,Category="Interact")
+	UFUNCTION(BlueprintCallable, Category="Interact")
 	void InteractWithActor();
-	UFUNCTION(BlueprintCallable,Category="Interact")
+	UFUNCTION(BlueprintCallable, Category="Interact")
 	void ConstantLineTraceToCheckObjectsForward();
-	
 
 public:
 	virtual void Tick(float DeltaSeconds) override;
@@ -81,28 +95,31 @@ public:
 	class UInputAction* InteractAction;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta=(AllowPrivateAccess = "true"))
 	class UInputAction* DelayedInteractAction;
-	
+
 	//Temporary inventory
-	TArray<AItem*> Inventory= { nullptr, nullptr , nullptr };
-	UPROPERTY(EditInstanceOnly,BlueprintReadOnly,meta=(MustImplement="InteractableExample"))
+	TArray<AItem*> Inventory = {nullptr, nullptr, nullptr, nullptr, nullptr, nullptr};
+	UPROPERTY(EditInstanceOnly, BlueprintReadOnly)
 	int CurrentlySelectedInventoryItem;
+
+	UFUNCTION(BlueprintCallable, Category="Inventory")
+	int GetavailableInventorySlot();
 
 	//ItemPlaceHolderStuff
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	UStaticMeshComponent* ItemPlaceHolderMeshComponent;
-	
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	AActor* CurrentItemHeld;
 
-	
+
 	//Lock the look function
-	
+
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta=(AllowPrivateAccess = "true"))
 	bool canMove;
 
 	//Store actor Interface to activate later
-	TWeakInterfacePtr<IInteractInterface> InteractInterface ;
+	TWeakInterfacePtr<IInteractInterface> InteractInterface;
 
 	AActor* currentInteractableActor;
 
@@ -118,10 +135,6 @@ protected:
 	void StopSprint(const FInputActionValue& Value);
 
 	void Crouchh(const FInputActionValue& Value);
-
-	
-
-	
 
 protected:
 	// APawn interface
@@ -139,9 +152,10 @@ public:
 	void InteractCanceledOrCompleted(const FInputActionValue& Value);
 	void InteractStarted(const FInputActionValue& Value);
 
+	void SelectInventorySlot(int n);
+
 private:
 	class UAIPerceptionStimuliSourceComponent* StimulusSource;
 
 	void SetupStimulusSource();
 };
-
