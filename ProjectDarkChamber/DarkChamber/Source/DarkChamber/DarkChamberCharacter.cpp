@@ -29,7 +29,7 @@ ADarkChamberCharacter::ADarkChamberCharacter()
 	DefaultWalkingSpeed = GetCharacterMovement()->MaxWalkSpeed;
 
 	//Inventory Stuff
-	//CurrentlySelectedInventoryItem = 1;
+	CurrentlySelectedInventoryItem = 6;
 
 	// Set size for collision capsule
 	GetCapsuleComponent()->InitCapsuleSize(55.f, 96.0f);
@@ -197,6 +197,7 @@ void ADarkChamberCharacter::InteractTriggered(const FInputActionValue& Value)
 			if (ItemSlot < 6)
 			{
 				Inventory.Insert(Cast<AItem>(currentInteractableActor), ItemSlot);
+				CurrentlySelectedInventoryItem = ItemSlot;
 				currentInteractableActor->AttachToComponent(ItemPlaceHolderMeshComponent,
 				                                            FAttachmentTransformRules::SnapToTargetNotIncludingScale);
 				currentInteractableActor->SetActorEnableCollision(false);
@@ -217,6 +218,8 @@ int ADarkChamberCharacter::GetavailableInventorySlot()
 	{
 		if (Inventory[i] == nullptr)
 		{
+			GEngine->AddOnScreenDebugMessage(-10, 1.f, FColor::Blue,
+			                                 FString::Printf(TEXT("available slot : %i"), i));
 			return i;
 		}
 	}
@@ -237,7 +240,7 @@ void ADarkChamberCharacter::InteractStarted(const FInputActionValue& Value)
 
 void ADarkChamberCharacter::SelectInventorySlot(int n)
 {
-	if (Inventory[n - 1] != nullptr)CurrentlySelectedInventoryItem = n;
+	if (Inventory[n - 1] != nullptr)CurrentlySelectedInventoryItem = n - 1;
 	GEngine->AddOnScreenDebugMessage(-10, 1.f, FColor::Red,
 	                                 FString::Printf(TEXT("Current Selected : %i"), CurrentlySelectedInventoryItem));
 }

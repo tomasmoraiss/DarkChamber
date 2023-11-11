@@ -4,6 +4,7 @@
 #include "Trap.h"
 
 #include "EnhancedInputSubsystems.h"
+#include "Item.h"
 #include "DarkChamber/DarkChamberCharacter.h"
 
 
@@ -85,12 +86,17 @@ void ATrap::AddItem()
 	// TODO: Remove this cast, this variable type should just be a character as it can be downcasted to an AActor*
 	// Note: I'm assuming Inventory is a TArray here (or at least it should be as we set this to have the right max number ahead of time)
 	ADarkChamberCharacter* TCharacter = Cast<ADarkChamberCharacter>(Character);
-	if (!TCharacter || !TCharacter->Inventory.IsValidIndex(TCharacter->CurrentlySelectedInventoryItem))
+	if (!TCharacter || !TCharacter->Inventory.IsValidIndex(TCharacter->CurrentlySelectedInventoryItem)||TCharacter->CurrentlySelectedInventoryItem>5)
 	{
+		GEngine->AddOnScreenDebugMessage(-1, 1, FColor::Red, "dont have item selected");
 		return;
 	}
 
 	ItemsPlaced[NumberWhereInventoryIs] = TCharacter->Inventory[TCharacter->CurrentlySelectedInventoryItem];
+	AActor* TActor= Cast<AActor>(TCharacter->Inventory[TCharacter->CurrentlySelectedInventoryItem]);
+	TActor->Destroy();
+	TCharacter->Inventory[TCharacter->CurrentlySelectedInventoryItem] = nullptr;
+	TCharacter->CurrentlySelectedInventoryItem=6;
 	if (NumberWhereInventoryIs + 1 < 3)NumberWhereInventoryIs++;
 	HasAllItems = IsItemsPlacedFull();
 	GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Black,
