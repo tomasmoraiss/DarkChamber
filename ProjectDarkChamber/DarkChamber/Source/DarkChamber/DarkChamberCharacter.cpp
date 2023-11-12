@@ -197,6 +197,7 @@ void ADarkChamberCharacter::InteractTriggered(const FInputActionValue& Value)
 			if (ItemSlot < 6)
 			{
 				Inventory.Insert(Cast<AItem>(currentInteractableActor), ItemSlot);
+				MakeItemsInvisible(Cast<AItem>(currentInteractableActor));
 				CurrentlySelectedInventoryItem = ItemSlot;
 				currentInteractableActor->AttachToComponent(ItemPlaceHolderMeshComponent,
 				                                            FAttachmentTransformRules::SnapToTargetNotIncludingScale);
@@ -240,10 +241,32 @@ void ADarkChamberCharacter::InteractStarted(const FInputActionValue& Value)
 
 void ADarkChamberCharacter::SelectInventorySlot(int n)
 {
-	if (Inventory[n - 1] != nullptr)CurrentlySelectedInventoryItem = n - 1;
+	if (Inventory[n - 1] != nullptr)
+	{
+		CurrentlySelectedInventoryItem = n - 1;
+		MakeItemsInvisible(Inventory[CurrentlySelectedInventoryItem]);
+	}
 	GEngine->AddOnScreenDebugMessage(-10, 1.f, FColor::Red,
 	                                 FString::Printf(TEXT("Current Selected : %i"), CurrentlySelectedInventoryItem));
 }
+
+void ADarkChamberCharacter::MakeItemsInvisible(AItem* item)
+{
+	for (int i = 0; i < Inventory.Num(); i++)
+	{
+		if (Inventory[i] != item && Inventory[i] != nullptr)
+		{
+			AActor* TActor = Cast<AActor>((Inventory[i]));
+			TActor->SetActorHiddenInGame(true);
+		}
+		else if (Inventory[i] == item)
+		{
+			AActor* TActor = Cast<AActor>((Inventory[i]));
+			TActor->SetActorHiddenInGame(false);
+		}
+	}
+}
+
 
 void ADarkChamberCharacter::SetupStimulusSource()
 {

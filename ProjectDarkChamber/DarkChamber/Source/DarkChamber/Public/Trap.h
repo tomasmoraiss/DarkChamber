@@ -26,7 +26,6 @@ public:
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
-	virtual void PostInitializeComponents() override;
 
 public:
 	// Called every frame
@@ -41,24 +40,16 @@ public:
 	void Build();
 	void AddItem();
 	bool IsItemsPlacedFull();
-
-
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta=(AllowPrivateAccess = "true"))
-	AItem* Item1;
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta=(AllowPrivateAccess = "true"))
-	AItem* Item2;
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta=(AllowPrivateAccess = "true"))
-	AItem* Item3;
-
-	//Temporary inventory
-	TArray<AItem*> Inventory = {nullptr, nullptr, nullptr};
-
+	bool CanIAddThisItemToTheTrap(int n);
+	int WhatTrapIsBuilt();
 	//boolean to check if its has all the items already
 	UPROPERTY(EditInstanceOnly, BlueprintReadWrite, meta=(MustImplement="ItemToSpawExample"))
 	bool HasAllItems;
 	//array of items in the trap
 
 	TArray<AItem*> ItemsPlaced = {nullptr, nullptr, nullptr};
+	TArray<int> ItemsPlaced2 = {NULL, NULL, NULL};
+
 	UPROPERTY(EditInstanceOnly, meta=(MustImplement="ItemToSpawExample"))
 	int NumberWhereInventoryIs;
 	//Item that will be spawned

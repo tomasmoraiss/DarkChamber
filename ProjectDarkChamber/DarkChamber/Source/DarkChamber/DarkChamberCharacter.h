@@ -154,6 +154,8 @@ public:
 
 	void SelectInventorySlot(int n);
 
+	void MakeItemsInvisible(AItem* item);
+
 private:
 	class UAIPerceptionStimuliSourceComponent* StimulusSource;
 

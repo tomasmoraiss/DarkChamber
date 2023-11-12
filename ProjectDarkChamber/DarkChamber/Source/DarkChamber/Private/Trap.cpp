@@ -3,6 +3,9 @@
 
 #include "Trap.h"
 
+#include <unordered_set>
+
+#include "iostream"
 #include "EnhancedInputSubsystems.h"
 #include "Item.h"
 #include "DarkChamber/DarkChamberCharacter.h"
@@ -22,14 +25,6 @@ ATrap::ATrap()
 void ATrap::BeginPlay()
 {
 	Super::BeginPlay();
-}
-
-void ATrap::PostInitializeComponents()
-{
-	Super::PostInitializeComponents();
-	Inventory.Insert(Item1, 0);
-	Inventory.Insert(Item2, 1);
-	Inventory.Insert(Item3, 2);
 }
 
 // Called every frame
@@ -83,24 +78,29 @@ void ATrap::Build()
 
 void ATrap::AddItem()
 {
-	// TODO: Remove this cast, this variable type should just be a character as it can be downcasted to an AActor*
-	// Note: I'm assuming Inventory is a TArray here (or at least it should be as we set this to have the right max number ahead of time)
 	ADarkChamberCharacter* TCharacter = Cast<ADarkChamberCharacter>(Character);
-	if (!TCharacter || !TCharacter->Inventory.IsValidIndex(TCharacter->CurrentlySelectedInventoryItem)||TCharacter->CurrentlySelectedInventoryItem>5)
+	if (!TCharacter || !TCharacter->Inventory.IsValidIndex(TCharacter->CurrentlySelectedInventoryItem) || TCharacter->
+		CurrentlySelectedInventoryItem > 5)
 	{
 		GEngine->AddOnScreenDebugMessage(-1, 1, FColor::Red, "dont have item selected");
 		return;
 	}
-
-	ItemsPlaced[NumberWhereInventoryIs] = TCharacter->Inventory[TCharacter->CurrentlySelectedInventoryItem];
-	AActor* TActor= Cast<AActor>(TCharacter->Inventory[TCharacter->CurrentlySelectedInventoryItem]);
-	TActor->Destroy();
-	TCharacter->Inventory[TCharacter->CurrentlySelectedInventoryItem] = nullptr;
-	TCharacter->CurrentlySelectedInventoryItem=6;
-	if (NumberWhereInventoryIs + 1 < 3)NumberWhereInventoryIs++;
-	HasAllItems = IsItemsPlacedFull();
-	GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Black,
-	                                 FString::Printf(TEXT("Bool: %s"), HasAllItems ? TEXT("true") : TEXT("false")));
+	AItem* TItem = Cast<AItem>(TCharacter->Inventory[TCharacter->CurrentlySelectedInventoryItem]);
+	if (CanIAddThisItemToTheTrap(TItem->itemNumber))
+	{
+		ItemsPlaced[NumberWhereInventoryIs] = TCharacter->Inventory[TCharacter->CurrentlySelectedInventoryItem];
+		ItemsPlaced2[NumberWhereInventoryIs] = TCharacter->Inventory[TCharacter->CurrentlySelectedInventoryItem]->
+			itemNumber;
+		AActor* TActor = Cast<AActor>(TCharacter->Inventory[TCharacter->CurrentlySelectedInventoryItem]);
+		TActor->Destroy();
+		TCharacter->Inventory[TCharacter->CurrentlySelectedInventoryItem] = nullptr;
+		TCharacter->CurrentlySelectedInventoryItem = 6;
+		if (NumberWhereInventoryIs + 1 < 3)NumberWhereInventoryIs++;
+		HasAllItems = IsItemsPlacedFull();
+		GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Black,
+		                                 FString::Printf(TEXT("Bool: %s"), HasAllItems ? TEXT("true") : TEXT("false")));
+	}
+	else GEngine->AddOnScreenDebugMessage(-1, 1, FColor::Red, "This item dont go into the trap or is already innit");
 }
 
 bool ATrap::IsItemsPlacedFull()
@@ -112,5 +112,53 @@ bool ATrap::IsItemsPlacedFull()
 			return false;
 		}
 	}
+	WhatTrapIsBuilt();
 	return true;
+}
+
+bool ATrap::CanIAddThisItemToTheTrap(int n)
+{
+	if (n <= 5)
+	{
+		for (int i = 0; i < ItemsPlaced.Num(); i++)
+		{
+			if (ItemsPlaced[i] != nullptr)
+			{
+				if (ItemsPlaced[i]->itemNumber == n)
+				{
+					return false;
+				}
+			}
+		}
+		return true;
+	}
+	return false;
+}
+
+int ATrap::WhatTrapIsBuilt()
+{
+	TArray<int> trap1 = {1, 2, 3};
+	TArray<int> trap2 = {1, 2, 4};
+	TArray<int> trap3 = {1, 2, 5};
+	std::unordered_multiset<int> Set1(ItemsPlaced2.GetData(), ItemsPlaced2.GetData() + ItemsPlaced2.Num());
+	std::unordered_multiset<int> Set2(trap1.GetData(), trap1.GetData() + trap1.Num());
+	std::unordered_multiset<int> Set3(trap2.GetData(), trap2.GetData() + trap2.Num());
+	std::unordered_multiset<int> Set4(trap3.GetData(), trap3.GetData() + trap3.Num());
+
+	if (Set1 == Set2)
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 3, FColor::Red, "Items are the same1");
+		return 1;
+	}
+	else if (Set1 == Set3)
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 3, FColor::Red, "Items are the same2");
+		return 2;
+	}
+	else if (Set1 == Set4)
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 3, FColor::Red, "Items are the same3");
+		return 3;
+	}
+	else return 0;
 }
