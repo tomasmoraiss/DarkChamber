@@ -37,3 +37,8 @@ UBehaviorTree* AMonster::GetBehaviorTree() const
 	return BehaviorTree;
 }
 
+APatrolPath* AMonster::GetPatrolPath() const
+{
+	return PatrolPath;
+}
+

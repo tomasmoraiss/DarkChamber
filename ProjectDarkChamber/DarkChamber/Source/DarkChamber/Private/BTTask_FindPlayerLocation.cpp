@@ -8,12 +8,13 @@
 #include "GameFramework/Character.h"
 #include "Kismet/GameplayStatics.h"
 
-UBTTask_FindPlayerLocation::UBTTask_FindPlayerLocation(FObjectInitializer const& ObjectInitializer)
+UBTTask_FindPlayerLocation::UBTTask_FindPlayerLocation(FObjectInitializer const& ObjectInitializer) :
+	UBTTask_BlackboardBase{ObjectInitializer}
 {
 	NodeName = TEXT("Find Player Location");
 }
 
-EBTNodeResult::Type UBTTask_FindPlayerLocation::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
+EBTNodeResult::Type UBTTask_FindPlayerLocation::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory) 
 {
 	//Get Player character
 	if(auto const* Player = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0))
