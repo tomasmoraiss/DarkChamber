@@ -69,10 +69,13 @@ void ATrap::OnInteractHoverEnd(AActor* ActorToInteractWith)
 void ATrap::Build()
 {
 	GEngine->AddOnScreenDebugMessage(-1, 1, FColor::Red, "BUILT");
-	FVector Location(this->GetActorLocation().X, this->GetActorLocation().Y, this->GetActorLocation().Z + 50);
+	FVector Location(this->GetActorLocation().X, this->GetActorLocation().Y, this->GetActorLocation().Z);
 	FRotator Rotation(0.0f, 0.0f, 0.0f);
 	FActorSpawnParameters SpawnInfo;
 	GetWorld()->SpawnActor<AActor>(TrapAfterBuild, Location, Rotation);
+	this->SetActorHiddenInGame(true);
+	FVector Location2(this->GetActorLocation().X, this->GetActorLocation().Y, this->GetActorLocation().Z - 10);
+	this->SetActorLocation(Location2);
 }
 
 void ATrap::AddItem()
