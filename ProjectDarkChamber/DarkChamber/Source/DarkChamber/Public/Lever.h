@@ -25,7 +25,7 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 	UFUNCTION(BlueprintNativeEvent)
-	void Interact();
+	void Interact(AActor* ActorInteracting);
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	bool isOn;

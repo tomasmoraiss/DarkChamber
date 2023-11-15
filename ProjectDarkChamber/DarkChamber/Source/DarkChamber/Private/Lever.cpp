@@ -28,13 +28,13 @@ void ALever::Tick(float DeltaTime)
 
 }
 
-void ALever::Interact_Implementation()
+void ALever::Interact_Implementation(AActor* ActorInteracting)
 {
 	isOn  = !isOn;
 	if(DoorReference!=nullptr)
 	{
 		IInteractInterface* InteractInterface = Cast<IInteractInterface>(DoorReference);
-		InteractInterface->Interact();
+		InteractInterface->Interact(this);
 	}
 	
 	UE_LOG(LogTemp, Warning, TEXT("Lever Activation"));

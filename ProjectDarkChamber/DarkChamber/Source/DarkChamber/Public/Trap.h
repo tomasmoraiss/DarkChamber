@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "DarkChamber/DarkChamberCharacter.h"
 #include "DarkChamber/InteractInterface.h"
+#include "Engine/StaticMeshActor.h"
 #include "GameFramework/Actor.h"
 #include "Trap.generated.h"
 
@@ -31,7 +32,7 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-	void Interact() override;
+	void Interact(AActor* ActorInteracting) override;
 
 	void OnInteractHoverBegin(AActor* ActorToInteractWith) override;
 
@@ -55,6 +56,12 @@ public:
 	//Item that will be spawned
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, meta=(MustImplement="ItemToSpawExample"))
 	TSubclassOf<AActor> TrapAfterBuild;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, meta=(MustImplement="ItemToSpawExample"))
+	TSubclassOf<AActor> TrapAfterBuildEletric;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, meta=(MustImplement="ItemToSpawExample"))
+	TSubclassOf<AActor> TrapAfterBuildFire;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, meta=(MustImplement="ItemToSpawExample"))
+	TSubclassOf<AActor> TrapAfterBuildHole;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, meta=(MustImplement="CharacterExample"))
 	AActor* Character;

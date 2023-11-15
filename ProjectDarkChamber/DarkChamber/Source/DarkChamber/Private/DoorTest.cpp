@@ -36,7 +36,7 @@ void ADoorTest::OnInteractHoverEnd(AActor* ActorToInteractWith)
 	IInteractInterface::OnInteractHoverEnd(ActorToInteractWith);
 }
 
-void ADoorTest::Interact_Implementation()
+void ADoorTest::Interact_Implementation(AActor* ActorInteracting)
 {
 	isOpen = !isOpen;
 	UE_LOG(LogTemp, Warning, TEXT("Door Activation"))

@@ -26,7 +26,7 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 	UFUNCTION()
-	void Interact();
+	void Interact(AActor* ActorInteracting);
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
 	class USphereComponent* InteractionRangeSphereComponent;

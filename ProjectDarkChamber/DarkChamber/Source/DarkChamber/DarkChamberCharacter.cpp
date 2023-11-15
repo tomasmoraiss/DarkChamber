@@ -189,7 +189,7 @@ void ADarkChamberCharacter::InteractTriggered(const FInputActionValue& Value)
 	canMove = true;
 	if (InteractInterface.IsValid())
 	{
-		InteractInterface->Interact();
+		InteractInterface->Interact(this);
 		if (Cast<AItem>(currentInteractableActor))
 		{
 			//HEREE

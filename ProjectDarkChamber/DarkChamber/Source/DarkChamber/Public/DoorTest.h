@@ -25,7 +25,7 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 	UFUNCTION(BlueprintNativeEvent)
-	void Interact();
+	void Interact(AActor* ActorInteracting);
 	UFUNCTION()
 	void OnInteractHoverBegin(AActor* ActorToInteractWith) override;
 	UFUNCTION()

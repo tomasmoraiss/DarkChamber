@@ -58,7 +58,7 @@ void AItem::Tick(float DeltaTime)
 	}
 }
 
-void AItem::Interact()
+void AItem::Interact(AActor* ActorInteracting)
 {
 	if (!IsOwned)
 	{

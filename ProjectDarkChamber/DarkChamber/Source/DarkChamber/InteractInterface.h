@@ -34,7 +34,7 @@ public:
 
 	// This is when the mapping happens
 	UFUNCTION()
-	virtual void Interact();
+	virtual void Interact(AActor* ActorInteracting);
 	// when the interaction ends happening
 	virtual void OnInteractEnd();
 

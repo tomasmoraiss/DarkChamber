@@ -16,7 +16,6 @@ ATrap::ATrap()
 {
 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-	TrapAfterBuild = this->GetClass();
 	HasAllItems = false;
 	NumberWhereInventoryIs = 0;
 }
@@ -33,7 +32,7 @@ void ATrap::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 }
 
-void ATrap::Interact()
+void ATrap::Interact(AActor* ActorInteracting)
 {
 	GEngine->AddOnScreenDebugMessage(-1, 1, FColor::Green, "Interactedd");
 	if (HasAllItems)Build();
@@ -147,16 +146,19 @@ int ATrap::WhatTrapIsBuilt()
 
 	if (Set1 == Set2)
 	{
+		TrapAfterBuild = TrapAfterBuildEletric;
 		GEngine->AddOnScreenDebugMessage(-1, 3, FColor::Red, "Items are the same1");
 		return 1;
 	}
 	else if (Set1 == Set3)
 	{
+		TrapAfterBuild = TrapAfterBuildFire;
 		GEngine->AddOnScreenDebugMessage(-1, 3, FColor::Red, "Items are the same2");
 		return 2;
 	}
 	else if (Set1 == Set4)
 	{
+		TrapAfterBuild = TrapAfterBuildHole;
 		GEngine->AddOnScreenDebugMessage(-1, 3, FColor::Red, "Items are the same3");
 		return 3;
 	}
