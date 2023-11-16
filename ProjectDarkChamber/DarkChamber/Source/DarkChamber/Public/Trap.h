@@ -4,13 +4,14 @@
 
 #include "CoreMinimal.h"
 #include "DarkChamber/DarkChamberCharacter.h"
+#include "ActivatableInterface.h"
 #include "DarkChamber/InteractInterface.h"
 #include "Engine/StaticMeshActor.h"
 #include "GameFramework/Actor.h"
 #include "Trap.generated.h"
 
 UCLASS()
-class DARKCHAMBER_API ATrap : public AActor, public IInteractInterface
+class DARKCHAMBER_API ATrap : public AActor, public IInteractInterface, public IActivatableInterface
 {
 	GENERATED_BODY()
 
@@ -38,6 +39,8 @@ public:
 
 	void OnInteractHoverEnd(AActor* ActorToInteractWith) override;
 
+	void Activate() override;
+
 	void Build();
 	void AddItem();
 	bool IsItemsPlacedFull();
@@ -62,7 +65,30 @@ public:
 	TSubclassOf<AActor> TrapAfterBuildFire;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, meta=(MustImplement="ItemToSpawExample"))
 	TSubclassOf<AActor> TrapAfterBuildHole;
-
+	//character instance
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, meta=(MustImplement="CharacterExample"))
 	AActor* Character;
+	//BoxCollider
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+	bool CanTakeDamage = false;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+	bool Activated = false;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+	UStaticMeshComponent* ItemMesh;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="BOX")
+	FVector vector;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+	class UBoxComponent* InteractionRangeBoxComponent;
+
+	UFUNCTION()
+	virtual void OnOverlapBegin(class UPrimitiveComponent* OverlappedComp, class AActor* OtherActor,
+	                    class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep,
+	                    const FHitResult& SweepResult);
+
+	UFUNCTION()
+	virtual void OnOverlapEnd(class UPrimitiveComponent* OverlappedComp, class AActor* OtherActor,
+	                  class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
+	
 };

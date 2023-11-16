@@ -8,7 +8,10 @@
 #include "iostream"
 #include "EnhancedInputSubsystems.h"
 #include "Item.h"
+#include "Components/BoxComponent.h"
+#include "Components/SphereComponent.h"
 #include "DarkChamber/DarkChamberCharacter.h"
+using namespace std;
 
 
 // Sets default values
@@ -18,18 +21,37 @@ ATrap::ATrap()
 	PrimaryActorTick.bCanEverTick = true;
 	HasAllItems = false;
 	NumberWhereInventoryIs = 0;
+
+
+	ItemMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Static Mesh"));
+
+	InteractionRangeBoxComponent = CreateDefaultSubobject<UBoxComponent>(TEXT("Actor Can Interact Range"));
+	InteractionRangeBoxComponent->InitBoxExtent(FVector(60.f, 60.f, 100.f));
+	InteractionRangeBoxComponent->AttachToComponent(ItemMesh, FAttachmentTransformRules::KeepRelativeTransform);
 }
 
-// Called when the game starts or when spawned
+// Called when the game starts or when spawned	
 void ATrap::BeginPlay()
 {
 	Super::BeginPlay();
+	FScriptDelegate DelegateOverlapBegin;
+	FScriptDelegate DelegateOverlapEnd;
+
+	DelegateOverlapBegin.BindUFunction(this, "OnOverlapBegin");
+	DelegateOverlapEnd.BindUFunction(this, "OnOverlapEnd");
+
+	if (DelegateOverlapBegin.IsBound() && DelegateOverlapEnd.IsBound() && InteractionRangeBoxComponent)
+	{
+		InteractionRangeBoxComponent->OnComponentBeginOverlap.Add(DelegateOverlapBegin);
+		InteractionRangeBoxComponent->OnComponentEndOverlap.Add(DelegateOverlapEnd);
+	}
 }
 
 // Called every frame
 void ATrap::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+	if (CanTakeDamage && Activated)GEngine->AddOnScreenDebugMessage(-1, 1, FColor::Red, "Damage");
 }
 
 void ATrap::Interact(AActor* ActorInteracting)
@@ -64,6 +86,11 @@ void ATrap::OnInteractHoverEnd(AActor* ActorToInteractWith)
 			Subsystem->RemoveMappingContext(InteractDelayedMappingContext);
 		}
 	}
+}
+
+void ATrap::Activate()
+{
+	Activated = true;
 }
 
 void ATrap::Build()
@@ -142,10 +169,10 @@ int ATrap::WhatTrapIsBuilt()
 	TArray<int> trap1 = {1, 2, 3};
 	TArray<int> trap2 = {1, 2, 4};
 	TArray<int> trap3 = {1, 2, 5};
-	std::unordered_multiset<int> Set1(ItemsPlaced2.GetData(), ItemsPlaced2.GetData() + ItemsPlaced2.Num());
-	std::unordered_multiset<int> Set2(trap1.GetData(), trap1.GetData() + trap1.Num());
-	std::unordered_multiset<int> Set3(trap2.GetData(), trap2.GetData() + trap2.Num());
-	std::unordered_multiset<int> Set4(trap3.GetData(), trap3.GetData() + trap3.Num());
+	unordered_multiset<int> Set1(ItemsPlaced2.GetData(), ItemsPlaced2.GetData() + ItemsPlaced2.Num());
+	unordered_multiset<int> Set2(trap1.GetData(), trap1.GetData() + trap1.Num());
+	unordered_multiset<int> Set3(trap2.GetData(), trap2.GetData() + trap2.Num());
+	unordered_multiset<int> Set4(trap3.GetData(), trap3.GetData() + trap3.Num());
 
 	if (Set1 == Set2)
 	{
@@ -166,4 +193,18 @@ int ATrap::WhatTrapIsBuilt()
 		return 3;
 	}
 	else return 0;
+}
+
+void ATrap::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp,
+                           int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+	CanTakeDamage = true;
+	GEngine->AddOnScreenDebugMessage(-1, 1, FColor::Green, "Interactedd");
+}
+
+void ATrap::OnOverlapEnd(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp,
+                         int32 OtherBodyIndex)
+{
+	CanTakeDamage = false;
+	GEngine->AddOnScreenDebugMessage(-1, 1, FColor::Green, "Interactedd");
 }

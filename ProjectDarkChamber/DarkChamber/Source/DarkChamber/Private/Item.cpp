@@ -13,7 +13,7 @@ AItem::AItem()
 	PrimaryActorTick.bCanEverTick = true;
 	IsOwned = false;
 
-	ItemMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Static Mesh"));
+		ItemMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Static Mesh"));
 
 	InteractionRangeSphereComponent = CreateDefaultSubobject<USphereComponent>(TEXT("Actor Can Interact Range"));
 	InteractionRangeSphereComponent->InitSphereRadius(2500.f);
