@@ -13,7 +13,7 @@ AItem::AItem()
 	PrimaryActorTick.bCanEverTick = true;
 	IsOwned = false;
 
-		ItemMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Static Mesh"));
+	ItemMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Static Mesh"));
 
 	InteractionRangeSphereComponent = CreateDefaultSubobject<USphereComponent>(TEXT("Actor Can Interact Range"));
 	InteractionRangeSphereComponent->InitSphereRadius(2500.f);
@@ -87,4 +87,24 @@ void AItem::OnOverlapEnd(UPrimitiveComponent* OverlappedComp, AActor* OtherActor
 		GEngine->AddOnScreenDebugMessage(-1, 1, FColor::Purple, "Exit Interact Area");
 		ItemWidget->SetVisibility(false);
 	}
+}
+
+void AItem::ThrowItem(float force, FVector direction)
+{
+	UStaticMeshComponent* mesh = this->FindComponentByClass<UStaticMeshComponent>();
+
+	FVector location(0.f, 0.f, 400.f);
+
+	this->SetActorLocation(this->GetActorLocation() * location);
+	mesh->SetSimulatePhysics(true);
+	FTimerHandle TimerHandle;
+	GetWorld()->GetTimerManager().SetTimer(TimerHandle, this, &AItem::CanCollide, 5.0f, false, .05f);
+	mesh->AddImpulse(direction * force * mesh->GetMass());
+	ItemWidget->SetVisibility(true);
+}
+
+void AItem::CanCollide()
+{
+	AActor* ator = Cast<AActor>(this);
+	ator->SetActorEnableCollision(true);
 }

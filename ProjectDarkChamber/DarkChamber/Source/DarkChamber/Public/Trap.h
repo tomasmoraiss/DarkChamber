@@ -70,6 +70,11 @@ public:
 	AActor* Character;
 	//BoxCollider
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+	bool Built = false;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+	bool Used = false;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
 	bool CanTakeDamage = false;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
@@ -90,5 +95,11 @@ public:
 	UFUNCTION()
 	virtual void OnOverlapEnd(class UPrimitiveComponent* OverlappedComp, class AActor* OtherActor,
 	                  class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
-	
+
+	UFUNCTION()
+	virtual void EletricAttack();
+	UFUNCTION()
+	virtual void FireAttack();
+	UFUNCTION()
+	virtual void HoleAttack();
 };

@@ -3,12 +3,13 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "ActivatableInterface.h"
 #include "DarkChamber/InteractInterface.h"
 #include "GameFramework/Actor.h"
 #include "DoorTest.generated.h"
 
 UCLASS()
-class DARKCHAMBER_API ADoorTest : public AActor, public IInteractInterface
+class DARKCHAMBER_API ADoorTest : public AActor, public IInteractInterface,public IActivatableInterface
 {
 	GENERATED_BODY()
 	
@@ -26,6 +27,9 @@ public:
 
 	UFUNCTION(BlueprintNativeEvent)
 	void Interact(AActor* ActorInteracting);
+
+	UFUNCTION(BlueprintNativeEvent)
+	void Activate();
 	UFUNCTION()
 	void OnInteractHoverBegin(AActor* ActorToInteractWith) override;
 	UFUNCTION()

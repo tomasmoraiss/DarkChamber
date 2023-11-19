@@ -35,6 +35,8 @@ void ALever::Interact_Implementation(AActor* ActorInteracting)
 	{
 		IInteractInterface* InteractInterface = Cast<IInteractInterface>(DoorReference);
 		InteractInterface->Interact(this);
+		IActivatableInterface* ActivatableInterface = Cast<IActivatableInterface>(DoorReference);
+		ActivatableInterface->Activate();
 	}
 	
 	UE_LOG(LogTemp, Warning, TEXT("Lever Activation"));

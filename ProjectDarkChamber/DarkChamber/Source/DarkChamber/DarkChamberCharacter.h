@@ -4,8 +4,11 @@
 
 #include"InteractInterface.h"
 #include "CoreMinimal.h"
+#include "HealthClass.h"
+#include "HealthComponent.h"
 #include "GameFramework/Character.h"
 #include "InputActionValue.h"
+#include "TrapDamageInterface.h"
 #include "UObject/WeakInterfacePtr.h"
 #include "DarkChamberCharacter.generated.h"
 
@@ -19,7 +22,7 @@ class UAnimMontage;
 class USoundBase;
 
 UCLASS(config=Game)
-class ADarkChamberCharacter : public ACharacter
+class ADarkChamberCharacter : public ACharacter,public ITrapDamageInterface
 {
 	GENERATED_BODY()
 
@@ -34,6 +37,9 @@ class ADarkChamberCharacter : public ACharacter
 	/** MappingContext */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=Input, meta=(AllowPrivateAccess = "true"))
 	class UInputMappingContext* DefaultMappingContext;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=Input, meta=(AllowPrivateAccess = "true"))
+	class UInputMappingContext* HoldingItemMappingContext;
 
 	/** Jump Input Action */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=Input, meta=(AllowPrivateAccess = "true"))
@@ -96,6 +102,13 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta=(AllowPrivateAccess = "true"))
 	class UInputAction* DelayedInteractAction;
 
+	//trow inputs
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta=(AllowPrivateAccess = "true"))
+	class UInputAction* HoldTrowAction;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta=(AllowPrivateAccess = "true"))
+	class UInputAction* TrowAction;
+
+
 	//Temporary inventory
 	TArray<AItem*> Inventory = {nullptr, nullptr, nullptr, nullptr, nullptr, nullptr};
 	UPROPERTY(EditInstanceOnly, BlueprintReadOnly)
@@ -123,10 +136,14 @@ public:
 
 	AActor* currentInteractableActor;
 
+	//HEALTH STUFF
+	UHealthComponent* PlayerHealth;
+
+
 protected:
 	/** Called for movement input */
 	void Move(const FInputActionValue& Value);
-
+	void setCanMove();
 	/** Called for looking input */
 	void Look(const FInputActionValue& Value);
 
@@ -137,6 +154,7 @@ protected:
 	void Crouchh(const FInputActionValue& Value);
 
 protected:
+	
 	// APawn interface
 	virtual void SetupPlayerInputComponent(UInputComponent* InputComponent) override;
 	// End of APawn interface
@@ -151,13 +169,20 @@ public:
 	void InteractTriggered(const FInputActionValue& Value);
 	void InteractCanceledOrCompleted(const FInputActionValue& Value);
 	void InteractStarted(const FInputActionValue& Value);
-
 	void SelectInventorySlot(int n);
-
 	void MakeItemsInvisible(AItem* item);
+	//trowing functions
+	void HoldTrowStarted();
+	void HoldTrowStop();
+	void TrowItem();
+	// Trap Damage Attacks
+	void EletricAttack() override;
+
+	void FireAttack() override;
+
+	void HoleAttack() override;
 
 private:
 	class UAIPerceptionStimuliSourceComponent* StimulusSource;
-
 	void SetupStimulusSource();
 };

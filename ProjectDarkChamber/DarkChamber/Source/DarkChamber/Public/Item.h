@@ -54,4 +54,11 @@ public:
 
 	UPROPERTY(EditAnywhere, Category="Inventory")
 	int itemNumber;
+	//throwItem
+	UFUNCTION()
+	void ThrowItem(float force,FVector direction);
+
+	UFUNCTION()
+	void CanCollide();
+	
 };

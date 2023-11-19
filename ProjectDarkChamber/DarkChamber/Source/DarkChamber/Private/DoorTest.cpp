@@ -26,6 +26,11 @@ void ADoorTest::Tick(float DeltaTime)
 
 }
 
+void ADoorTest::Activate_Implementation()
+{
+	isOpen = !isOpen;
+}
+
 void ADoorTest::OnInteractHoverBegin(AActor* ActorToInteractWith)
 {
 	IInteractInterface::OnInteractHoverBegin(ActorToInteractWith);
@@ -39,6 +44,5 @@ void ADoorTest::OnInteractHoverEnd(AActor* ActorToInteractWith)
 void ADoorTest::Interact_Implementation(AActor* ActorInteracting)
 {
 	isOpen = !isOpen;
-	UE_LOG(LogTemp, Warning, TEXT("Door Activation"))
 }
 

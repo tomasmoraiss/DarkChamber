@@ -9,6 +9,8 @@
 #include "Components/CapsuleComponent.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
+#include "HealthClass.h"
+#include "HealthComponent.h"
 #include "InputMappingContext.h"
 #include"InteractInterface.h"
 #include "Item.h"
@@ -51,6 +53,9 @@ ADarkChamberCharacter::ADarkChamberCharacter()
 	Mesh1P->SetRelativeLocation(FVector(-30.f, 0.f, -150.f));
 
 	SetupStimulusSource();
+
+	//HEALTH STUFF
+	PlayerHealth = CreateDefaultSubobject<UHealthComponent>("health");
 }
 
 void ADarkChamberCharacter::BeginPlay()
@@ -178,6 +183,15 @@ void ADarkChamberCharacter::SetupPlayerInputComponent(class UInputComponent* Pla
 		                                   &ADarkChamberCharacter::SelectInventorySlot, 5);
 		EnhancedInputComponent->BindAction(InventorySelect6Action, ETriggerEvent::Triggered, this,
 		                                   &ADarkChamberCharacter::SelectInventorySlot, 6);
+		//throw Actions
+		EnhancedInputComponent->BindAction(HoldTrowAction, ETriggerEvent::Started, this,
+		                                   &ADarkChamberCharacter::HoldTrowStarted);
+		EnhancedInputComponent->BindAction(HoldTrowAction, ETriggerEvent::Completed, this,
+		                                   &ADarkChamberCharacter::HoldTrowStop);
+		EnhancedInputComponent->BindAction(HoldTrowAction, ETriggerEvent::Canceled, this,
+		                                   &ADarkChamberCharacter::HoldTrowStop);
+		EnhancedInputComponent->BindAction(TrowAction, ETriggerEvent::Started, this,
+		                                   &ADarkChamberCharacter::TrowItem);
 	}
 }
 
@@ -186,7 +200,7 @@ void ADarkChamberCharacter::InteractTriggered(const FInputActionValue& Value)
 	GEngine->AddOnScreenDebugMessage(-1, 1, FColor::Red, "TRIGGERED");
 
 	InteractWithActor();
-	canMove = true;
+	//canMove = true;
 	if (InteractInterface.IsValid())
 	{
 		InteractInterface->Interact(this);
@@ -199,9 +213,11 @@ void ADarkChamberCharacter::InteractTriggered(const FInputActionValue& Value)
 				Inventory.Insert(Cast<AItem>(currentInteractableActor), ItemSlot);
 				MakeItemsInvisible(Cast<AItem>(currentInteractableActor));
 				CurrentlySelectedInventoryItem = ItemSlot;
+				currentInteractableActor->DisableComponentsSimulatePhysics();
 				currentInteractableActor->AttachToComponent(ItemPlaceHolderMeshComponent,
 				                                            FAttachmentTransformRules::SnapToTargetNotIncludingScale);
 				currentInteractableActor->SetActorEnableCollision(false);
+
 				CurrentItemHeld = currentInteractableActor;
 			}
 			else
@@ -210,7 +226,58 @@ void ADarkChamberCharacter::InteractTriggered(const FInputActionValue& Value)
 			}
 		}
 	}
-	canMove = true;
+	//canMove = true;
+}
+
+void ADarkChamberCharacter::InteractCanceledOrCompleted(const FInputActionValue& Value)
+{
+	//canMove = true;
+}
+
+void ADarkChamberCharacter::InteractStarted(const FInputActionValue& Value)
+{
+	//canMove = false;
+
+	//InteractWithActor();
+}
+
+void ADarkChamberCharacter::HoldTrowStarted()
+{
+	if (APlayerController* PlayerController = Cast<APlayerController>(Controller))
+	{
+		if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<
+			UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer()))
+		{
+			Subsystem->AddMappingContext(HoldingItemMappingContext, 0);
+		}
+	}
+}
+
+void ADarkChamberCharacter::HoldTrowStop()
+{
+	if (APlayerController* PlayerController = Cast<APlayerController>(Controller))
+	{
+		if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<
+			UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer()))
+		{
+			Subsystem->RemoveMappingContext(HoldingItemMappingContext);
+		}
+	}
+}
+
+void ADarkChamberCharacter::TrowItem()
+{
+	AActor* ActorToThrow = Inventory[CurrentlySelectedInventoryItem];
+	if (ActorToThrow)
+	{
+		FDetachmentTransformRules rules(EDetachmentRule::KeepRelative, true);
+		ActorToThrow->DetachFromActor(rules);
+		//ActorToThrow->SetActorEnableCollision(true);
+		AItem* item = Cast<AItem>(ActorToThrow);
+		FVector direction = GetFirstPersonCameraComponent()->GetForwardVector();
+		item->ThrowItem(1000, direction);
+		Inventory[CurrentlySelectedInventoryItem] = nullptr;
+	}
 }
 
 int ADarkChamberCharacter::GetavailableInventorySlot()
@@ -225,18 +292,6 @@ int ADarkChamberCharacter::GetavailableInventorySlot()
 		}
 	}
 	return 6;
-}
-
-void ADarkChamberCharacter::InteractCanceledOrCompleted(const FInputActionValue& Value)
-{
-	canMove = true;
-}
-
-void ADarkChamberCharacter::InteractStarted(const FInputActionValue& Value)
-{
-	//canMove = false;
-
-	//InteractWithActor();
 }
 
 void ADarkChamberCharacter::SelectInventorySlot(int n)
@@ -268,6 +323,9 @@ void ADarkChamberCharacter::MakeItemsInvisible(AItem* item)
 }
 
 
+//TRAP ATTACKS INTERFACE
+
+
 void ADarkChamberCharacter::SetupStimulusSource()
 {
 	StimulusSource = CreateDefaultSubobject<UAIPerceptionStimuliSourceComponent>(TEXT("Stimulus Source"));
@@ -292,6 +350,11 @@ void ADarkChamberCharacter::Move(const FInputActionValue& Value)
 			AddMovementInput(GetActorRightVector(), MovementVector.X);
 		}
 	}
+}
+
+void ADarkChamberCharacter::setCanMove()
+{
+	canMove = true;
 }
 
 void ADarkChamberCharacter::Look(const FInputActionValue& Value)
@@ -325,4 +388,27 @@ void ADarkChamberCharacter::StopSprint(const FInputActionValue& Value)
 
 void ADarkChamberCharacter::Crouchh(const FInputActionValue& Value)
 {
+}
+
+void ADarkChamberCharacter::EletricAttack()
+{
+	canMove = false;
+	FTimerHandle TimerHandle;
+	GetWorld()->GetTimerManager().SetTimer(TimerHandle, this, &ADarkChamberCharacter::setCanMove, 5.0f, false, 5);
+	GEngine->AddOnScreenDebugMessage(-1, 1, FColor::Red, "EletricAttack");
+	PlayerHealth->ReduceHealth(20);
+}
+
+void ADarkChamberCharacter::FireAttack()
+{
+	PlayerHealth->ReduceHealth(40);
+	GEngine->AddOnScreenDebugMessage(-1, 1, FColor::Red, "FireAttack");
+}
+
+void ADarkChamberCharacter::HoleAttack()
+{
+	canMove = false;
+	FTimerHandle TimerHandle;
+	GetWorld()->GetTimerManager().SetTimer(TimerHandle, this, &ADarkChamberCharacter::setCanMove, 7.0f, false, 5);
+	GEngine->AddOnScreenDebugMessage(-1, 1, FColor::Red, "HoleAttack");
 }

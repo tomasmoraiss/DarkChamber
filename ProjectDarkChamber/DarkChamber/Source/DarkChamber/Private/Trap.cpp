@@ -51,7 +51,7 @@ void ATrap::BeginPlay()
 void ATrap::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	if (CanTakeDamage && Activated)GEngine->AddOnScreenDebugMessage(-1, 1, FColor::Red, "Damage");
+	//if (CanTakeDamage && Activated && Built)GEngine->AddOnScreenDebugMessage(-1, 1, FColor::Red, "Damage");
 }
 
 void ATrap::Interact(AActor* ActorInteracting)
@@ -90,19 +90,20 @@ void ATrap::OnInteractHoverEnd(AActor* ActorToInteractWith)
 
 void ATrap::Activate()
 {
-	Activated = true;
+	Activated = !Activated;
 }
 
 void ATrap::Build()
 {
+	Built = true;
 	GEngine->AddOnScreenDebugMessage(-1, 1, FColor::Red, "BUILT");
 	FVector Location(this->GetActorLocation().X, this->GetActorLocation().Y, this->GetActorLocation().Z);
 	FRotator Rotation(0.0f, 0.0f, 0.0f);
 	FActorSpawnParameters SpawnInfo;
 	GetWorld()->SpawnActor<AActor>(TrapAfterBuild, Location, Rotation);
 	this->SetActorHiddenInGame(true);
-	FVector Location2(this->GetActorLocation().X, this->GetActorLocation().Y, this->GetActorLocation().Z - 10);
-	this->SetActorLocation(Location2);
+	FVector Location2(this->GetActorLocation().X, this->GetActorLocation().Y, this->GetActorLocation().Z + 5);
+	//this->SetActorLocation(Location2);
 }
 
 void ATrap::AddItem()
@@ -198,13 +199,30 @@ int ATrap::WhatTrapIsBuilt()
 void ATrap::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp,
                            int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	CanTakeDamage = true;
-	GEngine->AddOnScreenDebugMessage(-1, 1, FColor::Green, "Interactedd");
+	if (Built && Activated && !Used)
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 2, FColor::Red, "WORKED");
+		ITrapDamageInterface* TrapAttackInterface = Cast<ITrapDamageInterface>(OtherActor);
+		if (TrapAfterBuild == TrapAfterBuildEletric)TrapAttackInterface->EletricAttack();
+		else if (TrapAfterBuild == TrapAfterBuildFire)TrapAttackInterface->FireAttack();
+		else if (TrapAfterBuild == TrapAfterBuildHole)TrapAttackInterface->HoleAttack();
+		Used = true;
+	}
 }
 
 void ATrap::OnOverlapEnd(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp,
                          int32 OtherBodyIndex)
 {
-	CanTakeDamage = false;
-	GEngine->AddOnScreenDebugMessage(-1, 1, FColor::Green, "Interactedd");
+}
+
+void ATrap::EletricAttack()
+{
+}
+
+void ATrap::FireAttack()
+{
+}
+
+void ATrap::HoleAttack()
+{
 }
