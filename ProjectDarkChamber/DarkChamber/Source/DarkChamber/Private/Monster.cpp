@@ -42,3 +42,13 @@ APatrolPath* AMonster::GetPatrolPath() const
 	return PatrolPath;
 }
 
+int AMonster::MeleeAttack_Implementation()
+{
+	return ICombatInterface::MeleeAttack_Implementation();
+}
+
+int AMonster::ThrowItem_Implementation()
+{
+	return ICombatInterface::ThrowItem_Implementation();
+}
+

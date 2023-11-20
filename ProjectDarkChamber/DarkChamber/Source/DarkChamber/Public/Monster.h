@@ -6,10 +6,12 @@
 #include "PatrolPath.h"
 #include "BehaviorTree/BehaviorTree.h"
 #include "GameFramework/Character.h"
+#include "CombatInterface.h"
 #include "Monster.generated.h"
 
+
 UCLASS()
-class DARKCHAMBER_API AMonster : public ACharacter
+class DARKCHAMBER_API AMonster : public ACharacter, public ICombatInterface
 {
 	GENERATED_BODY()
 
@@ -31,10 +33,17 @@ public:
 	UBehaviorTree* GetBehaviorTree() const;
 
 	APatrolPath* GetPatrolPath() const;
+
+	//For attacking the players
+	int MeleeAttack_Implementation() override;
+	int ThrowItem_Implementation() override;
+
 private:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AI", meta=(AllowPrivateAccess = "true"))
 	UBehaviorTree* BehaviorTree;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AI", meta=(AllowPrivateAccess = "true"))
 	APatrolPath* PatrolPath;
+
+	
 };
