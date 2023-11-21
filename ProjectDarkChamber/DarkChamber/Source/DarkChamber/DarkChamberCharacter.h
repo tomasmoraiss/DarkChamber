@@ -177,7 +177,8 @@ public:
 	//trowing functions
 	void HoldTrowStarted();
 	void HoldTrowStop();
-	void TrowItem();
+	UFUNCTION(Server,Reliable)
+	void ServerTrowItem();
 	// Trap Damage Attacks
 	void EletricAttack() override;
 

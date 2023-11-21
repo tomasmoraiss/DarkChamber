@@ -201,7 +201,7 @@ void ADarkChamberCharacter::SetupPlayerInputComponent(class UInputComponent* Pla
 		EnhancedInputComponent->BindAction(HoldTrowAction, ETriggerEvent::Canceled, this,
 		                                   &ADarkChamberCharacter::HoldTrowStop);
 		EnhancedInputComponent->BindAction(TrowAction, ETriggerEvent::Started, this,
-		                                   &ADarkChamberCharacter::TrowItem);
+		                                   &ADarkChamberCharacter::ServerTrowItem);
 	}
 }
 
@@ -246,7 +246,7 @@ void ADarkChamberCharacter::HoldTrowStop()
 	}
 }
 
-void ADarkChamberCharacter::TrowItem()
+void ADarkChamberCharacter::ServerTrowItem_Implementation()
 {
 	AActor* ActorToThrow = Inventory[CurrentlySelectedInventoryItem];
 	if (ActorToThrow)
@@ -256,7 +256,7 @@ void ADarkChamberCharacter::TrowItem()
 		//ActorToThrow->SetActorEnableCollision(true);
 		AItem* item = Cast<AItem>(ActorToThrow);
 		FVector direction = GetFirstPersonCameraComponent()->GetForwardVector();
-		item->ThrowItem(1000, direction);
+		item->ServerThrowItem(1000, direction);
 		Inventory[CurrentlySelectedInventoryItem] = nullptr;
 	}
 }

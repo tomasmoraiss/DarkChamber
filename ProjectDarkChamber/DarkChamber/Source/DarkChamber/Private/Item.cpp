@@ -15,6 +15,7 @@ AItem::AItem()
 	IsOwned = false;
 
 	ItemMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Static Mesh"));
+	ItemMesh->SetIsReplicated(true);
 
 	InteractionRangeSphereComponent = CreateDefaultSubobject<USphereComponent>(TEXT("Actor Can Interact Range"));
 	InteractionRangeSphereComponent->InitSphereRadius(2500.f);
@@ -80,7 +81,7 @@ void AItem::Interact(AActor* ActorInteracting)
 			SetActorEnableCollision(false);
 
 			character->CurrentItemHeld = this;
-
+	
 			MulticastAddAndDisableItem(character);
 		}
 		else
@@ -120,7 +121,7 @@ void AItem::OnOverlapEnd(UPrimitiveComponent* OverlappedComp, AActor* OtherActor
 	}
 }
 
-void AItem::ThrowItem(float force, FVector direction)
+/*void AItem::ThrowItem(float force, FVector direction)
 {
 	UStaticMeshComponent* mesh = this->FindComponentByClass<UStaticMeshComponent>();
 
@@ -133,6 +134,21 @@ void AItem::ThrowItem(float force, FVector direction)
 	mesh->AddImpulse(direction * force * mesh->GetMass());
 	ItemWidget->SetVisibility(true);
 	IsOwned = false;	
+}*/
+
+void AItem::ServerThrowItem_Implementation(float force, FVector direction)
+{
+	UStaticMeshComponent* mesh = this->FindComponentByClass<UStaticMeshComponent>();
+
+	FVector location(0.f, 0.f, 400.f);
+
+	this->SetActorLocation(this->GetActorLocation() * location);
+	mesh->SetSimulatePhysics(true);
+	FTimerHandle TimerHandle;
+	GetWorld()->GetTimerManager().SetTimer(TimerHandle, this, &AItem::CanCollide, 5.0f, false, .05f);
+	mesh->AddImpulse(direction * force * mesh->GetMass());
+	ItemWidget->SetVisibility(true);
+	IsOwned = false;
 }
 
 void AItem::CanCollide()
