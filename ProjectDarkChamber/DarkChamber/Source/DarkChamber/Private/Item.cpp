@@ -14,15 +14,18 @@ AItem::AItem()
 	PrimaryActorTick.bCanEverTick = true;
 	IsOwned = false;
 
+	RootComponent = CreateDefaultSubobject<USceneComponent>("Root");
+	
 	ItemMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Static Mesh"));
+	ItemMesh->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
 
 	InteractionRangeSphereComponent = CreateDefaultSubobject<USphereComponent>(TEXT("Actor Can Interact Range"));
-	InteractionRangeSphereComponent->InitSphereRadius(2500.f);
+	InteractionRangeSphereComponent->InitSphereRadius(500.f);
 	InteractionRangeSphereComponent->AttachToComponent(ItemMesh, FAttachmentTransformRules::KeepRelativeTransform);
 
 	ItemWidget = CreateDefaultSubobject<UWidgetComponent>(TEXT("Item Widget"));
 	ItemWidget->SetDrawSize(FVector2d(200, 200));
-	ItemWidget->AttachToComponent(ItemMesh, FAttachmentTransformRules::KeepRelativeTransform);
+	ItemWidget->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
 	ItemWidget->SetVisibility(false);
 }
 
@@ -30,8 +33,7 @@ AItem::AItem()
 void AItem::BeginPlay()
 {
 	Super::BeginPlay();
-
-
+	
 	FScriptDelegate DelegateOverlapBegin;
 	FScriptDelegate DelegateOverlapEnd;
 
@@ -49,10 +51,12 @@ void AItem::BeginPlay()
 void AItem::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	if (ItemWidget->IsVisible() && !IsOwned)
+	if (IsValid(ItemWidget) && IsValid(TargetActor) && ItemWidget->IsVisible() && !IsOwned)
 	{
-		ItemWidget->SetWorldRotation(
-			UKismetMathLibrary::FindLookAtRotation(this->GetActorLocation(), TargetActor->GetActorLocation()));
+		ItemWidget->SetWorldRotation(UKismetMathLibrary::FindLookAtRotation(ItemMesh->GetComponentLocation(), TargetActor->GetActorLocation()));
+
+		ItemWidget->SetWorldLocation(InteractionRangeSphereComponent->GetComponentLocation() + FVector(0, 0, 50));
+	
 		//float opacity = 1-(UE::Geometry::Distance(this->GetActorLocation(), TargetActor->GetActorLocation())/InteractionRangeSphereComponent->GetScaledSphereRadius());
 		//ItemWidget->GetWidgetClass().GetDefaultObject()->SetRenderOpacity(opacity);
 		//GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, FString::Printf(TEXT("Alpha -> %f"), o));
@@ -75,9 +79,8 @@ void AItem::Interact(AActor* ActorInteracting)
 			character->MakeItemsInvisible(this);
 			character->CurrentlySelectedInventoryItem = ItemSlot;
 			DisableComponentsSimulatePhysics();
-			AttachToComponent(character->ItemPlaceHolderMeshComponent,
-			                  FAttachmentTransformRules::SnapToTargetNotIncludingScale);
 			SetActorEnableCollision(false);
+			AttachToComponent(character->ItemPlaceHolderMeshComponent, FAttachmentTransformRules::SnapToTargetNotIncludingScale);
 
 			character->CurrentItemHeld = this;
 
@@ -132,7 +135,7 @@ void AItem::ThrowItem(float force, FVector direction)
 	GetWorld()->GetTimerManager().SetTimer(TimerHandle, this, &AItem::CanCollide, 5.0f, false, .05f);
 	mesh->AddImpulse(direction * force * mesh->GetMass());
 	ItemWidget->SetVisibility(true);
-	IsOwned = false;	
+	IsOwned = false;
 }
 
 void AItem::CanCollide()
