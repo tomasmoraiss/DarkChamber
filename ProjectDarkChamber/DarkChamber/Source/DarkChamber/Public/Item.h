@@ -28,6 +28,9 @@ public:
 	UFUNCTION()
 	void Interact(AActor* ActorInteracting);
 
+	UFUNCTION(NetMulticast,Reliable)
+	void MulticastAddAndDisableItem(class ADarkChamberCharacter* character);
+
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
 	class USphereComponent* InteractionRangeSphereComponent;
 

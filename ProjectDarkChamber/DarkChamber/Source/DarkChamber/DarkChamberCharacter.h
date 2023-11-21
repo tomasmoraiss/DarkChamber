@@ -81,6 +81,7 @@ class ADarkChamberCharacter : public ACharacter,public ITrapDamageInterface
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	class UInputAction* InventorySelect6Action;
 
+	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 public:
 	ADarkChamberCharacter();
 
@@ -110,8 +111,10 @@ public:
 
 
 	//Temporary inventory
+	UPROPERTY(EditInstanceOnly, BlueprintReadOnly,Replicated)
 	TArray<AItem*> Inventory = {nullptr, nullptr, nullptr, nullptr, nullptr, nullptr};
-	UPROPERTY(EditInstanceOnly, BlueprintReadOnly)
+	
+	UPROPERTY(EditInstanceOnly, BlueprintReadOnly,Replicated)
 	int CurrentlySelectedInventoryItem;
 
 	UFUNCTION(BlueprintCallable, Category="Inventory")
@@ -122,7 +125,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	UStaticMeshComponent* ItemPlaceHolderMeshComponent;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite,Replicated)
 	AActor* CurrentItemHeld;
 
 
@@ -182,6 +185,8 @@ public:
 
 	void HoleAttack() override;
 
+	UFUNCTION(Server,Reliable)
+	void RequestInteractionWith(AActor* ObjectToInteract,AActor* InteractionInstigator);
 private:
 	class UAIPerceptionStimuliSourceComponent* StimulusSource;
 	void SetupStimulusSource();

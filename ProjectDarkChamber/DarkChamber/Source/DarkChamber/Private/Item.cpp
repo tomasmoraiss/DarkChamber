@@ -4,6 +4,7 @@
 #include "Item.h"
 #include "Components/SphereComponent.h"
 #include "Components/WidgetComponent.h"
+#include "DarkChamber/DarkChamberCharacter.h"
 #include "Kismet/KismetMathLibrary.h"
 
 // Sets default values
@@ -65,7 +66,37 @@ void AItem::Interact(AActor* ActorInteracting)
 		GEngine->AddOnScreenDebugMessage(-1, 1, FColor::Green, "Interact with Item");
 		IsOwned = true;
 		ItemWidget->SetVisibility(false);
+		ADarkChamberCharacter* character = Cast<ADarkChamberCharacter>(ActorInteracting);
+
+		int ItemSlot = character->GetavailableInventorySlot();
+		if (ItemSlot < 6)
+		{
+			character->Inventory.Insert(this, ItemSlot);
+			character->MakeItemsInvisible(this);
+			character->CurrentlySelectedInventoryItem = ItemSlot;
+			DisableComponentsSimulatePhysics();
+			AttachToComponent(character->ItemPlaceHolderMeshComponent,
+			                  FAttachmentTransformRules::SnapToTargetNotIncludingScale);
+			SetActorEnableCollision(false);
+
+			character->CurrentItemHeld = this;
+
+			MulticastAddAndDisableItem(character);
+		}
+		else
+		{
+			GEngine->AddOnScreenDebugMessage(-10, 1.f, FColor::Blue, "inventory is full");
+		}
 	}
+}
+
+void AItem::MulticastAddAndDisableItem_Implementation(ADarkChamberCharacter* character)
+{
+	character->MakeItemsInvisible(this);
+	DisableComponentsSimulatePhysics();
+	AttachToComponent(character->ItemPlaceHolderMeshComponent,
+	                  FAttachmentTransformRules::SnapToTargetNotIncludingScale);
+	SetActorEnableCollision(false);
 }
 
 void AItem::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp,
@@ -101,6 +132,7 @@ void AItem::ThrowItem(float force, FVector direction)
 	GetWorld()->GetTimerManager().SetTimer(TimerHandle, this, &AItem::CanCollide, 5.0f, false, .05f);
 	mesh->AddImpulse(direction * force * mesh->GetMass());
 	ItemWidget->SetVisibility(true);
+	IsOwned = false;	
 }
 
 void AItem::CanCollide()

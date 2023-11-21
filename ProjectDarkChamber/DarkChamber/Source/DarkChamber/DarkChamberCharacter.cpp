@@ -15,12 +15,22 @@
 #include"InteractInterface.h"
 #include "Item.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "Net/UnrealNetwork.h"
 #include "Perception/AIPerceptionStimuliSourceComponent.h"
 #include "Perception/AISense_Sight.h"
 
 
 //////////////////////////////////////////////////////////////////////////
 // ADarkChamberCharacter
+
+void ADarkChamberCharacter::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+
+	DOREPLIFETIME(ADarkChamberCharacter, Inventory);
+	DOREPLIFETIME(ADarkChamberCharacter, CurrentlySelectedInventoryItem);
+	DOREPLIFETIME(ADarkChamberCharacter, CurrentItemHeld);
+}
 
 ADarkChamberCharacter::ADarkChamberCharacter()
 {
@@ -197,36 +207,7 @@ void ADarkChamberCharacter::SetupPlayerInputComponent(class UInputComponent* Pla
 
 void ADarkChamberCharacter::InteractTriggered(const FInputActionValue& Value)
 {
-	GEngine->AddOnScreenDebugMessage(-1, 1, FColor::Red, "TRIGGERED");
-
-	InteractWithActor();
-	//canMove = true;
-	if (InteractInterface.IsValid())
-	{
-		InteractInterface->Interact(this);
-		if (Cast<AItem>(currentInteractableActor))
-		{
-			//HEREE
-			int ItemSlot = GetavailableInventorySlot();
-			if (ItemSlot < 6)
-			{
-				Inventory.Insert(Cast<AItem>(currentInteractableActor), ItemSlot);
-				MakeItemsInvisible(Cast<AItem>(currentInteractableActor));
-				CurrentlySelectedInventoryItem = ItemSlot;
-				currentInteractableActor->DisableComponentsSimulatePhysics();
-				currentInteractableActor->AttachToComponent(ItemPlaceHolderMeshComponent,
-				                                            FAttachmentTransformRules::SnapToTargetNotIncludingScale);
-				currentInteractableActor->SetActorEnableCollision(false);
-
-				CurrentItemHeld = currentInteractableActor;
-			}
-			else
-			{
-				GEngine->AddOnScreenDebugMessage(-10, 1.f, FColor::Blue, "iventory is full");
-			}
-		}
-	}
-	//canMove = true;
+	RequestInteractionWith(currentInteractableActor, this);
 }
 
 void ADarkChamberCharacter::InteractCanceledOrCompleted(const FInputActionValue& Value)
@@ -411,4 +392,24 @@ void ADarkChamberCharacter::HoleAttack()
 	FTimerHandle TimerHandle;
 	GetWorld()->GetTimerManager().SetTimer(TimerHandle, this, &ADarkChamberCharacter::setCanMove, 7.0f, false, 5);
 	GEngine->AddOnScreenDebugMessage(-1, 1, FColor::Red, "HoleAttack");
+}
+
+void ADarkChamberCharacter::RequestInteractionWith_Implementation(AActor* ObjectToInteract, AActor* InteractionInstigator)
+{
+	GEngine->AddOnScreenDebugMessage(-1, 1, FColor::Red, "TRIGGERED");
+
+	InteractWithActor();
+	//canMove = true;
+	IInteractInterface* TempIInteract = Cast<IInteractInterface>(ObjectToInteract);
+	if (!TempIInteract)
+		return;
+	
+	TempIInteract->Interact(this);
+	if (Cast<AItem>(currentInteractableActor))
+	{
+		//HEREE
+		
+	}
+
+	//canMove = true;
 }
