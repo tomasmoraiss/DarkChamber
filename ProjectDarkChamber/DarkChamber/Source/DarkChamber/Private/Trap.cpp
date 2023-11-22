@@ -103,7 +103,6 @@ void ATrap::Build()
 	GetWorld()->SpawnActor<AActor>(TrapAfterBuild, Location, Rotation);
 	this->SetActorHiddenInGame(true);
 	FVector Location2(this->GetActorLocation().X, this->GetActorLocation().Y, this->GetActorLocation().Z + 5);
-	//this->SetActorLocation(Location2);
 }
 
 void ATrap::AddItem(AActor* ActorInteracting)
@@ -142,8 +141,8 @@ bool ATrap::IsItemsPlacedFull()
 			return false;
 		}
 	}
-	WhatTrapIsBuilt();
-	return true;
+	if(WhatTrapIsBuilt()>=1)return true;
+	return false;
 }
 
 bool ATrap::CanIAddThisItemToTheTrap(int n)

@@ -171,6 +171,7 @@ public:
 	void InteractTriggered(const FInputActionValue& Value);
 	void InteractCanceledOrCompleted(const FInputActionValue& Value);
 	void InteractStarted(const FInputActionValue& Value);
+	UFUNCTION(Server,Reliable)
 	void SelectInventorySlot(int n);
 	void MakeItemsInvisible(AItem* item);
 	//trowing functions

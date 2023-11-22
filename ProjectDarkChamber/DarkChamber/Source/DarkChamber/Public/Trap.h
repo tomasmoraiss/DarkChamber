@@ -57,7 +57,7 @@ public:
 	UPROPERTY(EditInstanceOnly, meta=(MustImplement="ItemToSpawExample"))
 	int NumberWhereInventoryIs;
 	//Item that will be spawned
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, meta=(MustImplement="ItemToSpawExample"))
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite,Category="inventory")
 	TSubclassOf<AActor> TrapAfterBuild;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, meta=(MustImplement="ItemToSpawExample"))
 	TSubclassOf<AActor> TrapAfterBuildEletric;

@@ -222,6 +222,17 @@ void ADarkChamberCharacter::InteractStarted(const FInputActionValue& Value)
 	//InteractWithActor();
 }
 
+void ADarkChamberCharacter::SelectInventorySlot_Implementation(int n)
+{
+	if (Inventory[n - 1] != nullptr)
+	{
+		CurrentlySelectedInventoryItem = n - 1;
+		MakeItemsInvisible(Inventory[CurrentlySelectedInventoryItem]);
+	}
+	GEngine->AddOnScreenDebugMessage(-10, 1.f, FColor::Red,
+									 FString::Printf(TEXT("Current Selected : %i"), CurrentlySelectedInventoryItem));
+}
+
 void ADarkChamberCharacter::HoldTrowStarted()
 {
 	if (APlayerController* PlayerController = Cast<APlayerController>(Controller))
@@ -275,16 +286,16 @@ int ADarkChamberCharacter::GetavailableInventorySlot()
 	return 6;
 }
 
-void ADarkChamberCharacter::SelectInventorySlot(int n)
-{
-	if (Inventory[n - 1] != nullptr)
-	{
-		CurrentlySelectedInventoryItem = n - 1;
-		MakeItemsInvisible(Inventory[CurrentlySelectedInventoryItem]);
-	}
-	GEngine->AddOnScreenDebugMessage(-10, 1.f, FColor::Red,
-	                                 FString::Printf(TEXT("Current Selected : %i"), CurrentlySelectedInventoryItem));
-}
+// void ADarkChamberCharacter::SelectInventorySlot(int n)
+// {
+// 	if (Inventory[n - 1] != nullptr)
+// 	{
+// 		CurrentlySelectedInventoryItem = n - 1;
+// 		MakeItemsInvisible(Inventory[CurrentlySelectedInventoryItem]);
+// 	}
+// 	GEngine->AddOnScreenDebugMessage(-10, 1.f, FColor::Red,
+// 	                                 FString::Printf(TEXT("Current Selected : %i"), CurrentlySelectedInventoryItem));
+// }
 
 void ADarkChamberCharacter::MakeItemsInvisible(AItem* item)
 {
