@@ -6,8 +6,16 @@
 #include "Components/WidgetComponent.h"
 #include "DarkChamber/DarkChamberCharacter.h"
 #include "Kismet/KismetMathLibrary.h"
+#include "Net/UnrealNetwork.h"
 
 // Sets default values
+
+void AItem::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+	DOREPLIFETIME(AItem, IsOwned);
+}
+
 AItem::AItem()
 {
 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
@@ -15,7 +23,6 @@ AItem::AItem()
 	IsOwned = false;
 
 	RootComponent = CreateDefaultSubobject<USceneComponent>("Root");
-	
 	ItemMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Static Mesh"));
 	ItemMesh->SetIsReplicated(true);
 	ItemMesh->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
@@ -34,7 +41,7 @@ AItem::AItem()
 void AItem::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
 	FScriptDelegate DelegateOverlapBegin;
 	FScriptDelegate DelegateOverlapEnd;
 
@@ -54,10 +61,11 @@ void AItem::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 	if (IsValid(ItemWidget) && IsValid(TargetActor) && ItemWidget->IsVisible() && !IsOwned)
 	{
-		ItemWidget->SetWorldRotation(UKismetMathLibrary::FindLookAtRotation(ItemMesh->GetComponentLocation(), TargetActor->GetActorLocation()));
+		ItemWidget->SetWorldRotation(
+			UKismetMathLibrary::FindLookAtRotation(ItemMesh->GetComponentLocation(), TargetActor->GetActorLocation()));
 
 		ItemWidget->SetWorldLocation(InteractionRangeSphereComponent->GetComponentLocation() + FVector(0, 0, 50));
-	
+
 		//float opacity = 1-(UE::Geometry::Distance(this->GetActorLocation(), TargetActor->GetActorLocation())/InteractionRangeSphereComponent->GetScaledSphereRadius());
 		//ItemWidget->GetWidgetClass().GetDefaultObject()->SetRenderOpacity(opacity);
 		//GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, FString::Printf(TEXT("Alpha -> %f"), o));
@@ -66,13 +74,18 @@ void AItem::Tick(float DeltaTime)
 
 void AItem::Interact(AActor* ActorInteracting)
 {
+	InteractGetItem(ActorInteracting);
+}
+
+void AItem::InteractGetItem_Implementation(AActor* ActorInteracting)
+{
 	if (!IsOwned)
 	{
 		GEngine->AddOnScreenDebugMessage(-1, 1, FColor::Green, "Interact with Item");
-		IsOwned = true;
+
 		ItemWidget->SetVisibility(false);
 		ADarkChamberCharacter* character = Cast<ADarkChamberCharacter>(ActorInteracting);
-
+		IsOwned = true;
 		int ItemSlot = character->GetavailableInventorySlot();
 		if (ItemSlot < 6)
 		{
@@ -81,10 +94,12 @@ void AItem::Interact(AActor* ActorInteracting)
 			character->CurrentlySelectedInventoryItem = ItemSlot;
 			DisableComponentsSimulatePhysics();
 			SetActorEnableCollision(false);
-			AttachToComponent(character->ItemPlaceHolderMeshComponent, FAttachmentTransformRules::SnapToTargetNotIncludingScale);
+			AttachToComponent(character->ItemPlaceHolderMeshComponent,
+			                  FAttachmentTransformRules::SnapToTargetNotIncludingScale);
 
 			character->CurrentItemHeld = this;
-	
+
+
 			MulticastAddAndDisableItem(character);
 		}
 		else
@@ -94,13 +109,23 @@ void AItem::Interact(AActor* ActorInteracting)
 	}
 }
 
+void AItem::MulticastAddAndEnableItem_Implementation()
+{
+	//UStaticMeshComponent* mesh = this->FindComponentByClass<UStaticMeshComponent>();
+	//mesh->SetSimulatePhysics(true);
+	ItemWidget->SetVisibility(true);
+	IsOwned = false;
+	this->SetActorEnableCollision(true);
+	GEngine->AddOnScreenDebugMessage(-1, 1, FColor::Purple, "DID ENABLE");
+}
+
 void AItem::MulticastAddAndDisableItem_Implementation(ADarkChamberCharacter* character)
 {
 	character->MakeItemsInvisible(this);
 	DisableComponentsSimulatePhysics();
 	AttachToComponent(character->ItemPlaceHolderMeshComponent,
 	                  FAttachmentTransformRules::SnapToTargetNotIncludingScale);
-	SetActorEnableCollision(false);
+	this->SetActorEnableCollision(false);
 }
 
 void AItem::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp,
@@ -108,7 +133,7 @@ void AItem::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherAct
 {
 	if (OtherActor && (OtherActor != this) && OtherComp && !IsOwned)
 	{
-		GEngine->AddOnScreenDebugMessage(-1, 1, FColor::Purple, "Enter Interact Area");
+		//GEngine->AddOnScreenDebugMessage(-1, 1, FColor::Purple, "Enter Interact Area");
 		TargetActor = OtherActor;
 		ItemWidget->SetVisibility(true);
 	}
@@ -119,30 +144,15 @@ void AItem::OnOverlapEnd(UPrimitiveComponent* OverlappedComp, AActor* OtherActor
 {
 	if (OtherActor && (OtherActor != this) && OtherComp && !IsOwned)
 	{
-		GEngine->AddOnScreenDebugMessage(-1, 1, FColor::Purple, "Exit Interact Area");
+		//GEngine->AddOnScreenDebugMessage(-1, 1, FColor::Purple, "Exit Interact Area");
 		ItemWidget->SetVisibility(false);
 	}
 }
 
-/*void AItem::ThrowItem(float force, FVector direction)
-{
-	UStaticMeshComponent* mesh = this->FindComponentByClass<UStaticMeshComponent>();
-
-	FVector location(0.f, 0.f, 400.f);
-
-	this->SetActorLocation(this->GetActorLocation() * location);
-	mesh->SetSimulatePhysics(true);
-	FTimerHandle TimerHandle;
-	GetWorld()->GetTimerManager().SetTimer(TimerHandle, this, &AItem::CanCollide, 5.0f, false, .05f);
-	mesh->AddImpulse(direction * force * mesh->GetMass());
-	ItemWidget->SetVisibility(true);
-	IsOwned = false;	
-}*/
-
 void AItem::ServerThrowItem_Implementation(float force, FVector direction)
 {
 	UStaticMeshComponent* mesh = this->FindComponentByClass<UStaticMeshComponent>();
-
+	GEngine->AddOnScreenDebugMessage(-1, 1, FColor::Purple, "DID trow");
 	FVector location(0.f, 0.f, 400.f);
 
 	this->SetActorLocation(this->GetActorLocation() * location);
@@ -151,11 +161,10 @@ void AItem::ServerThrowItem_Implementation(float force, FVector direction)
 	GetWorld()->GetTimerManager().SetTimer(TimerHandle, this, &AItem::CanCollide, 5.0f, false, .05f);
 	mesh->AddImpulse(direction * force * mesh->GetMass());
 	ItemWidget->SetVisibility(true);
-	IsOwned = false;
 }
 
 void AItem::CanCollide()
 {
-	AActor* ator = Cast<AActor>(this);
-	ator->SetActorEnableCollision(true);
+	this->SetActorEnableCollision(true);
+	MulticastAddAndEnableItem();
 }

@@ -136,7 +136,7 @@ public:
 
 	//Store actor Interface to activate later
 	TWeakInterfacePtr<IInteractInterface> InteractInterface;
-
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	AActor* currentInteractableActor;
 
 	//HEALTH STUFF

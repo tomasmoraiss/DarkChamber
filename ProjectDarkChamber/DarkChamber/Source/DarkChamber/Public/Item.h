@@ -12,6 +12,7 @@ UCLASS()
 class DARKCHAMBER_API AItem : public AActor, public IInteractInterface
 {
 	GENERATED_BODY()
+	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 
 public:
 	// Sets default values for this actor's properties
@@ -27,9 +28,13 @@ public:
 
 	UFUNCTION()
 	void Interact(AActor* ActorInteracting);
+	UFUNCTION(Server,Reliable)
+	void InteractGetItem(AActor* ActorInteracting);
 
 	UFUNCTION(NetMulticast,Reliable)
 	void MulticastAddAndDisableItem(class ADarkChamberCharacter* character);
+	UFUNCTION(NetMulticast,Reliable)
+	void MulticastAddAndEnableItem();
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
 	class USphereComponent* InteractionRangeSphereComponent;
@@ -52,7 +57,7 @@ public:
 	UPROPERTY()
 	AActor* TargetActor;
 
-	UPROPERTY(BlueprintReadOnly)
+	UPROPERTY(BlueprintReadOnly,Replicated)
 	bool IsOwned;
 
 	UPROPERTY(EditAnywhere, Category="Inventory")

@@ -42,7 +42,7 @@ public:
 	void Activate() override;
 
 	void Build();
-	void AddItem();
+	void AddItem(AActor* ActorInteracting);
 	bool IsItemsPlacedFull();
 	bool CanIAddThisItemToTheTrap(int n);
 	int WhatTrapIsBuilt();

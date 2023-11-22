@@ -251,7 +251,7 @@ void ADarkChamberCharacter::ServerTrowItem_Implementation()
 	AActor* ActorToThrow = Inventory[CurrentlySelectedInventoryItem];
 	if (ActorToThrow)
 	{
-		FDetachmentTransformRules rules(EDetachmentRule::KeepRelative, true);
+		FDetachmentTransformRules rules(EDetachmentRule::KeepWorld, true);
 		ActorToThrow->DetachFromActor(rules);
 		//ActorToThrow->SetActorEnableCollision(true);
 		AItem* item = Cast<AItem>(ActorToThrow);
@@ -394,22 +394,16 @@ void ADarkChamberCharacter::HoleAttack()
 	GEngine->AddOnScreenDebugMessage(-1, 1, FColor::Red, "HoleAttack");
 }
 
-void ADarkChamberCharacter::RequestInteractionWith_Implementation(AActor* ObjectToInteract, AActor* InteractionInstigator)
+void ADarkChamberCharacter::RequestInteractionWith_Implementation(AActor* ObjectToInteract,
+                                                                  AActor* InteractionInstigator)
 {
-	GEngine->AddOnScreenDebugMessage(-1, 1, FColor::Red, "TRIGGERED");
-
 	InteractWithActor();
 	//canMove = true;
 	IInteractInterface* TempIInteract = Cast<IInteractInterface>(ObjectToInteract);
 	if (!TempIInteract)
 		return;
-	
+
 	TempIInteract->Interact(this);
-	if (Cast<AItem>(currentInteractableActor))
-	{
-		//HEREE
-		
-	}
 
 	//canMove = true;
 }
