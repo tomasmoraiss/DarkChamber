@@ -142,7 +142,6 @@ public:
 	//HEALTH STUFF
 	UHealthComponent* PlayerHealth;
 
-
 protected:
 	/** Called for movement input */
 	void Move(const FInputActionValue& Value);
