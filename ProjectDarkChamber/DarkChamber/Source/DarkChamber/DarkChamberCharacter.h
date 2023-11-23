@@ -122,7 +122,7 @@ public:
 
 	//ItemPlaceHolderStuff
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite,Replicated)
 	UStaticMeshComponent* ItemPlaceHolderMeshComponent;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite,Replicated)

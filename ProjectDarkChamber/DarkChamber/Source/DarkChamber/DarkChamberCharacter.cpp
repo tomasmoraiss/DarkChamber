@@ -30,6 +30,9 @@ void ADarkChamberCharacter::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>
 	DOREPLIFETIME(ADarkChamberCharacter, Inventory);
 	DOREPLIFETIME(ADarkChamberCharacter, CurrentlySelectedInventoryItem);
 	DOREPLIFETIME(ADarkChamberCharacter, CurrentItemHeld);
+	DOREPLIFETIME(ADarkChamberCharacter, ItemPlaceHolderMeshComponent);
+
+	
 }
 
 ADarkChamberCharacter::ADarkChamberCharacter()

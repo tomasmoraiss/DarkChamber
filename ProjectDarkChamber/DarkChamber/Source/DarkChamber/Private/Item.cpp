@@ -94,12 +94,11 @@ void AItem::InteractGetItem_Implementation(AActor* ActorInteracting)
 			character->CurrentlySelectedInventoryItem = ItemSlot;
 			DisableComponentsSimulatePhysics();
 			SetActorEnableCollision(false);
-			AttachToComponent(character->ItemPlaceHolderMeshComponent,
-			                  FAttachmentTransformRules::SnapToTargetNotIncludingScale);
+			UStaticMeshComponent* mesh= this->FindComponentByClass<UStaticMeshComponent>();
+			mesh->AttachToComponent(character->ItemPlaceHolderMeshComponent,
+			                  FAttachmentTransformRules::SnapToTargetNotIncludingScale);	
 
 			character->CurrentItemHeld = this;
-
-
 			MulticastAddAndDisableItem(character);
 		}
 		else
@@ -120,13 +119,13 @@ void AItem::MulticastAddAndEnableItem_Implementation()
 }
 
 void AItem::MulticastAddAndDisableItem_Implementation(ADarkChamberCharacter* character)
-{
-	character->MakeItemsInvisible(this);
+ {
+ 	character->MakeItemsInvisible(this);
 	DisableComponentsSimulatePhysics();
-	AttachToComponent(character->ItemPlaceHolderMeshComponent,
-	                  FAttachmentTransformRules::SnapToTargetNotIncludingScale);
+ 	AttachToComponent(character->ItemPlaceHolderMeshComponent,
+ 	                  FAttachmentTransformRules::SnapToTargetNotIncludingScale);
 	this->SetActorEnableCollision(false);
-}
+ }
 
 void AItem::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp,
                            int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
