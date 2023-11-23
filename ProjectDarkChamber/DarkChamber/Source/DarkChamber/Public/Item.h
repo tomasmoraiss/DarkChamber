@@ -28,12 +28,12 @@ public:
 
 	UFUNCTION()
 	void Interact(AActor* ActorInteracting);
-	UFUNCTION(Server,Reliable)
+	UFUNCTION(Server, Reliable)
 	void InteractGetItem(AActor* ActorInteracting);
 
-	UFUNCTION(NetMulticast,Reliable)
+	UFUNCTION(NetMulticast, Reliable)
 	void MulticastAddAndDisableItem(class ADarkChamberCharacter* character);
-	UFUNCTION(NetMulticast,Reliable)
+	UFUNCTION(NetMulticast, Reliable)
 	void MulticastAddAndEnableItem();
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
@@ -54,10 +54,17 @@ public:
 	void OnOverlapEnd(class UPrimitiveComponent* OverlappedComp, class AActor* OtherActor,
 	                  class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
 
+	//NOISE BUBBLE
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite,Category="noise")
+	TSubclassOf<AActor> NoiseBubble;
+	UFUNCTION()
+	void NotifyHit(UPrimitiveComponent* MyComp, AActor* Other, UPrimitiveComponent* OtherComp, bool bSelfMoved,
+	               FVector HitLocation, FVector HitNormal, FVector NormalImpulse, const FHitResult& Hit) override;
+
 	UPROPERTY()
 	AActor* TargetActor;
 
-	UPROPERTY(BlueprintReadOnly,Replicated)
+	UPROPERTY(BlueprintReadOnly, Replicated)
 	bool IsOwned;
 
 	UPROPERTY(EditAnywhere, Category="Inventory")
@@ -66,10 +73,9 @@ public:
 	//UFUNCTION()
 	//void ThrowItem(float force,FVector direction);
 
-	UFUNCTION(Server,Reliable)
-	void ServerThrowItem(float force,FVector direction);
+	UFUNCTION(Server, Reliable)
+	void ServerThrowItem(float force, FVector direction);
 
 	UFUNCTION()
 	void CanCollide();
-	
 };

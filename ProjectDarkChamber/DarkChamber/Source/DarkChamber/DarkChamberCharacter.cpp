@@ -31,7 +31,8 @@ void ADarkChamberCharacter::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>
 	DOREPLIFETIME(ADarkChamberCharacter, CurrentlySelectedInventoryItem);
 	DOREPLIFETIME(ADarkChamberCharacter, CurrentItemHeld);
 	DOREPLIFETIME(ADarkChamberCharacter, ItemPlaceHolderMeshComponent);
-	DOREPLIFETIME(ADarkChamberCharacter, PlayerHealth);	
+	DOREPLIFETIME(ADarkChamberCharacter, PlayerHealth);
+	DOREPLIFETIME(ADarkChamberCharacter, canMove);
 }
 
 ADarkChamberCharacter::ADarkChamberCharacter()
@@ -346,10 +347,11 @@ void ADarkChamberCharacter::Move(const FInputActionValue& Value)
 	}
 }
 
-void ADarkChamberCharacter::setCanMove()
+void ADarkChamberCharacter::setCanMove_Implementation()
 {
 	canMove = true;
 }
+
 
 void ADarkChamberCharacter::Look(const FInputActionValue& Value)
 {

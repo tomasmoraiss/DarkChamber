@@ -131,7 +131,7 @@ public:
 
 	//Lock the look function
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta=(AllowPrivateAccess = "true"))
+	UPROPERTY(EditAnywhere, BlueprintReadOnly,Replicated)
 	bool canMove;
 
 	//Store actor Interface to activate later

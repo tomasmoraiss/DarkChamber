@@ -148,6 +148,15 @@ void AItem::OnOverlapEnd(UPrimitiveComponent* OverlappedComp, AActor* OtherActor
 	}
 }
 
+void AItem::NotifyHit(UPrimitiveComponent* MyComp, AActor* Other, UPrimitiveComponent* OtherComp, bool bSelfMoved,
+	FVector HitLocation, FVector HitNormal, FVector NormalImpulse, const FHitResult& Hit)
+{
+	Super::NotifyHit(MyComp, Other, OtherComp, bSelfMoved, HitLocation, HitNormal, NormalImpulse, Hit);
+	FRotator Rotation(0.0f, 0.0f, 0.0f);
+	FActorSpawnParameters SpawnInfo;
+	//GetWorld()->SpawnActor<AActor>(NoiseBubble, HitLocation, Rotation);
+}
+
 void AItem::ServerThrowItem_Implementation(float force, FVector direction)
 {
 	UStaticMeshComponent* mesh = this->FindComponentByClass<UStaticMeshComponent>();
