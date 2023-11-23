@@ -13,9 +13,6 @@ class UActivatableInterface : public UInterface
 	GENERATED_BODY()
 };
 
-/**
- * 
- */
 class DARKCHAMBER_API IActivatableInterface
 {
 	GENERATED_BODY()

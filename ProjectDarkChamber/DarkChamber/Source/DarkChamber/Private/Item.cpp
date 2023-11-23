@@ -2,6 +2,8 @@
 
 
 #include "Item.h"
+
+#include "NoiseBubble.h"
 #include "Components/SphereComponent.h"
 #include "Components/WidgetComponent.h"
 #include "DarkChamber/DarkChamberCharacter.h"
@@ -58,6 +60,7 @@ void AItem::BeginPlay()
 // Called every frame
 void AItem::Tick(float DeltaTime)
 {
+	UStaticMeshComponent* mesh = this->FindComponentByClass<UStaticMeshComponent>();
 	Super::Tick(DeltaTime);
 	if (IsValid(ItemWidget) && IsValid(TargetActor) && ItemWidget->IsVisible() && !IsOwned)
 	{
@@ -94,9 +97,9 @@ void AItem::InteractGetItem_Implementation(AActor* ActorInteracting)
 			character->CurrentlySelectedInventoryItem = ItemSlot;
 			DisableComponentsSimulatePhysics();
 			SetActorEnableCollision(false);
-			UStaticMeshComponent* mesh= this->FindComponentByClass<UStaticMeshComponent>();
+			UStaticMeshComponent* mesh = this->FindComponentByClass<UStaticMeshComponent>();
 			mesh->AttachToComponent(character->ItemPlaceHolderMeshComponent,
-			                  FAttachmentTransformRules::SnapToTargetNotIncludingScale);	
+			                        FAttachmentTransformRules::SnapToTargetNotIncludingScale);
 
 			character->CurrentItemHeld = this;
 			MulticastAddAndDisableItem(character);
@@ -110,8 +113,8 @@ void AItem::InteractGetItem_Implementation(AActor* ActorInteracting)
 
 void AItem::MulticastAddAndEnableItem_Implementation()
 {
-	//UStaticMeshComponent* mesh = this->FindComponentByClass<UStaticMeshComponent>();
-	//mesh->SetSimulatePhysics(true);
+	UStaticMeshComponent* mesh = this->FindComponentByClass<UStaticMeshComponent>();
+	mesh->SetSimulatePhysics(true);
 	ItemWidget->SetVisibility(true);
 	IsOwned = false;
 	this->SetActorEnableCollision(true);
@@ -119,13 +122,13 @@ void AItem::MulticastAddAndEnableItem_Implementation()
 }
 
 void AItem::MulticastAddAndDisableItem_Implementation(ADarkChamberCharacter* character)
- {
- 	character->MakeItemsInvisible(this);
+{
+	character->MakeItemsInvisible(this);
 	DisableComponentsSimulatePhysics();
- 	AttachToComponent(character->ItemPlaceHolderMeshComponent,
- 	                  FAttachmentTransformRules::SnapToTargetNotIncludingScale);
+	AttachToComponent(character->ItemPlaceHolderMeshComponent,
+	                  FAttachmentTransformRules::SnapToTargetNotIncludingScale);
 	this->SetActorEnableCollision(false);
- }
+}
 
 void AItem::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp,
                            int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
@@ -149,12 +152,23 @@ void AItem::OnOverlapEnd(UPrimitiveComponent* OverlappedComp, AActor* OtherActor
 }
 
 void AItem::NotifyHit(UPrimitiveComponent* MyComp, AActor* Other, UPrimitiveComponent* OtherComp, bool bSelfMoved,
-	FVector HitLocation, FVector HitNormal, FVector NormalImpulse, const FHitResult& Hit)
+                      FVector HitLocation, FVector HitNormal, FVector NormalImpulse, const FHitResult& Hit)
 {
 	Super::NotifyHit(MyComp, Other, OtherComp, bSelfMoved, HitLocation, HitNormal, NormalImpulse, Hit);
 	FRotator Rotation(0.0f, 0.0f, 0.0f);
 	FActorSpawnParameters SpawnInfo;
-	//GetWorld()->SpawnActor<AActor>(NoiseBubble, HitLocation, Rotation);
+	TSubclassOf<AActor> Tactor = NoiseBubble;
+	AActor* TTActor = Cast<AActor>(Tactor);
+	GetWorld()->SpawnActor<AActor>(Tactor, HitLocation, Rotation);
+	FTimerDelegate TimerDel;
+	TimerDel.BindUFunction(this, FName("SetNoiseBubbleDestroy"), TTActor);
+	FTimerHandle TimerHandle;
+	GetWorld()->GetTimerManager().SetTimer(TimerHandle, TimerDel, 5.0f, false, 3);
+}
+
+void AItem::SetNoiseBubbleDestroy(AActor* bubble)
+{
+	//bubble->Destroy();
 }
 
 void AItem::ServerThrowItem_Implementation(float force, FVector direction)
