@@ -29,6 +29,7 @@ void ADoorTest::Tick(float DeltaTime)
 void ADoorTest::Activate_Implementation()
 {
 	isOpen = !isOpen;
+	GEngine->AddOnScreenDebugMessage(-1, 1, FColor::Red, "StopSprinting");
 }
 
 void ADoorTest::OnInteractHoverBegin(AActor* ActorToInteractWith)

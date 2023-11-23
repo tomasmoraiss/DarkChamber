@@ -31,7 +31,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	bool isOn;
 	
-	UPROPERTY(EditInstanceOnly,BlueprintReadOnly,meta=(MustImplement="InteractableExample"))
+	UPROPERTY(EditInstanceOnly,BlueprintReadOnly)
 	AActor* DoorReference;
 	
 };

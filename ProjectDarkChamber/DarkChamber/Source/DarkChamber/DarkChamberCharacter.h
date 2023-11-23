@@ -140,11 +140,13 @@ public:
 	AActor* currentInteractableActor;
 
 	//HEALTH STUFF
+	UPROPERTY(EditAnywhere, BlueprintReadWrite,Replicated)
 	UHealthComponent* PlayerHealth;
 
 protected:
 	/** Called for movement input */
 	void Move(const FInputActionValue& Value);
+	UFUNCTION(Server,Reliable)
 	void setCanMove();
 	/** Called for looking input */
 	void Look(const FInputActionValue& Value);
@@ -180,10 +182,11 @@ public:
 	UFUNCTION(Server,Reliable)
 	void ServerTrowItem();
 	// Trap Damage Attacks
+	UFUNCTION(Server,Reliable)
 	void EletricAttack() override;
-
+	UFUNCTION(Server,Reliable)
 	void FireAttack() override;
-
+	UFUNCTION(Server,Reliable)
 	void HoleAttack() override;
 
 	UFUNCTION(Server,Reliable)

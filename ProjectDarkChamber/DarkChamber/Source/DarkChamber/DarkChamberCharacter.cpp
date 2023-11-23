@@ -31,8 +31,7 @@ void ADarkChamberCharacter::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>
 	DOREPLIFETIME(ADarkChamberCharacter, CurrentlySelectedInventoryItem);
 	DOREPLIFETIME(ADarkChamberCharacter, CurrentItemHeld);
 	DOREPLIFETIME(ADarkChamberCharacter, ItemPlaceHolderMeshComponent);
-
-	
+	DOREPLIFETIME(ADarkChamberCharacter, PlayerHealth);	
 }
 
 ADarkChamberCharacter::ADarkChamberCharacter()
@@ -377,7 +376,7 @@ void ADarkChamberCharacter::Sprint(const FInputActionValue& Value)
 
 void ADarkChamberCharacter::StopSprint(const FInputActionValue& Value)
 {
-	GEngine->AddOnScreenDebugMessage(-1, 1, FColor::Red, "StopSprinting");
+	
 	GetCharacterMovement()->MaxWalkSpeed = DefaultWalkingSpeed;
 }
 
@@ -385,7 +384,8 @@ void ADarkChamberCharacter::Crouchh(const FInputActionValue& Value)
 {
 }
 
-void ADarkChamberCharacter::EletricAttack()
+
+void ADarkChamberCharacter::EletricAttack_Implementation()
 {
 	canMove = false;
 	FTimerHandle TimerHandle;
@@ -394,19 +394,22 @@ void ADarkChamberCharacter::EletricAttack()
 	PlayerHealth->ReduceHealth(20);
 }
 
-void ADarkChamberCharacter::FireAttack()
-{
-	PlayerHealth->ReduceHealth(40);
-	GEngine->AddOnScreenDebugMessage(-1, 1, FColor::Red, "FireAttack");
-}
 
-void ADarkChamberCharacter::HoleAttack()
+
+void ADarkChamberCharacter::HoleAttack_Implementation()
 {
 	canMove = false;
 	FTimerHandle TimerHandle;
 	GetWorld()->GetTimerManager().SetTimer(TimerHandle, this, &ADarkChamberCharacter::setCanMove, 7.0f, false, 5);
 	GEngine->AddOnScreenDebugMessage(-1, 1, FColor::Red, "HoleAttack");
 }
+
+void ADarkChamberCharacter::FireAttack_Implementation()
+{
+	PlayerHealth->ReduceHealth(40);
+	GEngine->AddOnScreenDebugMessage(-1, 1, FColor::Red, "FireAttack");
+}
+
 
 void ADarkChamberCharacter::RequestInteractionWith_Implementation(AActor* ObjectToInteract,
                                                                   AActor* InteractionInstigator)
