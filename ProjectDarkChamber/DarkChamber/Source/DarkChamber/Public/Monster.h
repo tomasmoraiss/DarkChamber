@@ -38,6 +38,9 @@ public:
 	int MeleeAttack_Implementation() override;
 	int ThrowItem_Implementation() override;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Melee Attack", meta=(AllowPrivateAccess = "true"))
+	int AttackDamage;
+
 private:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AI", meta=(AllowPrivateAccess = "true"))
 	UBehaviorTree* BehaviorTree;

@@ -39,7 +39,7 @@ void AMonster_AIController::SetupPerceptionSystem()
 		SightConfig->SightRadius = 500.f;
 		SightConfig->LoseSightRadius = SightConfig->SightRadius + 25.f;
 		SightConfig->PeripheralVisionAngleDegrees = 90.f;
-		SightConfig->SetMaxAge(1.f);
+		SightConfig->SetMaxAge(5.f);
 		//SightConfig->AutoSuccessRangeFromLastSeenLocation = 520.f;
 		SightConfig->DetectionByAffiliation.bDetectEnemies = true;
 		SightConfig->DetectionByAffiliation.bDetectFriendlies = true;

@@ -2,8 +2,8 @@
 
 
 #include "BTTask_MeleeAttack.h"
-
 #include "Monster_AIController.h"
+#include "DarkChamber/DarkChamberCharacter.h"
 
 UBTTask_MeleeAttack::UBTTask_MeleeAttack()
 {
@@ -20,20 +20,18 @@ EBTNodeResult::Type UBTTask_MeleeAttack::ExecuteTask(UBehaviorTreeComponent& Own
 		//Finish task
 		FinishLatentTask(OwnerComp, EBTNodeResult::Succeeded);
 		return EBTNodeResult::Succeeded;
-		
 	}
 
 	auto const * const Controller = OwnerComp.GetAIOwner();
 	auto* const Monster = Cast<AMonster>(Controller->GetPawn());
-
 	//If the Monster supports the Combat Interface, call and execute the Attack function
-	if(auto* const icombat = Cast<ICombatInterface>(Monster))
+	if(auto* const ICombat = Cast<ICombatInterface>(Monster))
 	{
-		/*if(MontageHasFinished(Monster))
+		ICombat->Execute_MeleeAttack(Monster);
+		if(auto* const Player = Cast<ADarkChamberCharacter>(Controller->GetPawn()))
 		{
-			
-		}*/
-		icombat->Execute_MeleeAttack(Monster);
+			Player->PlayerHealth->ReduceHealth(Monster->AttackDamage);
+		}
 	}
 	FinishLatentTask(OwnerComp, EBTNodeResult::Succeeded);
 	return EBTNodeResult::Type();
