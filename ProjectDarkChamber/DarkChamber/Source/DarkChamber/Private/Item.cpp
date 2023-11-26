@@ -3,6 +3,7 @@
 
 #include "Item.h"
 
+
 #include "NoiseBubble.h"
 #include "Components/SphereComponent.h"
 #include "Components/WidgetComponent.h"
@@ -157,18 +158,16 @@ void AItem::NotifyHit(UPrimitiveComponent* MyComp, AActor* Other, UPrimitiveComp
 	Super::NotifyHit(MyComp, Other, OtherComp, bSelfMoved, HitLocation, HitNormal, NormalImpulse, Hit);
 	FRotator Rotation(0.0f, 0.0f, 0.0f);
 	FActorSpawnParameters SpawnInfo;
-	TSubclassOf<AActor> Tactor = NoiseBubble;
-	AActor* TTActor = Cast<AActor>(Tactor);
-	GetWorld()->SpawnActor<AActor>(Tactor, HitLocation, Rotation);
+	AActor* Tactor = GetWorld()->SpawnActor<AActor>(NoiseBubble, HitLocation, Rotation);
 	FTimerDelegate TimerDel;
-	TimerDel.BindUFunction(this, FName("SetNoiseBubbleDestroy"), TTActor);
+	TimerDel.BindUFunction(this, FName("SetNoiseBubbleDestroy"), Tactor);
 	FTimerHandle TimerHandle;
 	GetWorld()->GetTimerManager().SetTimer(TimerHandle, TimerDel, 5.0f, false, 3);
 }
 
 void AItem::SetNoiseBubbleDestroy(AActor* bubble)
 {
-	//bubble->Destroy();
+	bubble->Destroy();
 }
 
 void AItem::ServerThrowItem_Implementation(float force, FVector direction)

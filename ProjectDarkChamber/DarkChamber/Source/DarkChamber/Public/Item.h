@@ -55,14 +55,14 @@ public:
 	                  class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
 
 	//NOISE BUBBLE
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite,Category="noise")
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="noise")
 	TSubclassOf<AActor> NoiseBubble;
 	UFUNCTION()
 	void NotifyHit(UPrimitiveComponent* MyComp, AActor* Other, UPrimitiveComponent* OtherComp, bool bSelfMoved,
 	               FVector HitLocation, FVector HitNormal, FVector NormalImpulse, const FHitResult& Hit) override;
 	UFUNCTION()
 	void SetNoiseBubbleDestroy(AActor* bubble);
-	
+
 
 	UPROPERTY()
 	AActor* TargetActor;
