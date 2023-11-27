@@ -3,8 +3,10 @@
 
 #include "BTTask_FindPlayerLocation.h"
 
+#include "AIController.h"
 #include "NavigationSystem.h"
 #include "BehaviorTree/BlackboardComponent.h"
+#include "DarkChamber/DarkChamberCharacter.h"
 #include "GameFramework/Character.h"
 #include "Kismet/GameplayStatics.h"
 
@@ -16,8 +18,9 @@ UBTTask_FindPlayerLocation::UBTTask_FindPlayerLocation(FObjectInitializer const&
 
 EBTNodeResult::Type UBTTask_FindPlayerLocation::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory) 
 {
+	//auto const * const Controller = OwnerComp.GetAIOwner();
 	//Get Player character
-	if(auto const* Player = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0))
+	if(auto const* Player = UGameplayStatics::GetPlayerCharacter(GetWorld(),0))
 	{
 		//Get Player location as origin
 		auto const PlayerLocation = Player->GetActorLocation();

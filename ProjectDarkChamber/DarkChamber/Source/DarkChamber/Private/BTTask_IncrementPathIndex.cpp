@@ -31,7 +31,8 @@ EBTNodeResult::Type UBTTask_IncrementPathIndex::ExecuteTask(UBehaviorTreeCompone
 				auto Index = BBComponent->GetValueAsInt(GetSelectedBlackboardKey());
 
 				//Change the direction if we are at the first or last index if we are in bidirectional mode
-				if(bBiDirectional)
+				
+				/*if(bBiDirectional)
 				{
 					if(Index >= MaxIndex && Direction == EDirectionType::Forward)
 					{
@@ -41,9 +42,10 @@ EBTNodeResult::Type UBTTask_IncrementPathIndex::ExecuteTask(UBehaviorTreeCompone
 					{
 						Direction = EDirectionType::Forward;
 					}
-				}
+				}*/
+				
 				//Set new value of index on the Blackboard
-				BBComponent->SetValueAsInt(GetSelectedBlackboardKey(), (Direction == EDirectionType::Forward ? ++Index : --Index) % NumberOfPatrolPoints);
+				BBComponent->SetValueAsInt(GetSelectedBlackboardKey(), FMath::RandRange(MinIndex, MaxIndex));
 
 				FinishLatentTask(OwnerComp, EBTNodeResult::Succeeded);
 				return EBTNodeResult::Succeeded;

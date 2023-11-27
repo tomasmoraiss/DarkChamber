@@ -379,7 +379,7 @@ void ADarkChamberCharacter::Sprint(const FInputActionValue& Value)
 void ADarkChamberCharacter::StopSprint(const FInputActionValue& Value)
 {
 	
-	GetCharacterMovement()->MaxWalkSpeed = DefaultWalkingSpeed;
+	GetCharacterMovement()->MaxWalkSpeed = 450.f;
 }
 
 void ADarkChamberCharacter::Crouchh(const FInputActionValue& Value)
