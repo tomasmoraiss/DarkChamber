@@ -232,7 +232,7 @@ void ADarkChamberCharacter::SelectInventorySlot_Implementation(int n)
 		MakeItemsInvisible(Inventory[CurrentlySelectedInventoryItem]);
 	}
 	GEngine->AddOnScreenDebugMessage(-10, 1.f, FColor::Red,
-									 FString::Printf(TEXT("Current Selected : %i"), CurrentlySelectedInventoryItem));
+	                                 FString::Printf(TEXT("Current Selected : %i"), CurrentlySelectedInventoryItem));
 }
 
 void ADarkChamberCharacter::HoldTrowStarted()
@@ -288,16 +288,6 @@ int ADarkChamberCharacter::GetavailableInventorySlot()
 	return 6;
 }
 
-// void ADarkChamberCharacter::SelectInventorySlot(int n)
-// {
-// 	if (Inventory[n - 1] != nullptr)
-// 	{
-// 		CurrentlySelectedInventoryItem = n - 1;
-// 		MakeItemsInvisible(Inventory[CurrentlySelectedInventoryItem]);
-// 	}
-// 	GEngine->AddOnScreenDebugMessage(-10, 1.f, FColor::Red,
-// 	                                 FString::Printf(TEXT("Current Selected : %i"), CurrentlySelectedInventoryItem));
-// }
 
 void ADarkChamberCharacter::MakeItemsInvisible(AItem* item)
 {
@@ -354,7 +344,6 @@ void ADarkChamberCharacter::setCanMove_Implementation()
 
 void ADarkChamberCharacter::Look(const FInputActionValue& Value)
 {
-	// input is a Vector2D
 	FVector2D LookAxisVector = Value.Get<FVector2D>();
 
 	if (Controller != nullptr)
@@ -377,7 +366,6 @@ void ADarkChamberCharacter::Sprint(const FInputActionValue& Value)
 
 void ADarkChamberCharacter::StopSprint(const FInputActionValue& Value)
 {
-	
 	GetCharacterMovement()->MaxWalkSpeed = 450.f;
 }
 
@@ -394,7 +382,6 @@ void ADarkChamberCharacter::EletricAttack_Implementation()
 	GEngine->AddOnScreenDebugMessage(-1, 1, FColor::Red, "EletricAttack");
 	PlayerHealth->ReduceHealth(20);
 }
-
 
 
 void ADarkChamberCharacter::HoleAttack_Implementation()

@@ -149,6 +149,7 @@ protected:
 	UFUNCTION(Server,Reliable)
 	void setCanMove();
 	/** Called for looking input */
+
 	void Look(const FInputActionValue& Value);
 
 	void Sprint(const FInputActionValue& Value);
