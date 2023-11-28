@@ -9,7 +9,6 @@
 #include "Components/CapsuleComponent.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
-#include "HealthClass.h"
 #include "HealthComponent.h"
 #include "InputMappingContext.h"
 #include"InteractInterface.h"

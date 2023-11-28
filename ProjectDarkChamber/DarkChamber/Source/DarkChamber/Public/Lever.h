@@ -35,3 +35,4 @@ public:
 	AActor* DoorReference;
 	
 };
+	
