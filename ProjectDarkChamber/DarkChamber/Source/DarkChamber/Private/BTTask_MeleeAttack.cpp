@@ -27,11 +27,12 @@ EBTNodeResult::Type UBTTask_MeleeAttack::ExecuteTask(UBehaviorTreeComponent& Own
 	//If the Monster supports the Combat Interface, call and execute the Attack function
 	if(auto* const ICombat = Cast<ICombatInterface>(Monster))
 	{
-		ICombat->Execute_MeleeAttack(Monster);
 		if(auto* const Player = Cast<ADarkChamberCharacter>(Controller->GetPawn()))
 		{
+			
 			Player->PlayerHealth->ReduceHealth(Monster->AttackDamage);
 		}
+		ICombat->Execute_MeleeAttack(Monster);
 	}
 	FinishLatentTask(OwnerComp, EBTNodeResult::Succeeded);
 	return EBTNodeResult::Type();

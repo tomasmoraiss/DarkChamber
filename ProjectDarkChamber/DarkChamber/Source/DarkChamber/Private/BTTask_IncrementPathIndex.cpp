@@ -2,7 +2,6 @@
 
 
 #include "BTTask_IncrementPathIndex.h"
-
 #include "Monster.h"
 #include "Monster_AIController.h"
 #include "BehaviorTree/BlackboardComponent.h"
@@ -29,20 +28,6 @@ EBTNodeResult::Type UBTTask_IncrementPathIndex::ExecuteTask(UBehaviorTreeCompone
 				auto const MinIndex = 0;
 				auto const MaxIndex = NumberOfPatrolPoints - 1;
 				auto Index = BBComponent->GetValueAsInt(GetSelectedBlackboardKey());
-
-				//Change the direction if we are at the first or last index if we are in bidirectional mode
-				
-				/*if(bBiDirectional)
-				{
-					if(Index >= MaxIndex && Direction == EDirectionType::Forward)
-					{
-						Direction = EDirectionType::Reverse;
-					}
-					else if(Index == MinIndex && Direction == EDirectionType::Reverse)
-					{
-						Direction = EDirectionType::Forward;
-					}
-				}*/
 				
 				//Set new value of index on the Blackboard
 				BBComponent->SetValueAsInt(GetSelectedBlackboardKey(), FMath::RandRange(MinIndex, MaxIndex));

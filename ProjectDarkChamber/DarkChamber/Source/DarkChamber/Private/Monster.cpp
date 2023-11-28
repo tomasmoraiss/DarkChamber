@@ -2,6 +2,8 @@
 
 
 #include "Monster.h"
+#include "BehaviorTree/BlackboardComponent.h"
+#include "GameFramework/CharacterMovementComponent.h"
 
 // Sets default values
 AMonster::AMonster()
@@ -51,4 +53,31 @@ int AMonster::ThrowItem_Implementation()
 {
 	return ICombatInterface::ThrowItem_Implementation();
 }
+
+void AMonster::FireAttack_Implementation()
+{	
+	GEngine->AddOnScreenDebugMessage(-1, 1, FColor::Red, "FireAttack");
+}
+
+void AMonster::HoleAttack_Implementation()
+{
+	CharacterMovement->Deactivate();
+	FTimerHandle TimerHandle;
+	GetWorld()->GetTimerManager().SetTimer(TimerHandle, this, &AMonster::SetMovement, 7.0f, false, 5);
+	GEngine->AddOnScreenDebugMessage(-1, 1, FColor::Red, "HoleAttack");
+}
+
+void AMonster::EletricAttack_Implementation()
+{
+	CharacterMovement->Deactivate();
+	FTimerHandle TimerHandle;
+	GetWorld()->GetTimerManager().SetTimer(TimerHandle, this, &AMonster::SetMovement, 5.0f, false, 5);
+	GEngine->AddOnScreenDebugMessage(-1, 1, FColor::Red, "EletricAttack");
+}
+
+void AMonster::SetMovement()
+{
+	CharacterMovement->Activate();
+}
+
 
