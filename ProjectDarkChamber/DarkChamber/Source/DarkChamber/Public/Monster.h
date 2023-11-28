@@ -9,6 +9,7 @@
 #include "GameFramework/Character.h"
 #include "CombatInterface.h"
 #include "TrapDamageInterface.h"
+#include "DarkChamber/DarkChamberCharacter.h"
 #include "Monster.generated.h"
 
 
@@ -36,24 +37,24 @@ public:
 
 	APatrolPath* GetPatrolPath() const;
 
-	UCharacterMovementComponent* CharacterMovement;
-
 	//For attacking the players
-	int MeleeAttack_Implementation() override;
-	int ThrowItem_Implementation() override;
+	virtual int MeleeAttack_Implementation() override;
+	virtual int ThrowItem_Implementation() override;
 
 	UFUNCTION(Server,Reliable)
-	void EletricAttack() override;
+	virtual void EletricAttack() override;
 	UFUNCTION(Server,Reliable)
-	void FireAttack() override;
+	virtual void FireAttack() override;
 	UFUNCTION(Server,Reliable)
-	void HoleAttack() override;
+	virtual void HoleAttack() override;
 
-	void SetMovement();
-	
+	AMonster* Monster;
+	ADarkChamberCharacter* TargetedPlayer;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Melee Attack", meta=(AllowPrivateAccess = "true"))
 	int AttackDamage;
+	
+	bool bIsStunned;
 
 private:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AI", meta=(AllowPrivateAccess = "true"))

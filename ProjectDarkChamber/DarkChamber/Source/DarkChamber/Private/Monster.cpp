@@ -3,7 +3,9 @@
 
 #include "Monster.h"
 #include "BehaviorTree/BlackboardComponent.h"
+#include "DarkChamber/DarkChamberCharacter.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "Kismet/GameplayStatics.h"
 
 // Sets default values
 AMonster::AMonster()
@@ -46,6 +48,10 @@ APatrolPath* AMonster::GetPatrolPath() const
 
 int AMonster::MeleeAttack_Implementation()
 {
+	if(const auto* Player = TargetedPlayer)
+	{
+		Player->PlayerHealth->ReduceHealth(AttackDamage);
+	}
 	return ICombatInterface::MeleeAttack_Implementation();
 }
 
@@ -56,28 +62,19 @@ int AMonster::ThrowItem_Implementation()
 
 void AMonster::FireAttack_Implementation()
 {	
-	GEngine->AddOnScreenDebugMessage(-1, 1, FColor::Red, "FireAttack");
+	return ITrapDamageInterface::FireAttack();
 }
 
 void AMonster::HoleAttack_Implementation()
 {
-	CharacterMovement->Deactivate();
-	FTimerHandle TimerHandle;
-	GetWorld()->GetTimerManager().SetTimer(TimerHandle, this, &AMonster::SetMovement, 7.0f, false, 5);
-	GEngine->AddOnScreenDebugMessage(-1, 1, FColor::Red, "HoleAttack");
+	return ITrapDamageInterface::HoleAttack();
+
 }
 
 void AMonster::EletricAttack_Implementation()
 {
-	CharacterMovement->Deactivate();
-	FTimerHandle TimerHandle;
-	GetWorld()->GetTimerManager().SetTimer(TimerHandle, this, &AMonster::SetMovement, 5.0f, false, 5);
-	GEngine->AddOnScreenDebugMessage(-1, 1, FColor::Red, "EletricAttack");
+	return ITrapDamageInterface::EletricAttack();
 }
 
-void AMonster::SetMovement()
-{
-	CharacterMovement->Activate();
-}
 
 

@@ -22,5 +22,6 @@ void UBTService_IsPlayerInRange::OnBecomeRelevant(UBehaviorTreeComponent& OwnerC
 	auto const * const Player = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0);
 	//Write true or false to the blackboard key depending on whether or not the player is in range
 	OwnerComp.GetBlackboardComponent()->SetValueAsBool(GetSelectedBlackboardKey(), Monster->GetDistanceTo(Player) <= MeleeRange);
+	OwnerComp.GetBlackboardComponent()->SetValueAsBool("CanAttack", true);
 	Super::OnBecomeRelevant(OwnerComp, NodeMemory);
 }

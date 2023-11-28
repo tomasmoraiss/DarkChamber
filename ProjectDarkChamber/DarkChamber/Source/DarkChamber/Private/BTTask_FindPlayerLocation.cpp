@@ -4,6 +4,7 @@
 #include "BTTask_FindPlayerLocation.h"
 
 #include "AIController.h"
+#include "Monster.h"
 #include "NavigationSystem.h"
 #include "BehaviorTree/BlackboardComponent.h"
 #include "DarkChamber/DarkChamberCharacter.h"
@@ -20,8 +21,11 @@ EBTNodeResult::Type UBTTask_FindPlayerLocation::ExecuteTask(UBehaviorTreeCompone
 {
 	//auto const * const Controller = OwnerComp.GetAIOwner();
 	//Get Player character
-	if(auto const* Player = UGameplayStatics::GetPlayerCharacter(GetWorld(),0))
+	if(auto* Player = UGameplayStatics::GetPlayerCharacter(GetWorld(),0))
 	{
+		auto const * const Controller = OwnerComp.GetAIOwner();
+		auto * const monster = Cast<AMonster>(Controller->GetPawn());
+		monster->TargetedPlayer = Cast<ADarkChamberCharacter>(Player);
 		//Get Player location as origin
 		auto const PlayerLocation = Player->GetActorLocation();
 		if(SearchRandom)

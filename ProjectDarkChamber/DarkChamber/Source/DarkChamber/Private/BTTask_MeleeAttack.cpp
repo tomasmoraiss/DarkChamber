@@ -17,21 +17,17 @@ EBTNodeResult::Type UBTTask_MeleeAttack::ExecuteTask(UBehaviorTreeComponent& Own
 
 	if(OutOfRange)
 	{
+		OwnerComp.GetBlackboardComponent()->SetValueAsBool("CanAttack", false);
 		//Finish task
 		FinishLatentTask(OwnerComp, EBTNodeResult::Succeeded);
 		return EBTNodeResult::Succeeded;
 	}
-
 	auto const * const Controller = OwnerComp.GetAIOwner();
 	auto* const Monster = Cast<AMonster>(Controller->GetPawn());
 	//If the Monster supports the Combat Interface, call and execute the Attack function
-	if(auto* const ICombat = Cast<ICombatInterface>(Monster))
+	if(const auto* const ICombat = Cast<ICombatInterface>(Monster))
 	{
-		if(auto* const Player = Cast<ADarkChamberCharacter>(Controller->GetPawn()))
-		{
-			
-			Player->PlayerHealth->ReduceHealth(Monster->AttackDamage);
-		}
+		GEngine->AddOnScreenDebugMessage(-1, 1, FColor::Green, "I attacked");
 		ICombat->Execute_MeleeAttack(Monster);
 	}
 	FinishLatentTask(OwnerComp, EBTNodeResult::Succeeded);
