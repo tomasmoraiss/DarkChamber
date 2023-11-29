@@ -41,12 +41,13 @@ public:
 	virtual int MeleeAttack_Implementation() override;
 	virtual int ThrowItem_Implementation() override;
 
-	UFUNCTION(Server,Reliable)
-	virtual void EletricAttack() override;
+	virtual int EletricAttack_Implementation() override;
 	UFUNCTION(Server,Reliable)
 	virtual void FireAttack() override;
 	UFUNCTION(Server,Reliable)
 	virtual void HoleAttack() override;
+
+	void SetNotStunned();
 
 	AMonster* Monster;
 	ADarkChamberCharacter* TargetedPlayer;
