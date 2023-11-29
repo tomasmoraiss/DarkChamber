@@ -27,7 +27,7 @@ EBTNodeResult::Type UBTTask_FindPlayerLocation::ExecuteTask(UBehaviorTreeCompone
 		auto * const monster = Cast<AMonster>(Controller->GetPawn());
 		monster->TargetedPlayer = Cast<ADarkChamberCharacter>(Player);
 		//Get Player location as origin
-		auto const PlayerLocation = Player->GetActorLocation();
+		auto const PlayerLocation = monster->TargetedPlayer->GetActorLocation();
 		if(SearchRandom)
 		{
 			FNavLocation Location;

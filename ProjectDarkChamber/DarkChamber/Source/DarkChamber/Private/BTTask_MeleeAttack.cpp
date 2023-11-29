@@ -3,7 +3,9 @@
 
 #include "BTTask_MeleeAttack.h"
 #include "Monster_AIController.h"
+#include "BehaviorTree/Tasks/BTTask_Wait.h"
 #include "DarkChamber/DarkChamberCharacter.h"
+#include "Tasks/Task.h"
 
 UBTTask_MeleeAttack::UBTTask_MeleeAttack()
 {
@@ -17,7 +19,6 @@ EBTNodeResult::Type UBTTask_MeleeAttack::ExecuteTask(UBehaviorTreeComponent& Own
 
 	if(OutOfRange)
 	{
-		OwnerComp.GetBlackboardComponent()->SetValueAsBool("CanAttack", false);
 		//Finish task
 		FinishLatentTask(OwnerComp, EBTNodeResult::Succeeded);
 		return EBTNodeResult::Succeeded;
@@ -31,6 +32,7 @@ EBTNodeResult::Type UBTTask_MeleeAttack::ExecuteTask(UBehaviorTreeComponent& Own
 		ICombat->Execute_MeleeAttack(Monster);
 	}
 	FinishLatentTask(OwnerComp, EBTNodeResult::Succeeded);
+	//OwnerComp.GetBlackboardComponent()->SetValueAsBool(GetSelectedBlackboardKey(), false);
 	return EBTNodeResult::Type();
 }
 

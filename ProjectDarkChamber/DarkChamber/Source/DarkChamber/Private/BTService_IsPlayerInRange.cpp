@@ -18,10 +18,19 @@ UBTService_IsPlayerInRange::UBTService_IsPlayerInRange()
 void UBTService_IsPlayerInRange::OnBecomeRelevant(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
 {
 	auto const * const Controller = Cast<AMonster_AIController>(OwnerComp.GetAIOwner());
-	auto const * const Monster = Cast<AMonster>(Controller->GetPawn());
-	auto const * const Player = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0);
+	auto * const Monster = Cast<AMonster>(Controller->GetPawn());
+	auto * const Player = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0);
+	Monster->TargetedPlayer = Cast<ADarkChamberCharacter>(Player);
 	//Write true or false to the blackboard key depending on whether or not the player is in range
-	OwnerComp.GetBlackboardComponent()->SetValueAsBool(GetSelectedBlackboardKey(), Monster->GetDistanceTo(Player) <= MeleeRange);
-	OwnerComp.GetBlackboardComponent()->SetValueAsBool("CanAttack", true);
+	OwnerComp.GetBlackboardComponent()->SetValueAsBool(GetSelectedBlackboardKey(), Monster->GetDistanceTo(Monster->TargetedPlayer) <= MeleeRange);
+	if(Monster->GetDistanceTo(Monster->TargetedPlayer) <= MeleeRange)
+	{
+		OwnerComp.GetBlackboardComponent()->SetValueAsBool(GetSelectedBlackboardKey(), true);
+	}else
+	{
+		OwnerComp.GetBlackboardComponent()->SetValueAsBool(GetSelectedBlackboardKey(), false);
+	}
+
+
 	Super::OnBecomeRelevant(OwnerComp, NodeMemory);
 }
