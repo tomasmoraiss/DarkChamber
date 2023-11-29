@@ -71,10 +71,23 @@ void AMonster::HoleAttack_Implementation()
 
 }
 
-void AMonster::EletricAttack_Implementation()
+int AMonster::EletricAttack_Implementation()
 {
+	bIsStunned = true;
+	FTimerHandle TimerHandle;
+	GetWorld()->GetTimerManager().SetTimer(TimerHandle, this, &AMonster::SetNotStunned, 7.0f, false, 5);
 	return ITrapDamageInterface::EletricAttack();
 }
+
+void AMonster::SetNotStunned()
+{
+	if(bIsStunned)
+	{
+		bIsStunned = false;
+	}
+}
+
+
 
 
 
