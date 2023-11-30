@@ -10,7 +10,7 @@
 // Sets default values
 AMonster::AMonster()
 {
- 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
+	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 	AttackDamage = 25;
 }
@@ -19,7 +19,7 @@ AMonster::AMonster()
 void AMonster::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
 }
 
 // Called every frame
@@ -48,7 +48,7 @@ APatrolPath* AMonster::GetPatrolPath() const
 
 int AMonster::MeleeAttack_Implementation()
 {
-	if(const auto* Player = TargetedPlayer)
+	if (const auto* Player = TargetedPlayer)
 	{
 		Player->PlayerHealth->ReduceHealth(AttackDamage);
 	}
@@ -61,7 +61,7 @@ int AMonster::ThrowItem_Implementation()
 }
 
 void AMonster::FireAttack_Implementation()
-{	
+{
 	return ITrapDamageInterface::FireAttack();
 }
 
@@ -71,9 +71,10 @@ void AMonster::HoleAttack_Implementation()
 
 }
 
-int AMonster::EletricAttack_Implementation()
+void AMonster::EletricAttack_Implementation()
 {
 	bIsStunned = true;
+	GEngine->AddOnScreenDebugMessage(-1, 1, FColor::Green, "Stunned");
 	FTimerHandle TimerHandle;
 	GetWorld()->GetTimerManager().SetTimer(TimerHandle, this, &AMonster::SetNotStunned, 7.0f, false, 5);
 	return ITrapDamageInterface::EletricAttack();
@@ -81,7 +82,7 @@ int AMonster::EletricAttack_Implementation()
 
 void AMonster::SetNotStunned()
 {
-	if(bIsStunned)
+	if (bIsStunned)
 	{
 		bIsStunned = false;
 	}

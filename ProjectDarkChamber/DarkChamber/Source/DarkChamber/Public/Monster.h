@@ -26,7 +26,7 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-public:	
+public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
@@ -41,28 +41,28 @@ public:
 	virtual int MeleeAttack_Implementation() override;
 	virtual int ThrowItem_Implementation() override;
 
-	virtual int EletricAttack_Implementation() override;
-	UFUNCTION(Server,Reliable)
-	virtual void FireAttack() override;
-	UFUNCTION(Server,Reliable)
-	virtual void HoleAttack() override;
+	virtual void EletricAttack_Implementation();
+	UFUNCTION(Server, Reliable)
+		virtual void FireAttack() override;
+	UFUNCTION(Server, Reliable)
+		virtual void HoleAttack() override;
 
 	void SetNotStunned();
 
 	AMonster* Monster;
 	ADarkChamberCharacter* TargetedPlayer;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Melee Attack", meta=(AllowPrivateAccess = "true"))
-	int AttackDamage;
-	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Melee Attack", meta = (AllowPrivateAccess = "true"))
+		int AttackDamage;
+
 	bool bIsStunned;
 
 private:
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AI", meta=(AllowPrivateAccess = "true"))
-	UBehaviorTree* BehaviorTree;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AI", meta = (AllowPrivateAccess = "true"))
+		UBehaviorTree* BehaviorTree;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AI", meta=(AllowPrivateAccess = "true"))
-	APatrolPath* PatrolPath;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AI", meta = (AllowPrivateAccess = "true"))
+		APatrolPath* PatrolPath;
 
-	
+
 };
