@@ -59,11 +59,11 @@ public:
 	//Item that will be spawned
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite,Category="inventory")
 	TSubclassOf<AActor> TrapAfterBuild;
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, meta=(MustImplement="ItemToSpawExample"))
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="inventory")
 	TSubclassOf<AActor> TrapAfterBuildEletric;
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, meta=(MustImplement="ItemToSpawExample"))
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite,Category="inventory")
 	TSubclassOf<AActor> TrapAfterBuildFire;
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, meta=(MustImplement="ItemToSpawExample"))
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite,Category="inventory")
 	TSubclassOf<AActor> TrapAfterBuildHole;
 	//character instance
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, meta=(MustImplement="CharacterExample"))
