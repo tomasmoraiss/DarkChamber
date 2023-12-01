@@ -28,7 +28,6 @@ EBTNodeResult::Type UBTTask_MeleeAttack::ExecuteTask(UBehaviorTreeComponent& Own
 	//If the Monster supports the Combat Interface, call and execute the Attack function
 	if(const auto* const ICombat = Cast<ICombatInterface>(Monster))
 	{
-		GEngine->AddOnScreenDebugMessage(-1, 1, FColor::Green, "I attacked");
 		ICombat->Execute_MeleeAttack(Monster);
 	}
 	FinishLatentTask(OwnerComp, EBTNodeResult::Succeeded);

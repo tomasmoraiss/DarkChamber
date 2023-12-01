@@ -41,11 +41,12 @@ public:
 	virtual int MeleeAttack_Implementation() override;
 	virtual int ThrowItem_Implementation() override;
 
-	virtual void EletricAttack_Implementation();
 	UFUNCTION(Server, Reliable)
-		virtual void FireAttack() override;
+	void EletricAttack() override;
 	UFUNCTION(Server, Reliable)
-		virtual void HoleAttack() override;
+	void FireAttack() override;
+	UFUNCTION(Server, Reliable)
+	void HoleAttack() override;
 
 	void SetNotStunned();
 

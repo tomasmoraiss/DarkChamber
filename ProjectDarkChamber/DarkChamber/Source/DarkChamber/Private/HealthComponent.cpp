@@ -21,10 +21,7 @@ void UHealthComponent::ReduceHealth(float Amount)
 		CurrentHealth -= Amount;
 		CurrentHealth = FMath::Max(CurrentHealth, 0.0f);
 		
-		GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Red,
-		                                 FString::Printf(
-			                                 TEXT("Health reduced by %f. Current Health: %f/%f"), Amount, CurrentHealth,
-			                                 MaxHealth));
+		//GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Red,FString::Printf(TEXT("Health reduced by %f. Current Health: %f/%f"), Amount, CurrentHealth, MaxHealth));
 	}
 	else
 	{

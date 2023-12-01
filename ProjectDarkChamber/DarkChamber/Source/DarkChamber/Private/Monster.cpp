@@ -67,23 +67,28 @@ void AMonster::FireAttack_Implementation()
 
 void AMonster::HoleAttack_Implementation()
 {
-	return ITrapDamageInterface::HoleAttack();
+	bIsStunned = true;
+	GetMovementComponent()->SetActive(false);
+	GEngine->AddOnScreenDebugMessage(-1, 1, FColor::Green, "Stunned");
+	FTimerHandle TimerHandle;
+	GetWorld()->GetTimerManager().SetTimer(TimerHandle, this, &AMonster::SetNotStunned, 7.0f, false, 7);
 
 }
 
 void AMonster::EletricAttack_Implementation()
 {
 	bIsStunned = true;
+	GetMovementComponent()->SetActive(false);
 	GEngine->AddOnScreenDebugMessage(-1, 1, FColor::Green, "Stunned");
 	FTimerHandle TimerHandle;
 	GetWorld()->GetTimerManager().SetTimer(TimerHandle, this, &AMonster::SetNotStunned, 7.0f, false, 5);
-	return ITrapDamageInterface::EletricAttack();
 }
 
 void AMonster::SetNotStunned()
 {
 	if (bIsStunned)
 	{
+		GetMovementComponent()->SetActive(true);
 		bIsStunned = false;
 	}
 }

@@ -30,7 +30,6 @@ void UBTService_IsPlayerInRange::OnBecomeRelevant(UBehaviorTreeComponent& OwnerC
 	{
 		OwnerComp.GetBlackboardComponent()->SetValueAsBool(GetSelectedBlackboardKey(), false);
 	}
-
-
+	
 	Super::OnBecomeRelevant(OwnerComp, NodeMemory);
 }
