@@ -25,6 +25,13 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Health")
 	void AddHealth(float Amount);
 
+	UFUNCTION(BlueprintCallable, Category = "Stamina")
+	void ReduceStamina(float Amount);
+
+	// Function to add health
+	UFUNCTION(BlueprintCallable, Category = "Stamina")
+	void AddStamina(float Amount);
+
 	// Function to get current health
 	UFUNCTION(BlueprintPure, Category = "Health")
 	float GetCurrentHealth() const;
@@ -36,6 +43,13 @@ public:
 	// Current health
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Health")
 	float CurrentHealth;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Stamina")
+	float MaxStamina;
+
+	// Current health
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Stamina")
+	float CurrentStamina;
 
 protected:
 	// Called when the game starts

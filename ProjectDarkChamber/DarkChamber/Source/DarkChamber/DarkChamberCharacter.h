@@ -22,7 +22,7 @@ class UAnimMontage;
 class USoundBase;
 
 UCLASS(config=Game)
-class ADarkChamberCharacter : public ACharacter,public ITrapDamageInterface
+class ADarkChamberCharacter : public ACharacter, public ITrapDamageInterface
 {
 	GENERATED_BODY()
 
@@ -82,6 +82,7 @@ class ADarkChamberCharacter : public ACharacter,public ITrapDamageInterface
 	class UInputAction* InventorySelect6Action;
 
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
+
 public:
 	ADarkChamberCharacter();
 
@@ -111,10 +112,10 @@ public:
 
 
 	//Temporary inventory
-	UPROPERTY(EditInstanceOnly, BlueprintReadOnly,Replicated)
+	UPROPERTY(EditInstanceOnly, BlueprintReadOnly, Replicated)
 	TArray<AItem*> Inventory = {nullptr, nullptr, nullptr, nullptr, nullptr, nullptr};
-	
-	UPROPERTY(EditInstanceOnly, BlueprintReadOnly,Replicated)
+
+	UPROPERTY(EditInstanceOnly, BlueprintReadOnly, Replicated)
 	int CurrentlySelectedInventoryItem;
 
 	UFUNCTION(BlueprintCallable, Category="Inventory")
@@ -122,16 +123,16 @@ public:
 
 	//ItemPlaceHolderStuff
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite,Replicated)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Replicated)
 	UStaticMeshComponent* ItemPlaceHolderMeshComponent;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite,Replicated)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Replicated)
 	AActor* CurrentItemHeld;
 
 
 	//Lock the look function
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly,Replicated)
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Replicated)
 	bool canMove;
 
 	//Store actor Interface to activate later
@@ -140,13 +141,13 @@ public:
 	AActor* currentInteractableActor;
 
 	//HEALTH STUFF
-	UPROPERTY(EditAnywhere, BlueprintReadWrite,Replicated)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Replicated)
 	UHealthComponent* PlayerHealth;
 
 protected:
 	/** Called for movement input */
 	void Move(const FInputActionValue& Value);
-	UFUNCTION(Server,Reliable)
+	UFUNCTION(Server, Reliable)
 	void setCanMove();
 	/** Called for looking input */
 
@@ -156,10 +157,16 @@ protected:
 
 	void StopSprint(const FInputActionValue& Value);
 
+	UPROPERTY()
+	bool IsSprinting;
+	UPROPERTY(EditAnywhere)
+	float SprintStaminaReduceValue;
+	UPROPERTY(EditAnywhere)
+	float SprintStaminaAddValue;
+
 	void Crouchh(const FInputActionValue& Value);
 
 protected:
-	
 	// APawn interface
 	virtual void SetupPlayerInputComponent(UInputComponent* InputComponent) override;
 	// End of APawn interface
@@ -174,24 +181,25 @@ public:
 	void InteractTriggered(const FInputActionValue& Value);
 	void InteractCanceledOrCompleted(const FInputActionValue& Value);
 	void InteractStarted(const FInputActionValue& Value);
-	UFUNCTION(Server,Reliable)
+	UFUNCTION(Server, Reliable)
 	void SelectInventorySlot(int n);
 	void MakeItemsInvisible(AItem* item);
 	//trowing functions
 	void HoldTrowStarted();
 	void HoldTrowStop();
-	UFUNCTION(Server,Reliable)
+	UFUNCTION(Server, Reliable)
 	void ServerTrowItem();
 	// Trap Damage Attacks
-	UFUNCTION(Server,Reliable)
+	UFUNCTION(Server, Reliable)
 	void EletricAttack() override;
-	UFUNCTION(Server,Reliable)
+	UFUNCTION(Server, Reliable)
 	void FireAttack() override;
-	UFUNCTION(Server,Reliable)
+	UFUNCTION(Server, Reliable)
 	void HoleAttack() override;
 
-	UFUNCTION(Server,Reliable)
-	void RequestInteractionWith(AActor* ObjectToInteract,AActor* InteractionInstigator);
+	UFUNCTION(Server, Reliable)
+	void RequestInteractionWith(AActor* ObjectToInteract, AActor* InteractionInstigator);
+
 private:
 	class UAIPerceptionStimuliSourceComponent* StimulusSource;
 	void SetupStimulusSource();

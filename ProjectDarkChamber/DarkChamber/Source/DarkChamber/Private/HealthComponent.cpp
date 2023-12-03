@@ -12,6 +12,8 @@ UHealthComponent::UHealthComponent()
 	// Default values for health
 	MaxHealth = 100.0f;
 	CurrentHealth = MaxHealth;
+	MaxStamina = 100.0f;
+	CurrentStamina = MaxHealth;
 }
 
 void UHealthComponent::ReduceHealth(float Amount)
@@ -42,6 +44,16 @@ void UHealthComponent::AddHealth(float Amount)
 	{
 		UE_LOG(LogTemp, Error, TEXT("Invalid amount. Please provide a positive value."));
 	}
+}
+
+void UHealthComponent::ReduceStamina(float Amount)
+{
+	CurrentStamina-=Amount;
+}
+
+void UHealthComponent::AddStamina(float Amount)
+{
+	CurrentStamina+=Amount;
 }
 
 float UHealthComponent::GetCurrentHealth() const

@@ -36,6 +36,10 @@ void ADarkChamberCharacter::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>
 
 ADarkChamberCharacter::ADarkChamberCharacter()
 {
+	//sprint stuff
+	IsSprinting = false;
+	SprintStaminaAddValue = 0.1f;
+	SprintStaminaReduceValue = 0.2f;
 	//character can move at start
 	canMove = true;
 
@@ -142,6 +146,15 @@ void ADarkChamberCharacter::ConstantLineTraceToCheckObjectsForward()
 void ADarkChamberCharacter::Tick(float DeltaSeconds)
 {
 	ConstantLineTraceToCheckObjectsForward();
+	if (IsSprinting && PlayerHealth->CurrentStamina - SprintStaminaReduceValue >= 0)
+	{
+		PlayerHealth->CurrentStamina -= SprintStaminaReduceValue;
+		if (PlayerHealth->CurrentStamina < SprintStaminaReduceValue)GetCharacterMovement()->MaxWalkSpeed = 450.f;
+	}
+	else if (!IsSprinting && PlayerHealth->CurrentStamina + SprintStaminaAddValue <= PlayerHealth->MaxStamina)
+	{
+		PlayerHealth->CurrentStamina += SprintStaminaAddValue;
+	}
 }
 
 
@@ -153,8 +166,8 @@ void ADarkChamberCharacter::SetupPlayerInputComponent(class UInputComponent* Pla
 	if (UEnhancedInputComponent* EnhancedInputComponent = CastChecked<UEnhancedInputComponent>(PlayerInputComponent))
 	{
 		//Jumping
-		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Triggered, this, &ACharacter::Jump);
-		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Completed, this, &ACharacter::StopJumping);
+		//EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Triggered, this, &ACharacter::Jump);
+		//EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Completed, this, &ACharacter::StopJumping);
 
 		//Moving
 		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &ADarkChamberCharacter::Move);
@@ -359,6 +372,7 @@ void ADarkChamberCharacter::Sprint(const FInputActionValue& Value)
 	//&& !bIsCrouched
 	if (canMove)
 	{
+		IsSprinting = true;
 		GEngine->AddOnScreenDebugMessage(-10, 1.f, FColor::Red, FString::Printf(TEXT("%f"), RunningSpeedMultiplier));
 		GetCharacterMovement()->MaxWalkSpeed = DefaultWalkingSpeed * 1.3f;
 	}
@@ -366,6 +380,7 @@ void ADarkChamberCharacter::Sprint(const FInputActionValue& Value)
 
 void ADarkChamberCharacter::StopSprint(const FInputActionValue& Value)
 {
+	IsSprinting = false;
 	GetCharacterMovement()->MaxWalkSpeed = 450.f;
 }
 

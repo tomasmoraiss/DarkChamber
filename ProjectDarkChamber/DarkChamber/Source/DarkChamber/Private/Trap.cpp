@@ -57,7 +57,7 @@ void ATrap::Tick(float DeltaTime)
 void ATrap::Interact(AActor* ActorInteracting)
 {
 	GEngine->AddOnScreenDebugMessage(-1, 1, FColor::Green, "Interactedd");
-	if (HasAllItems)Build();
+	if (HasAllItems && Cast<ADarkChamberCharacter>(ActorInteracting))Build();
 	else AddItem(ActorInteracting);
 }
 
@@ -90,7 +90,7 @@ void ATrap::OnInteractHoverEnd(AActor* ActorToInteractWith)
 
 void ATrap::Activate()
 {
-	Activated = !Activated;
+	if (Built)Activated = !Activated;
 }
 
 void ATrap::Build()
@@ -113,7 +113,7 @@ void ATrap::AddItem(AActor* ActorInteracting)
 	{
 		GEngine->AddOnScreenDebugMessage(-1, 1, FColor::Red, "dont have item selected");
 		return;
-	}	
+	}
 	AItem* TItem = Cast<AItem>(TCharacter->Inventory[TCharacter->CurrentlySelectedInventoryItem]);
 	if (CanIAddThisItemToTheTrap(TItem->itemNumber))
 	{
@@ -141,7 +141,7 @@ bool ATrap::IsItemsPlacedFull()
 			return false;
 		}
 	}
-	if(WhatTrapIsBuilt()>=1)return true;
+	if (WhatTrapIsBuilt() >= 1)return true;
 	return false;
 }
 
@@ -216,15 +216,12 @@ void ATrap::OnOverlapEnd(UPrimitiveComponent* OverlappedComp, AActor* OtherActor
 
 void ATrap::EletricAttack()
 {
-
 }
 
 void ATrap::FireAttack()
 {
-
 }
 
 void ATrap::HoleAttack()
 {
-
 }
