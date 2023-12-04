@@ -17,6 +17,7 @@ void AItem::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimePro
 {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 	DOREPLIFETIME(AItem, IsOwned);
+	DOREPLIFETIME(AItem, ItemWidget);
 }
 
 AItem::AItem()
@@ -89,10 +90,11 @@ void AItem::InteractGetItem_Implementation(AActor* ActorInteracting)
 
 		ItemWidget->SetVisibility(false);
 		ADarkChamberCharacter* character = Cast<ADarkChamberCharacter>(ActorInteracting);
-		IsOwned = true;
 		int ItemSlot = character->GetavailableInventorySlot();
-		if (ItemSlot < 6)
+		if (ItemSlot < character->InventoryMaxSize)
 		{
+			IsOwned = true;
+			
 			character->Inventory.Insert(this, ItemSlot);
 			character->MakeItemsInvisible(this);
 			character->CurrentlySelectedInventoryItem = ItemSlot;
@@ -158,9 +160,9 @@ void AItem::NotifyHit(UPrimitiveComponent* MyComp, AActor* Other, UPrimitiveComp
 	Super::NotifyHit(MyComp, Other, OtherComp, bSelfMoved, HitLocation, HitNormal, NormalImpulse, Hit);
 	FRotator Rotation(0.0f, 0.0f, 0.0f);
 	FActorSpawnParameters SpawnInfo;
-	AActor* Tactor = GetWorld()->SpawnActor<AActor>(NoiseBubble, HitLocation, Rotation);
+	//AActor* Tactor = GetWorld()->SpawnActor<AActor>(NoiseBubble, HitLocation, Rotation);
 	FTimerDelegate TimerDel;
-	TimerDel.BindUFunction(this, FName("SetNoiseBubbleDestroy"), Tactor);
+	//TimerDel.BindUFunction(this, FName("SetNoiseBubbleDestroy"), Tactor);
 	FTimerHandle TimerHandle;
 	GetWorld()->GetTimerManager().SetTimer(TimerHandle, TimerDel, 5.0f, false, 3);
 }

@@ -62,24 +62,6 @@ class ADarkChamberCharacter : public ACharacter, public ITrapDamageInterface
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	class UInputAction* CrouchAction;
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
-	class UInputAction* InventorySelect1Action;
-
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
-	class UInputAction* InventorySelect2Action;
-
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
-	class UInputAction* InventorySelect3Action;
-
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
-	class UInputAction* InventorySelect4Action;
-
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
-	class UInputAction* InventorySelect5Action;
-
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
-	class UInputAction* InventorySelect6Action;
-
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 
 public:
@@ -102,6 +84,8 @@ public:
 	class UInputAction* InteractAction;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta=(AllowPrivateAccess = "true"))
 	class UInputAction* DelayedInteractAction;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta=(AllowPrivateAccess = "true"))
+	class UInputAction* InventorySelection;
 
 	//trow inputs
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta=(AllowPrivateAccess = "true"))
@@ -112,7 +96,10 @@ public:
 
 	//Temporary inventory
 	UPROPERTY(EditInstanceOnly, BlueprintReadOnly, Replicated)
-	TArray<AItem*> Inventory = {nullptr, nullptr, nullptr, nullptr, nullptr, nullptr};
+	TArray<AItem*> Inventory = {nullptr, nullptr, nullptr, nullptr, nullptr};
+
+	UPROPERTY(BlueprintReadOnly, Replicated)
+	int InventoryMaxSize;
 
 	UPROPERTY(EditInstanceOnly, BlueprintReadOnly, Replicated)
 	int CurrentlySelectedInventoryItem;
@@ -130,7 +117,6 @@ public:
 
 
 	//Lock the look function
-
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Replicated)
 	bool canMove;
 
@@ -207,7 +193,8 @@ public:
 	void InteractTriggered(const FInputActionValue& Value);
 	void InteractCanceledOrCompleted(const FInputActionValue& Value);
 	void InteractStarted(const FInputActionValue& Value);
-	UFUNCTION(Server, Reliable)
+
+	UFUNCTION(Server,Reliable, BlueprintCallable)
 	void SelectInventorySlot(int n);
 	void MakeItemsInvisible(AItem* item);
 	//trowing functions

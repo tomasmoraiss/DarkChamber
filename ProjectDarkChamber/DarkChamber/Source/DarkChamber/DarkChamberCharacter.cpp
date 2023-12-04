@@ -10,6 +10,7 @@
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "HealthComponent.h"
+#include "IAutomationControllerManager.h"
 #include "InputMappingContext.h"
 #include"InteractInterface.h"
 #include "Item.h"
@@ -27,6 +28,7 @@ void ADarkChamberCharacter::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 
 	DOREPLIFETIME(ADarkChamberCharacter, Inventory);
+	DOREPLIFETIME(ADarkChamberCharacter, InventoryMaxSize);
 	DOREPLIFETIME(ADarkChamberCharacter, CurrentlySelectedInventoryItem);
 	DOREPLIFETIME(ADarkChamberCharacter, CurrentItemHeld);
 	DOREPLIFETIME(ADarkChamberCharacter, ItemPlaceHolderMeshComponent);
@@ -51,7 +53,7 @@ ADarkChamberCharacter::ADarkChamberCharacter()
 	DefaultWalkingSpeed = GetCharacterMovement()->MaxWalkSpeed;
 
 	//Inventory Stuff
-	CurrentlySelectedInventoryItem = 6;
+	CurrentlySelectedInventoryItem = Inventory.Num();
 
 	// Set size for collision capsule
 	GetCapsuleComponent()->InitCapsuleSize(55.f, 96.0f);
@@ -76,6 +78,7 @@ ADarkChamberCharacter::ADarkChamberCharacter()
 
 	//HEALTH STUFF
 	PlayerHealth = CreateDefaultSubobject<UHealthComponent>("health");
+	InventoryMaxSize = 5;
 }
 
 void ADarkChamberCharacter::BeginPlay()
@@ -186,6 +189,7 @@ void ADarkChamberCharacter::SetupPlayerInputComponent(class UInputComponent* Pla
 
 		//Looking
 		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &ADarkChamberCharacter::Look);
+		
 		//interact
 		EnhancedInputComponent->BindAction(InteractAction, ETriggerEvent::Started, this,
 		                                   &ADarkChamberCharacter::InteractStarted);
@@ -199,18 +203,8 @@ void ADarkChamberCharacter::SetupPlayerInputComponent(class UInputComponent* Pla
 		EnhancedInputComponent->BindAction(DelayedInteractAction, ETriggerEvent::Triggered, this,
 		                                   &ADarkChamberCharacter::InteractTriggered);
 		//InventorySelection
-		EnhancedInputComponent->BindAction(InventorySelect1Action, ETriggerEvent::Triggered, this,
-		                                   &ADarkChamberCharacter::SelectInventorySlot, 1);
-		EnhancedInputComponent->BindAction(InventorySelect2Action, ETriggerEvent::Triggered, this,
-		                                   &ADarkChamberCharacter::SelectInventorySlot, 2);
-		EnhancedInputComponent->BindAction(InventorySelect3Action, ETriggerEvent::Triggered, this,
-		                                   &ADarkChamberCharacter::SelectInventorySlot, 3);
-		EnhancedInputComponent->BindAction(InventorySelect4Action, ETriggerEvent::Triggered, this,
-		                                   &ADarkChamberCharacter::SelectInventorySlot, 4);
-		EnhancedInputComponent->BindAction(InventorySelect5Action, ETriggerEvent::Triggered, this,
-		                                   &ADarkChamberCharacter::SelectInventorySlot, 5);
-		EnhancedInputComponent->BindAction(InventorySelect6Action, ETriggerEvent::Triggered, this,
-		                                   &ADarkChamberCharacter::SelectInventorySlot, 6);
+		//EnhancedInputComponent->BindAction(, ETriggerEvent::Triggered, this,
+		//                                   &ADarkChamberCharacter::SelectInventorySlot, 1);
 		//throw Actions
 		EnhancedInputComponent->BindAction(HoldTrowAction, ETriggerEvent::Started, this,
 		                                   &ADarkChamberCharacter::HoldTrowStarted);
@@ -296,7 +290,7 @@ void ADarkChamberCharacter::ServerTrowItem_Implementation()
 
 int ADarkChamberCharacter::GetavailableInventorySlot()
 {
-	for (int i = 0; i < Inventory.Num(); i++)
+	for (int i = 0; i < InventoryMaxSize; i++)
 	{
 		if (Inventory[i] == nullptr)
 		{
@@ -305,13 +299,13 @@ int ADarkChamberCharacter::GetavailableInventorySlot()
 			return i;
 		}
 	}
-	return 6;
+	return InventoryMaxSize + 1;
 }
 
 
 void ADarkChamberCharacter::MakeItemsInvisible(AItem* item)
 {
-	for (int i = 0; i < Inventory.Num(); i++)
+	for (int i = 0; i < InventoryMaxSize; i++)
 	{
 		if (Inventory[i] != item && Inventory[i] != nullptr)
 		{
