@@ -2,6 +2,7 @@
 
 
 #include "Monster.h"
+#include "Monster_AIController.h"
 #include "BehaviorTree/BlackboardComponent.h"
 #include "DarkChamber/DarkChamberCharacter.h"
 #include "GameFramework/CharacterMovementComponent.h"
@@ -62,11 +63,29 @@ int AMonster::ThrowItem_Implementation()
 
 void AMonster::FireAttack_Implementation()
 {
-	return ITrapDamageInterface::FireAttack();
+	if (Controller && Controller->IsA(AMonster_AIController::StaticClass()))
+	{
+		if (AMonster_AIController* AIController = Cast<AMonster_AIController>(Controller))
+		{
+			if(!AIController || !GetWorld())
+			{
+				GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Red, "No Controller");
+				return;
+			}
+			AIController->FleeFromFire(true);
+			FTimerHandle TimerHandle;
+			GetWorld()->GetTimerManager().SetTimer(TimerHandle, this, &AMonster::SetStopFleeFromFire, 7.0f, false, 3);
+		}
+	}
+	
 }
 
 void AMonster::HoleAttack_Implementation()
 {
+	if(!GetMovementComponent() || !GetWorld())
+	{
+		return;
+	}
 	bIsStunned = true;
 	GetMovementComponent()->SetActive(false);
 	GEngine->AddOnScreenDebugMessage(-1, 1, FColor::Green, "Stunned");
@@ -77,6 +96,10 @@ void AMonster::HoleAttack_Implementation()
 
 void AMonster::EletricAttack_Implementation()
 {
+	if(!GetMovementComponent() || !GetWorld())
+	{
+		return;
+	}
 	bIsStunned = true;
 	GetMovementComponent()->SetActive(false);
 	GEngine->AddOnScreenDebugMessage(-1, 1, FColor::Green, "Stunned");
@@ -86,10 +109,26 @@ void AMonster::EletricAttack_Implementation()
 
 void AMonster::SetNotStunned()
 {
+	if(!GetMovementComponent())
+	{
+		return;
+	}
 	if (bIsStunned)
 	{
 		GetMovementComponent()->SetActive(true);
 		bIsStunned = false;
+	}
+}
+
+void AMonster::SetStopFleeFromFire()
+{
+	if (Controller && Controller->IsA(AMonster_AIController::StaticClass()))
+	{
+		AMonster_AIController* AIController = Cast<AMonster_AIController>(Controller);
+		if (AIController)
+		{
+			AIController->FleeFromFire(false);
+		}
 	}
 }
 

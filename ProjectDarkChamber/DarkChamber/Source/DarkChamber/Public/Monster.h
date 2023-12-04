@@ -3,11 +3,11 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "AIController.h"
 #include "PatrolPath.h"
 #include "BehaviorTree/BehaviorTree.h"
 #include "GameFramework/Character.h"
 #include "CombatInterface.h"
+#include "Monster_AIController.h"
 #include "TrapDamageInterface.h"
 #include "DarkChamber/DarkChamberCharacter.h"
 #include "Monster.generated.h"
@@ -49,6 +49,7 @@ public:
 	void HoleAttack() override;
 
 	void SetNotStunned();
+	void SetStopFleeFromFire();
 
 	AMonster* Monster;
 	ADarkChamberCharacter* TargetedPlayer;

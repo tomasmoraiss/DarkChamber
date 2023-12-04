@@ -14,6 +14,8 @@ AMonster_AIController::AMonster_AIController(FObjectInitializer const& ObjectIni
 	SetupPerceptionSystem();
 }
 
+
+
 void AMonster_AIController::OnPossess(APawn* InPawn)
 {
 	Super::OnPossess(InPawn);
@@ -36,9 +38,9 @@ void AMonster_AIController::SetupPerceptionSystem()
 	if(SightConfig)
 	{
 		SetPerceptionComponent(*CreateDefaultSubobject<UAIPerceptionComponent>(TEXT("Perception Component")));
-		SightConfig->SightRadius = 700.f;
+		SightConfig->SightRadius = 1000.f;
 		SightConfig->LoseSightRadius = SightConfig->SightRadius + 25.f;
-		SightConfig->PeripheralVisionAngleDegrees = 90.f;
+		SightConfig->PeripheralVisionAngleDegrees = 180.f;
 		SightConfig->SetMaxAge(5.f);
 		SightConfig->DetectionByAffiliation.bDetectEnemies = true;
 		SightConfig->DetectionByAffiliation.bDetectFriendlies = true;
@@ -57,3 +59,11 @@ void AMonster_AIController::OnTargetDetect(AActor* Actor, FAIStimulus const Stim
 		GetBlackboardComponent()->SetValueAsBool("CanSeePlayer", Stimulus.WasSuccessfullySensed());
 	}
 }
+
+void AMonster_AIController::FleeFromFire(bool Value)
+{
+	GetBlackboardComponent()->SetValueAsBool("CanFleeFromFireTrap", Value);
+}
+
+
+

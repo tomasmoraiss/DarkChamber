@@ -5,6 +5,7 @@
 
 #include "Monster.h"
 #include "BehaviorTree/BlackboardComponent.h"
+#include "Blueprint/AIBlueprintHelperLibrary.h"
 
 UBTTask_FleeFromFire::UBTTask_FleeFromFire(FObjectInitializer const& ObjectInitializer) :
 	UBTTask_BlackboardBase{ObjectInitializer}
@@ -14,5 +15,17 @@ UBTTask_FleeFromFire::UBTTask_FleeFromFire(FObjectInitializer const& ObjectIniti
 
 EBTNodeResult::Type UBTTask_FleeFromFire::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
 {
-	return Super::ExecuteTask(OwnerComp, NodeMemory);
+	//Get target location from Blackboard via Monster controller
+	if(auto* const controller = Cast<AMonster_AIController>(OwnerComp.GetAIOwner()))
+	{
+		auto const PatrolPointLocation = OwnerComp.GetBlackboardComponent()->GetValueAsVector((GetSelectedBlackboardKey()));
+
+		//Move to target location
+		UAIBlueprintHelperLibrary::SimpleMoveToLocation(controller, PatrolPointLocation);
+
+		//Finish task with success
+		FinishLatentTask(OwnerComp, EBTNodeResult::Succeeded);
+		return EBTNodeResult::Succeeded;
+	}
+	return EBTNodeResult::Failed;
 }
