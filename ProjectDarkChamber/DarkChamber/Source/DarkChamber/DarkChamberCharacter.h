@@ -143,6 +143,14 @@ public:
 	//ITEMS TO SPAWN REFERENCE
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta=(AllowPrivateAccess = "true"))
 	class UInputAction* ToggleGodAction;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta=(AllowPrivateAccess = "true"))
+	class UInputAction* SpawnItems1Action;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta=(AllowPrivateAccess = "true"))
+	class UInputAction* SpawnItems2Action;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta=(AllowPrivateAccess = "true"))
+	class UInputAction* SpawnItems3Action;
+	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Cheats")
 	TSubclassOf<AActor> Wood;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Cheats")

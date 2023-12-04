@@ -189,7 +189,7 @@ void ADarkChamberCharacter::SetupPlayerInputComponent(class UInputComponent* Pla
 
 		//Looking
 		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &ADarkChamberCharacter::Look);
-		
+
 		//interact
 		EnhancedInputComponent->BindAction(InteractAction, ETriggerEvent::Started, this,
 		                                   &ADarkChamberCharacter::InteractStarted);
@@ -216,8 +216,12 @@ void ADarkChamberCharacter::SetupPlayerInputComponent(class UInputComponent* Pla
 		                                   &ADarkChamberCharacter::ServerTrowItem);
 
 		//CHEATS
-		EnhancedInputComponent->BindAction(ToggleGodAction, ETriggerEvent::Started, this,
-		                                   &ADarkChamberCharacter::TogleHealthAndStamina);
+		EnhancedInputComponent->BindAction(SpawnItems1Action, ETriggerEvent::Triggered, this,
+										 &ADarkChamberCharacter::SpawnItems_Implementation,1);
+		EnhancedInputComponent->BindAction(SpawnItems2Action, ETriggerEvent::Triggered, this,
+										 &ADarkChamberCharacter::SpawnItems_Implementation,2);
+		EnhancedInputComponent->BindAction(SpawnItems3Action, ETriggerEvent::Triggered, this,
+										 &ADarkChamberCharacter::SpawnItems_Implementation,3);
 	}
 }
 
