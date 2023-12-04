@@ -98,7 +98,7 @@ void ATrap::Build()
 	Built = true;
 	GEngine->AddOnScreenDebugMessage(-1, 1, FColor::Red, "BUILT");
 	FVector Location(this->GetActorLocation().X, this->GetActorLocation().Y, this->GetActorLocation().Z);
-	FRotator Rotation(0.0f, 0.0f, 0.0f);
+	FRotator Rotation(this->GetActorRotation());
 	FActorSpawnParameters SpawnInfo;
 	GetWorld()->SpawnActor<AActor>(TrapAfterBuild, Location, Rotation);
 	this->SetActorHiddenInGame(true);
@@ -198,7 +198,7 @@ int ATrap::WhatTrapIsBuilt()
 void ATrap::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp,
                            int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	if (Built && Activated && !Used)
+	if (Built && Activated && !Used && Cast<ITrapDamageInterface>(OtherActor))
 	{
 		GEngine->AddOnScreenDebugMessage(-1, 2, FColor::Red, "WORKED");
 		ITrapDamageInterface* TrapAttackInterface = Cast<ITrapDamageInterface>(OtherActor);

@@ -32,10 +32,14 @@ void ADarkChamberCharacter::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>
 	DOREPLIFETIME(ADarkChamberCharacter, ItemPlaceHolderMeshComponent);
 	DOREPLIFETIME(ADarkChamberCharacter, PlayerHealth);
 	DOREPLIFETIME(ADarkChamberCharacter, canMove);
+	DOREPLIFETIME(ADarkChamberCharacter, IsSprinting);
+	DOREPLIFETIME(ADarkChamberCharacter, FirstPersonCameraComponent);
 }
 
 ADarkChamberCharacter::ADarkChamberCharacter()
 {
+	//Cheats
+	HealthCheatIsOn = false;
 	//sprint stuff
 	IsSprinting = false;
 	SprintStaminaAddValue = 0.1f;
@@ -165,7 +169,6 @@ void ADarkChamberCharacter::SetupPlayerInputComponent(class UInputComponent* Pla
 	// Set up action bindings
 	if (UEnhancedInputComponent* EnhancedInputComponent = CastChecked<UEnhancedInputComponent>(PlayerInputComponent))
 	{
-		//Jumping
 		//EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Triggered, this, &ACharacter::Jump);
 		//EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Completed, this, &ACharacter::StopJumping);
 
@@ -217,6 +220,10 @@ void ADarkChamberCharacter::SetupPlayerInputComponent(class UInputComponent* Pla
 		                                   &ADarkChamberCharacter::HoldTrowStop);
 		EnhancedInputComponent->BindAction(TrowAction, ETriggerEvent::Started, this,
 		                                   &ADarkChamberCharacter::ServerTrowItem);
+
+		//CHEATS
+		EnhancedInputComponent->BindAction(ToggleGodAction, ETriggerEvent::Started, this,
+		                                   &ADarkChamberCharacter::TogleHealthAndStamina);
 	}
 }
 
@@ -334,6 +341,48 @@ void ADarkChamberCharacter::SetupStimulusSource()
 }
 
 
+void ADarkChamberCharacter::PlayerDead_Implementation()
+{
+	GEngine->AddOnScreenDebugMessage(-1, 1, FColor::Red, "DEAAAAAD");
+}
+
+void ADarkChamberCharacter::SpawnItems_Implementation(int number)
+{
+	FVector Location(this->GetActorLocation().X + 20, this->GetActorLocation().Y, this->GetActorLocation().Z);
+	FRotator Rotation(0.0f, 0.0f, 0.0f);
+	FActorSpawnParameters SpawnInfo;
+	GetWorld()->SpawnActor<AActor>(Wood, Location, Rotation);
+	GetWorld()->SpawnActor<AActor>(Batery, Location, Rotation);
+	if (number == 1)
+	{
+		GetWorld()->SpawnActor<AActor>(TeslaCoil, Location, Rotation);
+	}
+	else if (number == 2)
+	{
+		GetWorld()->SpawnActor<AActor>(GasCannister, Location, Rotation);
+	}
+	if (number == 3)
+	{
+		GetWorld()->SpawnActor<AActor>(Shovel, Location, Rotation);
+	}
+}
+
+void ADarkChamberCharacter::TogleHealthAndStamina_Implementation()
+{
+	if (!HealthCheatIsOn)
+	{
+		PlayerHealth->CurrentHealth = 10000000;
+		PlayerHealth->CurrentStamina = 10000000;
+		HealthCheatIsOn = true;
+	}
+	else if (HealthCheatIsOn)
+	{
+		PlayerHealth->CurrentHealth = PlayerHealth->MaxHealth;
+		PlayerHealth->CurrentStamina = PlayerHealth->MaxStamina;
+		HealthCheatIsOn = false;
+	}
+}
+
 void ADarkChamberCharacter::Move(const FInputActionValue& Value)
 {
 	if (canMove)
@@ -367,7 +416,8 @@ void ADarkChamberCharacter::Look(const FInputActionValue& Value)
 	}
 }
 
-void ADarkChamberCharacter::Sprint(const FInputActionValue& Value)
+
+void ADarkChamberCharacter::Sprint_Implementation(const FInputActionValue& Value)
 {
 	//&& !bIsCrouched
 	if (canMove)
@@ -378,11 +428,12 @@ void ADarkChamberCharacter::Sprint(const FInputActionValue& Value)
 	}
 }
 
-void ADarkChamberCharacter::StopSprint(const FInputActionValue& Value)
+void ADarkChamberCharacter::StopSprint_Implementation(const FInputActionValue& Value)
 {
 	IsSprinting = false;
 	GetCharacterMovement()->MaxWalkSpeed = 450.f;
 }
+
 
 void ADarkChamberCharacter::Crouchh(const FInputActionValue& Value)
 {
@@ -395,7 +446,7 @@ void ADarkChamberCharacter::EletricAttack_Implementation()
 	FTimerHandle TimerHandle;
 	GetWorld()->GetTimerManager().SetTimer(TimerHandle, this, &ADarkChamberCharacter::setCanMove, 5.0f, false, 5);
 	GEngine->AddOnScreenDebugMessage(-1, 1, FColor::Red, "EletricAttack");
-	PlayerHealth->ReduceHealth(20);
+	if (PlayerHealth->ReduceHealth(20))PlayerDead();
 }
 
 
@@ -409,7 +460,7 @@ void ADarkChamberCharacter::HoleAttack_Implementation()
 
 void ADarkChamberCharacter::FireAttack_Implementation()
 {
-	PlayerHealth->ReduceHealth(40);
+	if (PlayerHealth->ReduceHealth(40))PlayerDead();
 	GEngine->AddOnScreenDebugMessage(-1, 1, FColor::Red, "FireAttack");
 }
 

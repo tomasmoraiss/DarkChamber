@@ -4817,6 +4817,8 @@ void APlayerController::GetLifetimeReplicatedProps(TArray< FLifetimeProperty > &
 	DOREPLIFETIME_CONDITION(APlayerController, SpawnLocation, COND_OwnerOnly);
 
 	DOREPLIFETIME_CONDITION(APlayerController, AsyncPhysicsDataComponent, COND_OwnerOnly);
+	DOREPLIFETIME(APlayerController, RotationInput);
+
 }
 
 void APlayerController::OnRep_AsyncPhysicsDataComponent()

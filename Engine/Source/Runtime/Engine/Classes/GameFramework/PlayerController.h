@@ -474,6 +474,7 @@ public:
 	TObjectPtr<UNetConnection> NetConnection;
 
 	/** Input axes values, accumulated each tick. */
+	UPROPERTY(Replicated)
 	FRotator RotationInput;
 
 	/** Yaw input speed scaling */

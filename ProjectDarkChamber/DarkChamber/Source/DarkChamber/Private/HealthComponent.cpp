@@ -16,19 +16,24 @@ UHealthComponent::UHealthComponent()
 	CurrentStamina = MaxHealth;
 }
 
-void UHealthComponent::ReduceHealth(float Amount)
+bool UHealthComponent::ReduceHealth(float Amount)
 {
 	if (Amount > 0.0f)
 	{
 		CurrentHealth -= Amount;
+		if (CurrentHealth <= 0)return true;
 		CurrentHealth = FMath::Max(CurrentHealth, 0.0f);
-		
-		//GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Red,FString::Printf(TEXT("Health reduced by %f. Current Health: %f/%f"), Amount, CurrentHealth, MaxHealth));
+		GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Red,
+		                                 FString::Printf(
+			                                 TEXT("Health reduced by %f. Current Health: %f/%f"), Amount, CurrentHealth,
+			                                 MaxHealth));
 	}
 	else
 	{
 		UE_LOG(LogTemp, Error, TEXT("Invalid amount. Please provide a positive value."));
+		return false;
 	}
+	return false;
 }
 
 void UHealthComponent::AddHealth(float Amount)
@@ -48,12 +53,12 @@ void UHealthComponent::AddHealth(float Amount)
 
 void UHealthComponent::ReduceStamina(float Amount)
 {
-	CurrentStamina-=Amount;
+	CurrentStamina -= Amount;
 }
 
 void UHealthComponent::AddStamina(float Amount)
 {
-	CurrentStamina+=Amount;
+	CurrentStamina += Amount;
 }
 
 float UHealthComponent::GetCurrentHealth() const

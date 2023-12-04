@@ -11,6 +11,7 @@ UCLASS()
 class DARKCHAMBER_API AHidingSpot : public AActor, public IInteractInterface
 {
 	GENERATED_BODY()
+	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 	
 public:	
 	// Sets default values for this actor's properties
@@ -36,7 +37,7 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
 	UStaticMeshComponent* LeaveLocation;
 	
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite,Replicated)
 	bool isHiding;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)

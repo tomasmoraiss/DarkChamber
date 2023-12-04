@@ -4,7 +4,6 @@
 
 #include"InteractInterface.h"
 #include "CoreMinimal.h"
-#include "HealthClass.h"
 #include "HealthComponent.h"
 #include "GameFramework/Character.h"
 #include "InputActionValue.h"
@@ -31,7 +30,7 @@ class ADarkChamberCharacter : public ACharacter, public ITrapDamageInterface
 	USkeletalMeshComponent* Mesh1P;
 
 	/** First person camera */
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"),Replicated)
 	UCameraComponent* FirstPersonCameraComponent;
 
 	/** MappingContext */
@@ -144,6 +143,33 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Replicated)
 	UHealthComponent* PlayerHealth;
 
+	UFUNCTION(Server,Reliable)
+	void PlayerDead();
+
+	//CHEATS
+	
+	UFUNCTION(Server,Reliable)
+	void SpawnItems(int number);
+	UFUNCTION(Server,Reliable)
+	void TogleHealthAndStamina();
+	UPROPERTY(EditAnywhere,Category="Cheats")
+	bool HealthCheatIsOn;
+	//ITEMS TO SPAWN REFERENCE
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta=(AllowPrivateAccess = "true"))
+	class UInputAction* ToggleGodAction;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Cheats")
+	TSubclassOf<AActor> Wood;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Cheats")
+	TSubclassOf<AActor> Batery;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Cheats")
+	TSubclassOf<AActor> TeslaCoil;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Cheats")
+	TSubclassOf<AActor> GasCannister;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Cheats")
+	TSubclassOf<AActor> Shovel;
+	
+	
+
 protected:
 	/** Called for movement input */
 	void Move(const FInputActionValue& Value);
@@ -152,12 +178,12 @@ protected:
 	/** Called for looking input */
 
 	void Look(const FInputActionValue& Value);
-
+	UFUNCTION(Server, Reliable)
 	void Sprint(const FInputActionValue& Value);
-
+	UFUNCTION(Server, Reliable)
 	void StopSprint(const FInputActionValue& Value);
 
-	UPROPERTY()
+	UPROPERTY(Replicated)
 	bool IsSprinting;
 	UPROPERTY(EditAnywhere)
 	float SprintStaminaReduceValue;

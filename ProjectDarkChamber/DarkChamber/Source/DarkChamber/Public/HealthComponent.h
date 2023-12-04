@@ -19,7 +19,7 @@ public:
 
 	// Function to reduce health
 	UFUNCTION(BlueprintCallable, Category = "Health")
-	void ReduceHealth(float Amount);
+	bool ReduceHealth(float Amount);
 
 	// Function to add health
 	UFUNCTION(BlueprintCallable, Category = "Health")
