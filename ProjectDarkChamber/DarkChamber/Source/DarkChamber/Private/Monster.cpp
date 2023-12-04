@@ -3,6 +3,7 @@
 
 #include "Monster.h"
 #include "Monster_AIController.h"
+#include "AssetTypeActions/AssetDefinition_SoundBase.h"
 #include "BehaviorTree/BlackboardComponent.h"
 #include "DarkChamber/DarkChamberCharacter.h"
 #include "GameFramework/CharacterMovementComponent.h"
@@ -49,6 +50,11 @@ APatrolPath* AMonster::GetPatrolPath() const
 
 int AMonster::MeleeAttack_Implementation()
 {
+	if (AttackRoar)
+	{
+		// Create an AudioComponent
+		UAudioComponent* AudioComponent = UGameplayStatics::SpawnSoundAttached(AttackRoar, GetRootComponent());
+	}
 	if (const auto* Player = TargetedPlayer)
 	{
 		Player->PlayerHealth->ReduceHealth(AttackDamage);

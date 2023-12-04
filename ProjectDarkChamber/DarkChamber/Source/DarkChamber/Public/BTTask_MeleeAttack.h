@@ -21,7 +21,5 @@ class DARKCHAMBER_API UBTTask_MeleeAttack : public UBTTask_BlackboardBase
 public:
 	UBTTask_MeleeAttack();
 	EBTNodeResult::Type ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory) override;
-
-private:
-	//bool MontageHasFinished(AMonster* const Monster);
+	
 };

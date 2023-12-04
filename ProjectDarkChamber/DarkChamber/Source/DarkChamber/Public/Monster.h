@@ -37,6 +37,8 @@ public:
 
 	APatrolPath* GetPatrolPath() const;
 
+	UAnimMontage* GetMontage() const;
+
 	//For attacking the players
 	virtual int MeleeAttack_Implementation() override;
 	virtual int ThrowItem_Implementation() override;
@@ -61,10 +63,11 @@ public:
 
 private:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AI", meta = (AllowPrivateAccess = "true"))
-		UBehaviorTree* BehaviorTree;
+	UBehaviorTree* BehaviorTree;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AI", meta = (AllowPrivateAccess = "true"))
-		APatrolPath* PatrolPath;
-
-
+	APatrolPath* PatrolPath;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Sound effect", meta = (AllowPrivateAccess = "true"))
+	USoundBase* AttackRoar;
 };
