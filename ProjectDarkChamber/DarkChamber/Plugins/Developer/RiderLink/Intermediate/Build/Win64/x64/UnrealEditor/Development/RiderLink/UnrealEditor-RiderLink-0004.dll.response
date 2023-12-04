@@ -33,10 +33,10 @@
 /NODEFAULTLIB:"LIBCD"
 /NODEFAULTLIB:"LIBCPD"
 /FUNCTIONPADMIN:6
-"E:\DarkChamber\ProjectDarkChamber\DarkChamber\Plugins\Developer\RiderLink\Intermediate\Build\Win64\x64\UnrealEditor\Development\RiderLink\Module.RiderLink.cpp.obj"
+"C:\Users\Bruno\Documents\GitHub\DarkChamber\ProjectDarkChamber\DarkChamber\Plugins\Developer\RiderLink\Intermediate\Build\Win64\x64\UnrealEditor\Development\RiderLink\Module.RiderLink.cpp.obj"
 "..\Intermediate\Build\Win64\x64\UnrealEditor\Development\Default.rc2.res"
 "..\Intermediate\Build\Win64\x64\UnrealEditor\Development\Core\UnrealEditor-Core.lib"
-"E:\DarkChamber\ProjectDarkChamber\DarkChamber\Plugins\Developer\RiderLink\Intermediate\Build\Win64\x64\UnrealEditor\Development\RD\UnrealEditor-RD-0004.lib"
+"C:\Users\Bruno\Documents\GitHub\DarkChamber\ProjectDarkChamber\DarkChamber\Plugins\Developer\RiderLink\Intermediate\Build\Win64\x64\UnrealEditor\Development\RD\UnrealEditor-RD-0004.lib"
 "delayimp.lib"
 "wininet.lib"
 "rpcrt4.lib"
@@ -61,7 +61,7 @@
 "setupapi.lib"
 "dwmapi.lib"
 "imm32.lib"
-/OUT:"E:\DarkChamber\ProjectDarkChamber\DarkChamber\Plugins\Developer\RiderLink\Binaries\Win64\UnrealEditor-RiderLink-0004.dll"
-/IMPLIB:"E:\DarkChamber\ProjectDarkChamber\DarkChamber\Plugins\Developer\RiderLink\Intermediate\Build\Win64\x64\UnrealEditor\Development\RiderLink\UnrealEditor-RiderLink-0004.suppressed.lib"
-/PDB:"E:\DarkChamber\ProjectDarkChamber\DarkChamber\Plugins\Developer\RiderLink\Binaries\Win64\UnrealEditor-RiderLink-0004.pdb"
+/OUT:"C:\Users\Bruno\Documents\GitHub\DarkChamber\ProjectDarkChamber\DarkChamber\Plugins\Developer\RiderLink\Binaries\Win64\UnrealEditor-RiderLink-0004.dll"
+/IMPLIB:"C:\Users\Bruno\Documents\GitHub\DarkChamber\ProjectDarkChamber\DarkChamber\Plugins\Developer\RiderLink\Intermediate\Build\Win64\x64\UnrealEditor\Development\RiderLink\UnrealEditor-RiderLink-0004.suppressed.lib"
+/PDB:"C:\Users\Bruno\Documents\GitHub\DarkChamber\ProjectDarkChamber\DarkChamber\Plugins\Developer\RiderLink\Binaries\Win64\UnrealEditor-RiderLink-0004.pdb"
 /ignore:4078
