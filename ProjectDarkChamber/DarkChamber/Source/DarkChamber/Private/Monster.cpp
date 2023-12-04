@@ -3,7 +3,6 @@
 
 #include "Monster.h"
 #include "Monster_AIController.h"
-#include "AssetTypeActions/AssetDefinition_SoundBase.h"
 #include "BehaviorTree/BlackboardComponent.h"
 #include "DarkChamber/DarkChamberCharacter.h"
 #include "GameFramework/CharacterMovementComponent.h"
@@ -21,21 +20,18 @@ AMonster::AMonster()
 void AMonster::BeginPlay()
 {
 	Super::BeginPlay();
-
 }
 
 // Called every frame
 void AMonster::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
 }
 
 // Called to bind functionality to input
 void AMonster::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
-
 }
 
 UBehaviorTree* AMonster::GetBehaviorTree() const
@@ -57,7 +53,7 @@ int AMonster::MeleeAttack_Implementation()
 	}
 	if (const auto* Player = TargetedPlayer)
 	{
-		Player->PlayerHealth->ReduceHealth(AttackDamage);
+		if (Player->PlayerHealth->ReduceHealth(AttackDamage))TargetedPlayer->PlayerDead();
 	}
 	return ICombatInterface::MeleeAttack_Implementation();
 }
@@ -73,7 +69,7 @@ void AMonster::FireAttack_Implementation()
 	{
 		if (AMonster_AIController* AIController = Cast<AMonster_AIController>(Controller))
 		{
-			if(!AIController || !GetWorld())
+			if (!AIController || !GetWorld())
 			{
 				GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Red, "No Controller");
 				return;
@@ -83,12 +79,11 @@ void AMonster::FireAttack_Implementation()
 			GetWorld()->GetTimerManager().SetTimer(TimerHandle, this, &AMonster::SetStopFleeFromFire, 7.0f, false, 3);
 		}
 	}
-	
 }
 
 void AMonster::HoleAttack_Implementation()
 {
-	if(!GetMovementComponent() || !GetWorld())
+	if (!GetMovementComponent() || !GetWorld())
 	{
 		return;
 	}
@@ -97,12 +92,11 @@ void AMonster::HoleAttack_Implementation()
 	GEngine->AddOnScreenDebugMessage(-1, 1, FColor::Green, "Stunned");
 	FTimerHandle TimerHandle;
 	GetWorld()->GetTimerManager().SetTimer(TimerHandle, this, &AMonster::SetNotStunned, 7.0f, false, 7);
-
 }
 
 void AMonster::EletricAttack_Implementation()
 {
-	if(!GetMovementComponent() || !GetWorld())
+	if (!GetMovementComponent() || !GetWorld())
 	{
 		return;
 	}
@@ -115,7 +109,7 @@ void AMonster::EletricAttack_Implementation()
 
 void AMonster::SetNotStunned()
 {
-	if(!GetMovementComponent())
+	if (!GetMovementComponent())
 	{
 		return;
 	}
@@ -137,8 +131,3 @@ void AMonster::SetStopFleeFromFire()
 		}
 	}
 }
-
-
-
-
-

@@ -100,7 +100,8 @@ void ATrap::Build()
 	FVector Location(this->GetActorLocation().X, this->GetActorLocation().Y, this->GetActorLocation().Z);
 	FRotator Rotation(this->GetActorRotation());
 	FActorSpawnParameters SpawnInfo;
-	GetWorld()->SpawnActor<AActor>(TrapAfterBuild, Location, Rotation);
+	AActor* trap = GetWorld()->SpawnActor<AActor>(TrapAfterBuild, Location, Rotation);
+	trap->SetActorScale3D(this->GetActorScale());
 	this->SetActorHiddenInGame(true);
 	FVector Location2(this->GetActorLocation().X, this->GetActorLocation().Y, this->GetActorLocation().Z + 5);
 }
@@ -154,7 +155,7 @@ bool ATrap::CanIAddThisItemToTheTrap(int n)
 		{
 			if (ItemsPlaced[i] != nullptr)
 			{
-				if (ItemsPlaced[i]->itemNumber == n || n >= 3 && array.Contains(n))
+				if (ItemsPlaced[i]->itemNumber == n || array.Contains(ItemsPlaced[i]->itemNumber) && array.Contains(n))
 				{
 					return false;
 				}

@@ -1,20 +1,17 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "DarkChamberCharacter.h"
-
-#include <iostream>
-
 #include "Animation/AnimInstance.h"
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "HealthComponent.h"
-#include "IAutomationControllerManager.h"
 #include "InputMappingContext.h"
 #include"InteractInterface.h"
 #include "Item.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "Kismet/GameplayStatics.h"
 #include "Net/UnrealNetwork.h"
 #include "Perception/AIPerceptionStimuliSourceComponent.h"
 #include "Perception/AISense_Sight.h"
@@ -216,11 +213,11 @@ void ADarkChamberCharacter::SetupPlayerInputComponent(class UInputComponent* Pla
 		                                   &ADarkChamberCharacter::ServerTrowItem);
 
 		//CHEATS
-		EnhancedInputComponent->BindAction(SpawnItems1Action, ETriggerEvent::Triggered, this,
+		EnhancedInputComponent->BindAction(SpawnItems1Action, ETriggerEvent::Started, this,
 		                                   &ADarkChamberCharacter::SpawnItems_Implementation, 1);
-		EnhancedInputComponent->BindAction(SpawnItems2Action, ETriggerEvent::Triggered, this,
+		EnhancedInputComponent->BindAction(SpawnItems2Action, ETriggerEvent::Started, this,
 		                                   &ADarkChamberCharacter::SpawnItems_Implementation, 2);
-		EnhancedInputComponent->BindAction(SpawnItems3Action, ETriggerEvent::Triggered, this,
+		EnhancedInputComponent->BindAction(SpawnItems3Action, ETriggerEvent::Started, this,
 		                                   &ADarkChamberCharacter::SpawnItems_Implementation, 3);
 	}
 }
@@ -344,7 +341,8 @@ void ADarkChamberCharacter::SetupStimulusSource()
 
 void ADarkChamberCharacter::PlayerDead_Implementation()
 {
-	GEngine->AddOnScreenDebugMessage(-1, 1, FColor::Red, "DEAAAAAD");
+	FString CurrentLevelName = UGameplayStatics::GetCurrentLevelName(GetWorld());
+	UGameplayStatics::OpenLevel(GetWorld(), FName(*CurrentLevelName));
 }
 
 void ADarkChamberCharacter::SpawnItems_Implementation(int number)
