@@ -147,13 +147,14 @@ bool ATrap::IsItemsPlacedFull()
 
 bool ATrap::CanIAddThisItemToTheTrap(int n)
 {
+	TArray<int> array{3, 4, 5};
 	if (n <= 5)
 	{
 		for (int i = 0; i < ItemsPlaced.Num(); i++)
 		{
 			if (ItemsPlaced[i] != nullptr)
 			{
-				if (ItemsPlaced[i]->itemNumber == n)
+				if (ItemsPlaced[i]->itemNumber == n || n >= 3 && array.Contains(n))
 				{
 					return false;
 				}

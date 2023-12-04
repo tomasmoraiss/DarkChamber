@@ -217,11 +217,11 @@ void ADarkChamberCharacter::SetupPlayerInputComponent(class UInputComponent* Pla
 
 		//CHEATS
 		EnhancedInputComponent->BindAction(SpawnItems1Action, ETriggerEvent::Triggered, this,
-										 &ADarkChamberCharacter::SpawnItems_Implementation,1);
+		                                   &ADarkChamberCharacter::SpawnItems_Implementation, 1);
 		EnhancedInputComponent->BindAction(SpawnItems2Action, ETriggerEvent::Triggered, this,
-										 &ADarkChamberCharacter::SpawnItems_Implementation,2);
+		                                   &ADarkChamberCharacter::SpawnItems_Implementation, 2);
 		EnhancedInputComponent->BindAction(SpawnItems3Action, ETriggerEvent::Triggered, this,
-										 &ADarkChamberCharacter::SpawnItems_Implementation,3);
+		                                   &ADarkChamberCharacter::SpawnItems_Implementation, 3);
 	}
 }
 
@@ -279,16 +279,19 @@ void ADarkChamberCharacter::HoldTrowStop()
 
 void ADarkChamberCharacter::ServerTrowItem_Implementation()
 {
-	AActor* ActorToThrow = Inventory[CurrentlySelectedInventoryItem];
-	if (ActorToThrow)
+	if (CurrentlySelectedInventoryItem != InventoryMaxSize)
 	{
-		FDetachmentTransformRules rules(EDetachmentRule::KeepWorld, true);
-		ActorToThrow->DetachFromActor(rules);
-		//ActorToThrow->SetActorEnableCollision(true);
-		AItem* item = Cast<AItem>(ActorToThrow);
-		FVector direction = GetFirstPersonCameraComponent()->GetForwardVector();
-		item->ServerThrowItem(1000, direction);
-		Inventory[CurrentlySelectedInventoryItem] = nullptr;
+		AActor* ActorToThrow = Inventory[CurrentlySelectedInventoryItem];
+		if (ActorToThrow)
+		{
+			FDetachmentTransformRules rules(EDetachmentRule::KeepWorld, true);
+			ActorToThrow->DetachFromActor(rules);
+			//ActorToThrow->SetActorEnableCollision(true);
+			AItem* item = Cast<AItem>(ActorToThrow);
+			FVector direction = GetFirstPersonCameraComponent()->GetForwardVector();
+			item->ServerThrowItem(1000, direction);
+			Inventory[CurrentlySelectedInventoryItem] = nullptr;
+		}
 	}
 }
 
