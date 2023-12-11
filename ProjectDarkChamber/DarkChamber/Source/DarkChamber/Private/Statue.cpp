@@ -23,8 +23,11 @@ AStatue::AStatue()
 void AStatue::BeginPlay()
 {
 	Super::BeginPlay();
-	if(doorToBeTested != nullptr)
-		doorToBeTested->StatuesToBeUsed.Push(this);
+	if(!doorsToBeTested.IsEmpty())
+		for(int i = 0; i < doorsToBeTested.Num(); i++)
+		{
+			doorsToBeTested[i]->StatuesToBeUsed.Push(this);
+		}
 }
 
 // Called every frame
@@ -38,7 +41,10 @@ void AStatue::CheckStatueDirection()
 	if(CorrectFacingDirection == (EDirection)CurrentFacingDirection)
 	{
 		StatueFacingCorrectDirection = true;
-		doorToBeTested->OpenDoorWithStatues();
+		for (int i = 0; i < doorsToBeTested.Num(); i++)
+		{
+			doorsToBeTested[i]->OpenDoorWithStatues();
+		}
 	}
 	else
 	{
@@ -48,7 +54,7 @@ void AStatue::CheckStatueDirection()
 
 void AStatue::Interact_Implementation(AActor* ActorInteracting)
 {
-	if(doorToBeTested != nullptr)
+	if(!doorsToBeTested.IsEmpty())
 	{
 		CurrentFacingDirection = CurrentFacingDirection+1;
 		if((EDirection)CurrentFacingDirection == EDirection::MAX)

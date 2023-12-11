@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "ActivatableInterface.h"
+#include "DoorTest.h"
 #include "DarkChamber/InteractInterface.h"
 #include "GameFramework/Actor.h"
 #include "Lever.generated.h"
@@ -28,11 +29,11 @@ public:
 	UFUNCTION(BlueprintNativeEvent)
 	void Interact(AActor* ActorInteracting);
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Variables")
 	bool isOn;
 	
-	UPROPERTY(EditInstanceOnly,BlueprintReadOnly)
-	AActor* DoorReference;
+	UPROPERTY(EditInstanceOnly,BlueprintReadOnly, Category="Variables")
+	TArray<ADoorTest*> DoorReference;
 	
 };
 	

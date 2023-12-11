@@ -50,8 +50,10 @@ public:
 	void ChangeDoorState();
 
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Variables")
 	bool isOpen;
+	UPROPERTY(EditInstanceOnly, BlueprintReadOnly, Category="Variables")
+	bool reverse;
 	UPROPERTY(EditInstanceOnly, BlueprintReadOnly, Category="Variables")
 	EOpenType doorOpenType;
 	UPROPERTY(EditInstanceOnly, BlueprintReadOnly, Category="Variables")

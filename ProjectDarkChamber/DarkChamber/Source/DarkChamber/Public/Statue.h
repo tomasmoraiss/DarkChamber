@@ -51,7 +51,7 @@ public:
 	bool StatueFacingCorrectDirection = false;
 
 	UPROPERTY(EditInstanceOnly, BlueprintReadOnly, Category="Variables")
-	ADoorTest* doorToBeTested = nullptr;
+	TArray<ADoorTest*> doorsToBeTested;
 
 	UFUNCTION(BlueprintNativeEvent)
 	void Interact(AActor* ActorInteracting);

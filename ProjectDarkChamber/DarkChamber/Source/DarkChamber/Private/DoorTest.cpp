@@ -13,6 +13,7 @@ ADoorTest::ADoorTest()
 	isOpen = false;
 
 	doorOpenType = EOpenType::Interaction;
+	isOpen = reverse;
 }
 
 // Called when the game starts or when spawned
