@@ -5,6 +5,7 @@
 
 #include "Monster.h"
 #include "BehaviorTree/BlackboardComponent.h"
+#include "Blueprint/AIBlueprintHelperLibrary.h"
 #include "DarkChamber/DarkChamberCharacter.h"
 #include "Perception/AIPerceptionComponent.h"
 #include "Perception/AISenseConfig_Sight.h"
@@ -63,6 +64,16 @@ void AMonster_AIController::OnTargetDetect(AActor* Actor, FAIStimulus const Stim
 void AMonster_AIController::FleeFromFire(bool Value)
 {
 	GetBlackboardComponent()->SetValueAsBool("CanFleeFromFireTrap", Value);
+}
+
+void AMonster_AIController::NotifySoundItemFalling(FVector SoundLocation)
+{
+	UAIBlueprintHelperLibrary::SimpleMoveToLocation(this, SoundLocation);
+}
+
+void AMonster_AIController::GetController()
+{
+	
 }
 
 

@@ -4,10 +4,12 @@
 #include "Item.h"
 
 
+#include "Monster_AIController.h"
 #include "NoiseBubble.h"
 #include "Components/SphereComponent.h"
 #include "Components/WidgetComponent.h"
 #include "DarkChamber/DarkChamberCharacter.h"
+#include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "Net/UnrealNetwork.h"
 
@@ -160,17 +162,29 @@ void AItem::NotifyHit(UPrimitiveComponent* MyComp, AActor* Other, UPrimitiveComp
 	Super::NotifyHit(MyComp, Other, OtherComp, bSelfMoved, HitLocation, HitNormal, NormalImpulse, Hit);
 	FRotator Rotation(0.0f, 0.0f, 0.0f);
 	FActorSpawnParameters SpawnInfo;
-	//AActor* Tactor = GetWorld()->SpawnActor<AActor>(NoiseBubble, HitLocation, Rotation);
-	FTimerDelegate TimerDel;
-	//TimerDel.BindUFunction(this, FName("SetNoiseBubbleDestroy"), Tactor);
+	if (!bHasPlayedSound)
+	{
+		UGameplayStatics::PlaySoundAtLocation(this, FallingSoundEffect, HitLocation);
+		bHasPlayedSound = true;
+	}
 	FTimerHandle TimerHandle;
-	GetWorld()->GetTimerManager().SetTimer(TimerHandle, TimerDel, 5.0f, false, 3);
+	AMonster_AIController* AIController = Cast<AMonster_AIController>(GetOwner());
+	if (AIController)
+	{
+		AIController->NotifySoundItemFalling(HitLocation);
+	}
+	else
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Red, "No Controller");
+	}
+	GetWorld()->GetTimerManager().SetTimer(TimerHandle,this, &AItem::ResetSetPlayedSound, 1.0f, false, 5);
+	
 }
 
 void AItem::SetNoiseBubbleDestroy(AActor* bubble)
 {
 	bubble->Destroy();
-}
+}	
 
 void AItem::ServerThrowItem_Implementation(float force, FVector direction)
 {
@@ -190,4 +204,12 @@ void AItem::CanCollide()
 {
 	this->SetActorEnableCollision(true);
 	MulticastAddAndEnableItem();
+}
+
+void AItem::ResetSetPlayedSound()
+{
+	if(bHasPlayedSound)
+	{
+		bHasPlayedSound = false;
+	}
 }

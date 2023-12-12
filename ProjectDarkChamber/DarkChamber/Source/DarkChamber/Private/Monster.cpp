@@ -48,7 +48,6 @@ int AMonster::MeleeAttack_Implementation()
 {
 	if (AttackRoar)
 	{
-		// Create an AudioComponent
 		UAudioComponent* AudioComponent = UGameplayStatics::SpawnSoundAttached(AttackRoar, GetRootComponent());
 	}
 	if (const auto* Player = TargetedPlayer)

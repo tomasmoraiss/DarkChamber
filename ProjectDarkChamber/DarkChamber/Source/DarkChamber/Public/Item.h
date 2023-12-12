@@ -6,6 +6,7 @@
 #include "Components/WidgetComponent.h"
 #include "DarkChamber/InteractInterface.h"
 #include "GameFramework/Actor.h"
+#include "Sound/SoundCue.h"
 #include "Item.generated.h"
 
 UCLASS()
@@ -62,10 +63,14 @@ public:
 	               FVector HitLocation, FVector HitNormal, FVector NormalImpulse, const FHitResult& Hit) override;
 	UFUNCTION()
 	void SetNoiseBubbleDestroy(AActor* bubble);
-
-
+	
 	UPROPERTY()
 	AActor* TargetActor;
+
+	UPROPERTY(EditAnywhere, Category= "Sound")
+	USoundCue* FallingSoundEffect;
+	UPROPERTY(BlueprintReadOnly, Replicated)
+	bool bHasPlayedSound;
 
 	UPROPERTY(BlueprintReadOnly, Replicated)
 	bool IsOwned;
@@ -81,4 +86,8 @@ public:
 
 	UFUNCTION()
 	void CanCollide();
+
+	UFUNCTION()
+	void ResetSetPlayedSound();
+	
 };
