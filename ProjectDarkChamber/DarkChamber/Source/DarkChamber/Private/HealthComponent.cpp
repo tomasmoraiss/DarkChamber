@@ -10,22 +10,20 @@ UHealthComponent::UHealthComponent()
 	PrimaryComponentTick.bCanEverTick = true;
 
 	// Default values for health
-	MaxHealth = 100.0f;
+	MaxHealth = 3;
 	CurrentHealth = MaxHealth;
 	MaxStamina = 100.0f;
-	CurrentStamina = MaxHealth;
+	CurrentStamina = MaxStamina;
 }
 
-bool UHealthComponent::ReduceHealth(float Amount)
+bool UHealthComponent::ReduceHealth(int Amount)
 {
-	if (Amount > 0.0f)
+	if (Amount > 0)
 	{
 		CurrentHealth -= Amount;
 		if (CurrentHealth <= 0)return true;
 		CurrentHealth = FMath::Max(CurrentHealth, 0.0f);
-		GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Red,
-		                                 FString::Printf(
-			                                 TEXT("Health reduced by %f. Current Health: %f/%f"), Amount, CurrentHealth,
+		GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Red,FString::Printf(TEXT("Health reduced by %i. Current Health: %i/%i"), Amount, CurrentHealth,
 			                                 MaxHealth));
 	}
 	else
@@ -64,6 +62,16 @@ void UHealthComponent::AddStamina(float Amount)
 float UHealthComponent::GetCurrentHealth() const
 {
 	return CurrentHealth;
+}
+
+float UHealthComponent::GetMaxStamina() const
+{
+	return MaxStamina;
+}
+
+float UHealthComponent::GetCurrentStamina() const
+{
+	return CurrentStamina;
 }
 
 // Called when the game starts

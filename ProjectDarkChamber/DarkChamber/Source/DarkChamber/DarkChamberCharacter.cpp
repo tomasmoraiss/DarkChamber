@@ -445,7 +445,7 @@ void ADarkChamberCharacter::EletricAttack_Implementation()
 	FTimerHandle TimerHandle;
 	GetWorld()->GetTimerManager().SetTimer(TimerHandle, this, &ADarkChamberCharacter::setCanMove, 5.0f, false, 5);
 	GEngine->AddOnScreenDebugMessage(-1, 1, FColor::Red, "EletricAttack");
-	if (PlayerHealth->ReduceHealth(20))PlayerDead();
+	if (PlayerHealth->ReduceHealth(1))PlayerDead();
 }
 
 
@@ -459,7 +459,7 @@ void ADarkChamberCharacter::HoleAttack_Implementation()
 
 void ADarkChamberCharacter::FireAttack_Implementation()
 {
-	if (PlayerHealth->ReduceHealth(40))PlayerDead();
+	if (PlayerHealth->ReduceHealth(1))PlayerDead();
 	GEngine->AddOnScreenDebugMessage(-1, 1, FColor::Red, "FireAttack");
 }
 

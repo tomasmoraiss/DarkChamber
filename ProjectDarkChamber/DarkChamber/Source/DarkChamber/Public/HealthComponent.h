@@ -19,7 +19,7 @@ public:
 
 	// Function to reduce health
 	UFUNCTION(BlueprintCallable, Category = "Health")
-	bool ReduceHealth(float Amount);
+	bool ReduceHealth(int Amount);
 
 	// Function to add health
 	UFUNCTION(BlueprintCallable, Category = "Health")
@@ -36,13 +36,21 @@ public:
 	UFUNCTION(BlueprintPure, Category = "Health")
 	float GetCurrentHealth() const;
 
+	// Function to get max stamina
+	UFUNCTION(BlueprintPure, Category = "Stamina")
+	float GetMaxStamina() const;
+	
+	// Function to get current stamina
+	UFUNCTION(BlueprintPure, Category = "Stamina")
+	float GetCurrentStamina() const;
+
 	// Maximum health
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Health")
-	float MaxHealth;
+	int MaxHealth;
 
 	// Current health
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Health")
-	float CurrentHealth;
+	int CurrentHealth;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Stamina")
 	float MaxStamina;
