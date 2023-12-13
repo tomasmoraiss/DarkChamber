@@ -220,6 +220,10 @@ public:
 
 	UFUNCTION(Server, Reliable)
 	void RequestInteractionWith(AActor* ObjectToInteract, AActor* InteractionInstigator);
+	
+	UFUNCTION(BlueprintNativeEvent)
+	void TakeDamage();
+	
 
 private:
 	class UAIPerceptionStimuliSourceComponent* StimulusSource;

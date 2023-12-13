@@ -324,10 +324,11 @@ void ADarkChamberCharacter::MakeItemsInvisible(AItem* item)
 	}
 }
 
+void ADarkChamberCharacter::TakeDamage_Implementation()
+{
+}
 
 //TRAP ATTACKS INTERFACE
-
-
 void ADarkChamberCharacter::SetupStimulusSource()
 {
 	StimulusSource = CreateDefaultSubobject<UAIPerceptionStimuliSourceComponent>(TEXT("Stimulus Source"));

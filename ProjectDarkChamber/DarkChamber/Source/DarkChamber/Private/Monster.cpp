@@ -53,6 +53,7 @@ int AMonster::MeleeAttack_Implementation()
 	if (const auto* Player = TargetedPlayer)
 	{
 		if (Player->PlayerHealth->ReduceHealth(AttackDamage))TargetedPlayer->PlayerDead();
+		TargetedPlayer->TakeDamage();
 	}
 	return ICombatInterface::MeleeAttack_Implementation();
 }
