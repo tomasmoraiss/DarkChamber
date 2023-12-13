@@ -66,15 +66,7 @@ void AMonster_AIController::FleeFromFire(bool Value)
 	GetBlackboardComponent()->SetValueAsBool("CanFleeFromFireTrap", Value);
 }
 
-void AMonster_AIController::NotifySoundItemFalling(FVector SoundLocation)
-{
-	UAIBlueprintHelperLibrary::SimpleMoveToLocation(this, SoundLocation);
-}
 
-void AMonster_AIController::GetController()
-{
-	
-}
 
 
 

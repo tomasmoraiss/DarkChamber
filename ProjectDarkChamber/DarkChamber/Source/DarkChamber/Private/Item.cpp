@@ -4,6 +4,7 @@
 #include "Item.h"
 
 
+#include "Monster.h"
 #include "Monster_AIController.h"
 #include "NoiseBubble.h"
 #include "Components/SphereComponent.h"
@@ -168,18 +169,10 @@ void AItem::NotifyHit(UPrimitiveComponent* MyComp, AActor* Other, UPrimitiveComp
 		bHasPlayedSound = true;
 	}
 	FTimerHandle TimerHandle;
-	AMonster_AIController* AIController = Cast<AMonster_AIController>(GetOwner());
-	if (AIController)
-	{
-		AIController->NotifySoundItemFalling(HitLocation);
-	}
-	else
-	{
-		GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Red, "No Controller");
-	}
+	
 	GetWorld()->GetTimerManager().SetTimer(TimerHandle,this, &AItem::ResetSetPlayedSound, 1.0f, false, 5);
 	
-}
+}	
 
 void AItem::SetNoiseBubbleDestroy(AActor* bubble)
 {
