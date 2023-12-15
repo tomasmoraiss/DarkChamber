@@ -20,13 +20,6 @@ public:
 	
 	UFUNCTION()
 	void FleeFromFire(bool Value);
-
-	UFUNCTION()
-	void NotifySoundItemFalling(FVector SoundLocation);
-
-	UFUNCTION()
-	void GetController();
-
 		
 protected:
 	virtual void OnPossess(APawn* InPawn) override;
