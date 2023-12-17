@@ -24,6 +24,20 @@ ATrap::ATrap()
 
 
 	ItemMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Static Mesh"));
+	Wood = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Wood"));
+	Wood->AttachToComponent(ItemMesh, FAttachmentTransformRules::KeepRelativeTransform);
+
+	GasCan = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("GasCan"));
+	GasCan->AttachToComponent(ItemMesh, FAttachmentTransformRules::KeepRelativeTransform);
+
+	Spike = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Spike"));
+	Spike->AttachToComponent(ItemMesh, FAttachmentTransformRules::KeepRelativeTransform);
+	
+	Batery = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Batery"));
+	Batery->AttachToComponent(ItemMesh, FAttachmentTransformRules::KeepRelativeTransform);
+	
+	TeslaCoil = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("TeslaCoil"));
+	TeslaCoil->AttachToComponent(ItemMesh, FAttachmentTransformRules::KeepRelativeTransform);
 
 	InteractionRangeBoxComponent = CreateDefaultSubobject<UBoxComponent>(TEXT("Actor Can Interact Range"));
 	InteractionRangeBoxComponent->InitBoxExtent(FVector(60.f, 60.f, 100.f));
@@ -121,6 +135,7 @@ void ATrap::AddItem(AActor* ActorInteracting)
 		ItemsPlaced[NumberWhereInventoryIs] = TCharacter->Inventory[TCharacter->CurrentlySelectedInventoryItem];
 		ItemsPlaced2[NumberWhereInventoryIs] = TCharacter->Inventory[TCharacter->CurrentlySelectedInventoryItem]->
 			itemNumber;
+		SetTrapItemVisible(TItem->itemNumber);
 		AActor* TActor = Cast<AActor>(TCharacter->Inventory[TCharacter->CurrentlySelectedInventoryItem]);
 		TActor->Destroy();
 		TCharacter->Inventory[TCharacter->CurrentlySelectedInventoryItem] = nullptr;
@@ -131,6 +146,30 @@ void ATrap::AddItem(AActor* ActorInteracting)
 		                                 FString::Printf(TEXT("Bool: %s"), HasAllItems ? TEXT("true") : TEXT("false")));
 	}
 	else GEngine->AddOnScreenDebugMessage(-1, 1, FColor::Red, "This item dont go into the trap or is already innit");
+}
+
+void ATrap::SetTrapItemVisible(int n)
+{
+	switch (n)
+	{
+	case 1:
+		Wood->SetVisibility(true);
+		break;
+	case 2:
+		Batery->SetVisibility(true);
+		break;
+	case 3:
+		TeslaCoil->SetVisibility(true);
+		break;
+	case 4:
+		GasCan->SetVisibility(true);
+		break;
+	case 5:
+		Spike->SetVisibility(true);
+		break;
+	default:
+		std::cout << "Invalid choice." << std::endl;
+	}
 }
 
 bool ATrap::IsItemsPlacedFull()

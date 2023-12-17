@@ -43,6 +43,7 @@ public:
 
 	void Build();
 	void AddItem(AActor* ActorInteracting);
+	void SetTrapItemVisible(int n);
 	bool IsItemsPlacedFull();
 	bool CanIAddThisItemToTheTrap(int n);
 	int WhatTrapIsBuilt();
@@ -82,6 +83,19 @@ public:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
 	UStaticMeshComponent* ItemMesh;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+	UStaticMeshComponent* TeslaCoil;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+	UStaticMeshComponent* Wood;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+	UStaticMeshComponent* Batery;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+	UStaticMeshComponent* GasCan;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+	UStaticMeshComponent* Spike;
+	
+	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="BOX")
 	FVector vector;
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
