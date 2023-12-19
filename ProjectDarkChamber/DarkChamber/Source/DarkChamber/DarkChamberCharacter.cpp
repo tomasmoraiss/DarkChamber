@@ -82,18 +82,7 @@ void ADarkChamberCharacter::BeginPlay()
 {
 	// Call the base class  
 	Super::BeginPlay();
-
-	//Add Input Mapping Context
-	if (APlayerController* PlayerController = Cast<APlayerController>(Controller))
-	{
-		if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<
-			UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer()))
-		{
-			Subsystem->AddMappingContext(DefaultMappingContext, 0);
-		}
-	}
 }
-
 
 void ADarkChamberCharacter::InteractWithActor()
 {
@@ -143,6 +132,19 @@ void ADarkChamberCharacter::ConstantLineTraceToCheckObjectsForward()
 			InteractInterface->OnInteractHoverEnd(this);
 			currentInteractableActor = nullptr;
 			InteractInterface = nullptr;
+		}
+	}
+}
+
+void ADarkChamberCharacter::PossessedBy(AController* NewPlayerController)
+{
+	//Add Input Mapping Context
+	if (APlayerController* PlayerController = Cast<APlayerController>(NewPlayerController))
+	{
+		if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<
+			UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer()))
+		{
+			Subsystem->AddMappingContext(DefaultMappingContext, 0);
 		}
 	}
 }

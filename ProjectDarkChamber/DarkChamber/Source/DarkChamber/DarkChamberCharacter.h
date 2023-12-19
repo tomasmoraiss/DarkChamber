@@ -25,6 +25,7 @@ class ADarkChamberCharacter : public ACharacter, public ITrapDamageInterface
 {
 	GENERATED_BODY()
 
+	
 	/** Pawn mesh: 1st person view (arms; seen only by self) */
 	UPROPERTY(VisibleDefaultsOnly, Category=Mesh)
 	USkeletalMeshComponent* Mesh1P;
@@ -73,6 +74,8 @@ protected:
 	void InteractWithActor();
 	UFUNCTION(BlueprintCallable, Category="Interact")
 	void ConstantLineTraceToCheckObjectsForward();
+
+	virtual void PossessedBy(AController* NewPlayerController) override;
 
 public:
 	virtual void Tick(float DeltaSeconds) override;
