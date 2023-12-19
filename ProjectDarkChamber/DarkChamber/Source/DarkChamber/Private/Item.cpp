@@ -13,6 +13,8 @@
 #include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "Net/UnrealNetwork.h"
+#include "Perception/AIPerceptionStimuliSourceComponent.h"
+#include "Perception/AISense_Hearing.h"
 
 // Sets default values
 
@@ -42,6 +44,8 @@ AItem::AItem()
 	ItemWidget->SetDrawSize(FVector2d(200, 200));
 	ItemWidget->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
 	ItemWidget->SetVisibility(false);
+
+	SetupStimulusSource();
 }
 
 // Called when the game starts or when spawned	
@@ -163,9 +167,15 @@ void AItem::NotifyHit(UPrimitiveComponent* MyComp, AActor* Other, UPrimitiveComp
 	Super::NotifyHit(MyComp, Other, OtherComp, bSelfMoved, HitLocation, HitNormal, NormalImpulse, Hit);
 	FRotator Rotation(0.0f, 0.0f, 0.0f);
 	FActorSpawnParameters SpawnInfo;
+	if (Other && Other->IsA(ADarkChamberCharacter::StaticClass()))
+	{
+		return;
+	}
+
 	if (!bHasPlayedSound)
 	{
 		UGameplayStatics::PlaySoundAtLocation(this, FallingSoundEffect, HitLocation);
+		UAISense_Hearing::ReportNoiseEvent(this, HitLocation, 1.f, Other, 0, NAME_None);
 		bHasPlayedSound = true;
 	}
 	FTimerHandle TimerHandle;
@@ -204,5 +214,15 @@ void AItem::ResetSetPlayedSound()
 	if(bHasPlayedSound)
 	{
 		bHasPlayedSound = false;
+	}
+}
+
+void AItem::SetupStimulusSource()
+{
+	StimulusSource = CreateDefaultSubobject<UAIPerceptionStimuliSourceComponent>(TEXT("Stimulus Source"));
+	if (StimulusSource)
+	{
+		StimulusSource->RegisterForSense(TSubclassOf<UAISense_Hearing>());
+		StimulusSource->RegisterWithPerceptionSystem();
 	}
 }

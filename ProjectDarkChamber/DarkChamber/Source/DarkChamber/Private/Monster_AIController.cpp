@@ -8,6 +8,7 @@
 #include "Blueprint/AIBlueprintHelperLibrary.h"
 #include "DarkChamber/DarkChamberCharacter.h"
 #include "Perception/AIPerceptionComponent.h"
+#include "Perception/AISenseConfig_Hearing.h"
 #include "Perception/AISenseConfig_Sight.h"
 
 AMonster_AIController::AMonster_AIController(FObjectInitializer const& ObjectInitializer)
@@ -38,7 +39,7 @@ void AMonster_AIController::SetupPerceptionSystem()
 	SightConfig = CreateDefaultSubobject<UAISenseConfig_Sight>(TEXT("Sight Config"));
 	if(SightConfig)
 	{
-		SetPerceptionComponent(*CreateDefaultSubobject<UAIPerceptionComponent>(TEXT("Perception Component")));
+		SetPerceptionComponent(*CreateDefaultSubobject<UAIPerceptionComponent>(TEXT("Sight Perception Component")));
 		SightConfig->SightRadius = 1000.f;
 		SightConfig->LoseSightRadius = SightConfig->SightRadius + 25.f;
 		SightConfig->PeripheralVisionAngleDegrees = 180.f;
@@ -51,6 +52,18 @@ void AMonster_AIController::SetupPerceptionSystem()
 		GetPerceptionComponent()->OnTargetPerceptionUpdated.AddDynamic(this, &AMonster_AIController::OnTargetDetect);
 		GetPerceptionComponent()->ConfigureSense(*SightConfig);
 	}
+	HearingConfig = CreateDefaultSubobject<UAISenseConfig_Hearing>(TEXT("Hearing Config"));
+	if(HearingConfig)
+	{
+		SetPerceptionComponent(*CreateDefaultSubobject<UAIPerceptionComponent>(TEXT("Hearing Perception Component")));
+		HearingConfig->HearingRange = 1000.f;
+		HearingConfig->DetectionByAffiliation.bDetectEnemies = true;
+		HearingConfig->DetectionByAffiliation.bDetectFriendlies = true;
+		HearingConfig->DetectionByAffiliation.bDetectNeutrals = true;
+
+		GetPerceptionComponent()->OnTargetPerceptionUpdated.AddDynamic(this, &AMonster_AIController::OnTargetHeard);
+		GetPerceptionComponent()->ConfigureSense(*HearingConfig);
+	}
 }
 
 void AMonster_AIController::OnTargetDetect(AActor* Actor, FAIStimulus const Stimulus)
@@ -60,6 +73,15 @@ void AMonster_AIController::OnTargetDetect(AActor* Actor, FAIStimulus const Stim
 		GetBlackboardComponent()->SetValueAsBool("CanSeePlayer", Stimulus.WasSuccessfullySensed());
 	}
 }
+
+void AMonster_AIController::OnTargetHeard(AActor* Actor, FAIStimulus const Stimulus)
+{
+	if(Stimulus.WasSuccessfullySensed())
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Green, "Successfully Sensed");
+	}
+}
+
 
 void AMonster_AIController::FleeFromFire(bool Value)
 {

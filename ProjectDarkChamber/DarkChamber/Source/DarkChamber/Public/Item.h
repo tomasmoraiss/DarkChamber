@@ -89,5 +89,9 @@ public:
 
 	UFUNCTION()
 	void ResetSetPlayedSound();
+
+private:
+	class UAIPerceptionStimuliSourceComponent* StimulusSource;
+	void SetupStimulusSource();
 	
 };
