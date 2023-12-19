@@ -21,7 +21,7 @@ ATrap::ATrap()
 	PrimaryActorTick.bCanEverTick = true;
 	HasAllItems = false;
 	NumberWhereInventoryIs = 0;
-
+	
 
 	ItemMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Static Mesh"));
 	Wood = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Wood"));
