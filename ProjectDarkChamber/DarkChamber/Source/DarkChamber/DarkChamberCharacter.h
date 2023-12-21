@@ -226,6 +226,10 @@ public:
 	
 	UFUNCTION(BlueprintNativeEvent)
 	void TakeDamage();
+
+	UFUNCTION(BlueprintNativeEvent)
+	void ActivateJumpScare();
+	
 	
 
 private:

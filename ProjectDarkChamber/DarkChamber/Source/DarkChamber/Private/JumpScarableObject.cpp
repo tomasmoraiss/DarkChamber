@@ -4,6 +4,7 @@
 #include "JumpScarableObject.h"
 
 #include "Components/SphereComponent.h"
+#include "DarkChamber/DarkChamberCharacter.h"
 
 // Sets default values
 AJumpScarableObject::AJumpScarableObject()
@@ -45,5 +46,8 @@ void AJumpScarableObject::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AA
 {
 	if (OtherActor && (OtherActor != this) && OtherComp)
 	{
+		ADarkChamberCharacter* character;
+		character = Cast<ADarkChamberCharacter>(OtherActor);
+		character->ActivateJumpScare();
 	}
 }

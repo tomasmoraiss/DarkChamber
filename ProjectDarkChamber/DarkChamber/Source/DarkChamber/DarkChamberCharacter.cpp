@@ -330,6 +330,10 @@ void ADarkChamberCharacter::TakeDamage_Implementation()
 {
 }
 
+void ADarkChamberCharacter::ActivateJumpScare_Implementation()
+{
+}
+
 //TRAP ATTACKS INTERFACE
 void ADarkChamberCharacter::SetupStimulusSource()
 {

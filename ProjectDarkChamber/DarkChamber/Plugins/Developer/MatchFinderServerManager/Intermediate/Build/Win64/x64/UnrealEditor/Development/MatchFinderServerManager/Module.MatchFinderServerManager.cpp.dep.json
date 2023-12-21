@@ -1,0 +1,20 @@
+{
+    "Version": "1.1",
+    "Data": {
+        "Source": "c:\\users\\bruno\\documents\\github\\darkchamber\\projectdarkchamber\\darkchamber\\plugins\\developer\\matchfinderservermanager\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\matchfinderservermanager\\module.matchfinderservermanager.cpp",
+        "ProvidedModule": "",
+        "PCH": "c:\\users\\bruno\\documents\\github\\darkchamber\\engine\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\engine\\sharedpch.engine.shadowerrors.h.pch",
+        "Includes": [
+            "c:\\users\\bruno\\documents\\github\\darkchamber\\projectdarkchamber\\darkchamber\\plugins\\developer\\matchfinderservermanager\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\matchfinderservermanager\\definitions.matchfinderservermanager.h",
+            "c:\\users\\bruno\\documents\\github\\darkchamber\\projectdarkchamber\\darkchamber\\plugins\\developer\\matchfinderservermanager\\intermediate\\build\\win64\\unrealeditor\\inc\\matchfinderservermanager\\uht\\matchfinderservermanager.init.gen.cpp",
+            "c:\\users\\bruno\\documents\\github\\darkchamber\\projectdarkchamber\\darkchamber\\plugins\\developer\\matchfinderservermanager\\intermediate\\build\\win64\\unrealeditor\\inc\\matchfinderservermanager\\uht\\matchmadeinstancesubsystem.gen.cpp",
+            "c:\\users\\bruno\\documents\\github\\darkchamber\\projectdarkchamber\\darkchamber\\plugins\\developer\\matchfinderservermanager\\source\\matchfinderservermanager\\public\\matchmadeinstancesubsystem.h",
+            "c:\\users\\bruno\\documents\\github\\darkchamber\\projectdarkchamber\\darkchamber\\plugins\\developer\\matchfinderservermanager\\intermediate\\build\\win64\\unrealeditor\\inc\\matchfinderservermanager\\uht\\matchmadeinstancesubsystem.generated.h",
+            "c:\\users\\bruno\\documents\\github\\darkchamber\\projectdarkchamber\\darkchamber\\plugins\\developer\\matchfinderservermanager\\source\\matchfinderservermanager\\private\\matchfinderservermanager.cpp",
+            "c:\\users\\bruno\\documents\\github\\darkchamber\\projectdarkchamber\\darkchamber\\plugins\\developer\\matchfinderservermanager\\source\\matchfinderservermanager\\public\\matchfinderservermanager.h",
+            "c:\\users\\bruno\\documents\\github\\darkchamber\\projectdarkchamber\\darkchamber\\plugins\\developer\\matchfinderservermanager\\source\\matchfinderservermanager\\private\\matchmadeinstancesubsystem.cpp"
+        ],
+        "ImportedModules": [],
+        "ImportedHeaderUnits": []
+    }
+}

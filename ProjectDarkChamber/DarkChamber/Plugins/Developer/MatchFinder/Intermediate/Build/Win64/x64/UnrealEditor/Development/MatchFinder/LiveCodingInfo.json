@@ -1,0 +1,11 @@
+{
+	"RemapUnityFiles": 
+	{
+		"Module.MatchFinder.cpp.obj": [
+			"MatchFinder.init.gen.cpp.obj",
+			"MatchFinderSubsystem.gen.cpp.obj",
+			"MatchFinder.cpp.obj",
+			"MatchFinderSubsystem.cpp.obj"
+		]
+	}
+}

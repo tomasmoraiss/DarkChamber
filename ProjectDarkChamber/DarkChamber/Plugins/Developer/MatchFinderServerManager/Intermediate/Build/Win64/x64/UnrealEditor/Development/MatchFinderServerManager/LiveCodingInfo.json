@@ -1,0 +1,11 @@
+{
+	"RemapUnityFiles": 
+	{
+		"Module.MatchFinderServerManager.cpp.obj": [
+			"MatchFinderServerManager.init.gen.cpp.obj",
+			"MatchmadeInstanceSubsystem.gen.cpp.obj",
+			"MatchFinderServerManager.cpp.obj",
+			"MatchmadeInstanceSubsystem.cpp.obj"
+		]
+	}
+}
