@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "AIController.h"
 #include "TrapDamageInterface.h"
+#include "BehaviorTree/BehaviorTreeComponent.h"
 #include "Perception/AIPerceptionTypes.h"
 #include "Monster_AIController.generated.h"
 
@@ -34,5 +35,9 @@ private:
 	void OnTargetDetect(AActor* Actor, FAIStimulus const Stimulus);
 	UFUNCTION()
 	void OnTargetHeard(AActor* Actor, FAIStimulus const Stimulus);
+	void OnTaskFinished(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory, EBTNodeResult::Type TaskResult);
+	void OnMoveCompleted(FAIRequestID RequestID, const FPathFollowingResult& Result);
+
+	void StopInvestigation();
 	
 };

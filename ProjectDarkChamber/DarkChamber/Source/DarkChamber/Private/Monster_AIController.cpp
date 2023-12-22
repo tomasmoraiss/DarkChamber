@@ -7,6 +7,7 @@
 #include "BehaviorTree/BlackboardComponent.h"
 #include "Blueprint/AIBlueprintHelperLibrary.h"
 #include "DarkChamber/DarkChamberCharacter.h"
+#include "Navigation/PathFollowingComponent.h"
 #include "Perception/AIPerceptionComponent.h"
 #include "Perception/AISenseConfig_Hearing.h"
 #include "Perception/AISenseConfig_Sight.h"
@@ -22,9 +23,9 @@ void AMonster_AIController::OnPossess(APawn* InPawn)
 {
 	Super::OnPossess(InPawn);
 
-	if(AMonster* const monster = Cast<AMonster>(InPawn))
+	if(AMonster* const Monster = Cast<AMonster>(InPawn))
 	{
-		if(UBehaviorTree* const BTree = monster->GetBehaviorTree())
+		if(UBehaviorTree* const BTree = Monster->GetBehaviorTree())
 		{
 			UBlackboardComponent* b;
 			UseBlackboard(BTree->BlackboardAsset, b);
@@ -56,13 +57,24 @@ void AMonster_AIController::SetupPerceptionSystem()
 	if(HearingConfig)
 	{
 		SetPerceptionComponent(*CreateDefaultSubobject<UAIPerceptionComponent>(TEXT("Hearing Perception Component")));
-		HearingConfig->HearingRange = 1000.f;
+		HearingConfig->HearingRange = 3000.f;
 		HearingConfig->DetectionByAffiliation.bDetectEnemies = true;
 		HearingConfig->DetectionByAffiliation.bDetectFriendlies = true;
 		HearingConfig->DetectionByAffiliation.bDetectNeutrals = true;
 
 		GetPerceptionComponent()->OnTargetPerceptionUpdated.AddDynamic(this, &AMonster_AIController::OnTargetHeard);
 		GetPerceptionComponent()->ConfigureSense(*HearingConfig);
+	}
+}
+
+void AMonster_AIController::OnMoveCompleted(FAIRequestID RequestID, const FPathFollowingResult& Result)
+{
+	Super::OnMoveCompleted(RequestID, Result);
+
+	if (Result.Code == EPathFollowingResult::Success)
+	{
+		// The MoveToLocation task succeeded, meaning the AI reached the destination
+		GetBlackboardComponent()->SetValueAsBool("HeardItem", false);
 	}
 }
 
@@ -76,10 +88,30 @@ void AMonster_AIController::OnTargetDetect(AActor* Actor, FAIStimulus const Stim
 
 void AMonster_AIController::OnTargetHeard(AActor* Actor, FAIStimulus const Stimulus)
 {
-	if(Stimulus.WasSuccessfullySensed())
+	GetBlackboardComponent()->SetValueAsBool("HeardItem", Stimulus.WasSuccessfullySensed());
+	GetBlackboardComponent()->SetValueAsVector("NoiseLocation", Stimulus.StimulusLocation);
+
+	if (UBehaviorTreeComponent* BTree = Cast<UBehaviorTreeComponent>(BrainComponent))
 	{
-		GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Green, "Successfully Sensed");
+		BTree->RestartLogic();
 	}
+	if (Stimulus.WasSuccessfullySensed())
+	{
+		// If AI heard something successfully, initiate movement
+		if (AAIController* MyController = Cast<AAIController>(this))
+		{
+			FAIMoveRequest MoveRequest;
+			MoveRequest.SetGoalLocation(Stimulus.StimulusLocation);
+			MoveRequest.SetAcceptanceRadius(50.0f); // Adjust the radius as needed
+
+			MyController->MoveTo(MoveRequest);
+		}
+	}
+}
+
+void AMonster_AIController::StopInvestigation()
+{
+	GetBlackboardComponent()->SetValueAsBool("HeardItem", false);
 }
 
 

@@ -166,7 +166,7 @@ void AItem::NotifyHit(UPrimitiveComponent* MyComp, AActor* Other, UPrimitiveComp
 {
 	Super::NotifyHit(MyComp, Other, OtherComp, bSelfMoved, HitLocation, HitNormal, NormalImpulse, Hit);
 	FRotator Rotation(0.0f, 0.0f, 0.0f);
-	FActorSpawnParameters SpawnInfo;
+	
 	if (Other && Other->IsA(ADarkChamberCharacter::StaticClass()))
 	{
 		return;
@@ -179,7 +179,6 @@ void AItem::NotifyHit(UPrimitiveComponent* MyComp, AActor* Other, UPrimitiveComp
 		bHasPlayedSound = true;
 	}
 	FTimerHandle TimerHandle;
-	
 	GetWorld()->GetTimerManager().SetTimer(TimerHandle,this, &AItem::ResetSetPlayedSound, 1.0f, false, 5);
 	
 }	
