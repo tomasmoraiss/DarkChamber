@@ -57,7 +57,7 @@ void AMonster_AIController::SetupPerceptionSystem()
 	if(HearingConfig)
 	{
 		SetPerceptionComponent(*CreateDefaultSubobject<UAIPerceptionComponent>(TEXT("Hearing Perception Component")));
-		HearingConfig->HearingRange = 3000.f;
+		HearingConfig->HearingRange = 1000.f;
 		HearingConfig->DetectionByAffiliation.bDetectEnemies = true;
 		HearingConfig->DetectionByAffiliation.bDetectFriendlies = true;
 		HearingConfig->DetectionByAffiliation.bDetectNeutrals = true;

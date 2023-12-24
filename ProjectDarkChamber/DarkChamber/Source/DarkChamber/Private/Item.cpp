@@ -175,7 +175,7 @@ void AItem::NotifyHit(UPrimitiveComponent* MyComp, AActor* Other, UPrimitiveComp
 	if (!bHasPlayedSound)
 	{
 		UGameplayStatics::PlaySoundAtLocation(this, FallingSoundEffect, HitLocation);
-		UAISense_Hearing::ReportNoiseEvent(this, HitLocation, 1.f, Other, 0, NAME_None);
+		UAISense_Hearing::ReportNoiseEvent(this, HitLocation, 1.f, Other, 0, "Item Noise");
 		bHasPlayedSound = true;
 	}
 	FTimerHandle TimerHandle;

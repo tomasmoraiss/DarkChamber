@@ -6,6 +6,7 @@
 #include "DoorTest.h"
 #include "DarkChamber/InteractInterface.h"
 #include "GameFramework/Actor.h"
+#include "Perception/AIPerceptionStimuliSourceComponent.h"
 #include "Statue.generated.h"
 
 UENUM(BlueprintType)
@@ -58,4 +59,9 @@ public:
 
 	UFUNCTION()
 	void CheckStatueDirection();
+
+private:
+	class UAIPerceptionStimuliSourceComponent* StimulusSource;
+	void SetupStimulusSource();
+	
 };

@@ -5,12 +5,15 @@
 
 #include "DoorTest.h"
 #include "Kismet/GameplayStatics.h"
+#include "Perception/AISense_Hearing.h"
 
 // Sets default values
 ALever::ALever()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
+
+	SetupStimulusSource();
 }
 
 // Called when the game starts or when spawned
@@ -41,5 +44,15 @@ void ALever::Interact_Implementation(AActor* ActorInteracting)
 	}
 		
 	UE_LOG(LogTemp, Warning, TEXT("Lever Activation"));
+}
+
+void ALever::SetupStimulusSource()
+{
+	StimulusSource = CreateDefaultSubobject<UAIPerceptionStimuliSourceComponent>(TEXT("Stimulus Source"));
+	if (StimulusSource)
+	{
+		StimulusSource->RegisterForSense(TSubclassOf<UAISense_Hearing>());
+		StimulusSource->RegisterWithPerceptionSystem();
+	}	
 }
 

@@ -3,6 +3,8 @@
 
 #include "Statue.h"
 
+#include "Perception/AISense_Hearing.h"
+
 // Sets default values
 AStatue::AStatue()
 {
@@ -16,6 +18,8 @@ AStatue::AStatue()
 
 	canInteract = true;
 	CorrectFacingDirection = EDirection::Front;
+
+	SetupStimulusSource();
 	
 }
 
@@ -52,8 +56,10 @@ void AStatue::CheckStatueDirection()
 	}
 }
 
+
 void AStatue::Interact_Implementation(AActor* ActorInteracting)
 {
+	UAISense_Hearing::ReportNoiseEvent(this, GetActorLocation(), 1.f, this, 0.f,"Statue Noise");
 	if(!doorsToBeTested.IsEmpty())
 	{
 		CurrentFacingDirection = CurrentFacingDirection+1;
@@ -61,7 +67,16 @@ void AStatue::Interact_Implementation(AActor* ActorInteracting)
 		{
 			CurrentFacingDirection = (uint8)EDirection::Front;
 		}
-			
 		CheckStatueDirection();
+	}
+}
+
+void AStatue::SetupStimulusSource()
+{
+	StimulusSource = CreateDefaultSubobject<UAIPerceptionStimuliSourceComponent>(TEXT("Stimulus Source"));
+	if (StimulusSource)
+	{
+		StimulusSource->RegisterForSense(TSubclassOf<UAISense_Hearing>());
+		StimulusSource->RegisterWithPerceptionSystem();
 	}
 }

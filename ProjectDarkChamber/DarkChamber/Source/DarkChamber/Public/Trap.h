@@ -116,4 +116,8 @@ public:
 	virtual void FireAttack();
 	UFUNCTION()
 	virtual void HoleAttack();
+
+private:
+	class UAIPerceptionStimuliSourceComponent* StimulusSource;
+	void SetupStimulusSource();
 };

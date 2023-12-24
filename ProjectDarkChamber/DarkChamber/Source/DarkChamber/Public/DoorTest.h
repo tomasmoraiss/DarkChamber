@@ -7,6 +7,7 @@
 //#include "Statue.h"
 #include "DarkChamber/InteractInterface.h"
 #include "GameFramework/Actor.h"
+#include "Sound/SoundCue.h"
 #include "DoorTest.generated.h"
 
 UENUM(BlueprintType, Blueprintable)
@@ -58,4 +59,10 @@ public:
 	EOpenType doorOpenType;
 	UPROPERTY(EditInstanceOnly, BlueprintReadOnly, Category="Variables")
 	TArray<AActor*> StatuesToBeUsed;
+	UPROPERTY(EditAnywhere, Category = "Sound Effect")
+	USoundCue* OpeningSoundEffect;
+
+private:
+	class UAIPerceptionStimuliSourceComponent* StimulusSource;
+	void SetupStimulusSource();
 };

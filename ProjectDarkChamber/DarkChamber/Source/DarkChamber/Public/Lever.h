@@ -7,6 +7,7 @@
 #include "DoorTest.h"
 #include "DarkChamber/InteractInterface.h"
 #include "GameFramework/Actor.h"
+#include "Perception/AIPerceptionStimuliSourceComponent.h"
 #include "Lever.generated.h"
 
 UCLASS()
@@ -34,6 +35,10 @@ public:
 	
 	UPROPERTY(EditInstanceOnly,BlueprintReadOnly, Category="Variables")
 	TArray<ADoorTest*> DoorReference;
+
+private:
+	class UAIPerceptionStimuliSourceComponent* StimulusSource;
+	void SetupStimulusSource();
 	
 };
 	

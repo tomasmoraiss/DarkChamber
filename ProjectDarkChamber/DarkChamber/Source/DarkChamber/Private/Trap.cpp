@@ -11,6 +11,8 @@
 #include "Components/BoxComponent.h"
 #include "Components/SphereComponent.h"
 #include "DarkChamber/DarkChamberCharacter.h"
+#include "Perception/AIPerceptionStimuliSourceComponent.h"
+#include "Perception/AISense_Hearing.h"
 using namespace std;
 
 
@@ -42,6 +44,8 @@ ATrap::ATrap()
 	InteractionRangeBoxComponent = CreateDefaultSubobject<UBoxComponent>(TEXT("Actor Can Interact Range"));
 	InteractionRangeBoxComponent->InitBoxExtent(FVector(60.f, 60.f, 100.f));
 	InteractionRangeBoxComponent->AttachToComponent(ItemMesh, FAttachmentTransformRules::KeepRelativeTransform);
+
+	SetupStimulusSource();
 }
 
 // Called when the game starts or when spawned	
@@ -109,6 +113,7 @@ void ATrap::Activate()
 
 void ATrap::Build()
 {
+	UAISense_Hearing::ReportNoiseEvent(this, GetActorLocation(), 1.f, this, 0.f, "Building Trap Noise");
 	Built = true;
 	GEngine->AddOnScreenDebugMessage(-1, 1, FColor::Red, "BUILT");
 	FVector Location(this->GetActorLocation().X, this->GetActorLocation().Y, this->GetActorLocation().Z);
@@ -122,6 +127,7 @@ void ATrap::Build()
 
 void ATrap::AddItem(AActor* ActorInteracting)
 {
+	UAISense_Hearing::ReportNoiseEvent(this, GetActorLocation(), 1.f, ActorInteracting, 0.f, "Adding Item to Trap Noise");
 	ADarkChamberCharacter* TCharacter = Cast<ADarkChamberCharacter>(ActorInteracting);
 	if (!TCharacter || !TCharacter->Inventory.IsValidIndex(TCharacter->CurrentlySelectedInventoryItem) || TCharacter->
 		CurrentlySelectedInventoryItem > 5)
@@ -265,4 +271,14 @@ void ATrap::FireAttack()
 
 void ATrap::HoleAttack()
 {
+}
+
+void ATrap::SetupStimulusSource()
+{
+	StimulusSource = CreateDefaultSubobject<UAIPerceptionStimuliSourceComponent>(TEXT("Stimulus Source"));
+	if (StimulusSource)
+	{
+		StimulusSource->RegisterForSense(TSubclassOf<UAISense_Hearing>());
+		StimulusSource->RegisterWithPerceptionSystem();
+	}
 }
