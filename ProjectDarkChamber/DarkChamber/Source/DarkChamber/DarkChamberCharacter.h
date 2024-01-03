@@ -74,7 +74,7 @@ protected:
 	void InteractWithActor();
 	UFUNCTION(BlueprintCallable, Category="Interact")
 	void ConstantLineTraceToCheckObjectsForward();
-
+	UFUNCTION(BlueprintCallable, Category="possess")
 	virtual void PossessedBy(AController* NewPlayerController) override;
 
 public:
@@ -170,6 +170,8 @@ public:
 protected:
 	/** Called for movement input */
 	void Move(const FInputActionValue& Value);
+	UFUNCTION(Server, Reliable)
+	void MoveServer(FVector2D MovementVector);
 	UFUNCTION(Server, Reliable)
 	void setCanMove();
 	/** Called for looking input */

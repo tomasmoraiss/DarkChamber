@@ -141,10 +141,12 @@ void ADarkChamberCharacter::PossessedBy(AController* NewPlayerController)
 	//Add Input Mapping Context
 	if (APlayerController* PlayerController = Cast<APlayerController>(NewPlayerController))
 	{
+		GEngine->AddOnScreenDebugMessage(-1, 1, FColor::Red, "dubidubidabadaba1");
 		if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<
 			UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer()))
 		{
 			Subsystem->AddMappingContext(DefaultMappingContext, 0);
+			GEngine->AddOnScreenDebugMessage(-1, 1, FColor::Red, "dubidubidabadaba2");
 		}
 	}
 }
@@ -389,19 +391,25 @@ void ADarkChamberCharacter::TogleHealthAndStamina_Implementation()
 	}
 }
 
-void ADarkChamberCharacter::Move(const FInputActionValue& Value)
-{
+ void ADarkChamberCharacter::Move(const FInputActionValue& Value)
+ {
 	if (canMove)
 	{
 		// input is a Vector2D
 		FVector2D MovementVector = Value.Get<FVector2D>();
 		if (Controller != nullptr)
 		{
-			// add movement 
-			AddMovementInput(GetActorForwardVector(), MovementVector.Y);
-			AddMovementInput(GetActorRightVector(), MovementVector.X);
+			MoveServer_Implementation(MovementVector);
 		}
 	}
+ }
+
+void ADarkChamberCharacter::MoveServer_Implementation(FVector2D MovementVector)
+{
+	// add movement 
+	AddMovementInput(GetActorForwardVector(), MovementVector.Y);
+	AddMovementInput(GetActorRightVector(), MovementVector.X);
+	GEngine->AddOnScreenDebugMessage(-1, 1, FColor::Red, "moving");
 }
 
 void ADarkChamberCharacter::setCanMove_Implementation()
