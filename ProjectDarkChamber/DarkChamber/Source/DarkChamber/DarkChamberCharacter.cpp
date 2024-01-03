@@ -33,6 +33,7 @@ void ADarkChamberCharacter::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>
 	DOREPLIFETIME(ADarkChamberCharacter, canMove);
 	DOREPLIFETIME(ADarkChamberCharacter, IsSprinting);
 	DOREPLIFETIME(ADarkChamberCharacter, FirstPersonCameraComponent);
+	DOREPLIFETIME(ADarkChamberCharacter, MovementVectorr);
 }
 
 ADarkChamberCharacter::ADarkChamberCharacter()
@@ -162,6 +163,11 @@ void ADarkChamberCharacter::Tick(float DeltaSeconds)
 	else if (!IsSprinting && PlayerHealth->CurrentStamina + SprintStaminaAddValue <= PlayerHealth->MaxStamina)
 	{
 		PlayerHealth->CurrentStamina += SprintStaminaAddValue;
+	}
+	if (Controller != nullptr && canMove)
+	{
+		AddMovementInput(GetActorForwardVector(), MovementVectorr.Y);
+		AddMovementInput(GetActorRightVector(), MovementVectorr.X);
 	}
 }
 
@@ -336,6 +342,8 @@ void ADarkChamberCharacter::ActivateJumpScare_Implementation()
 {
 }
 
+
+
 //TRAP ATTACKS INTERFACE
 void ADarkChamberCharacter::SetupStimulusSource()
 {
@@ -391,24 +399,17 @@ void ADarkChamberCharacter::TogleHealthAndStamina_Implementation()
 	}
 }
 
- void ADarkChamberCharacter::Move(const FInputActionValue& Value)
- {
-	if (canMove)
-	{
-		// input is a Vector2D
-		FVector2D MovementVector = Value.Get<FVector2D>();
-		if (Controller != nullptr)
-		{
-			MoveServer_Implementation(MovementVector);
-		}
-	}
- }
+void ADarkChamberCharacter::Move(const FInputActionValue& Value)
+{
+	MovementVectorr = Value.Get<FVector2D>();
 
-void ADarkChamberCharacter::MoveServer_Implementation(FVector2D MovementVector)
+	MoveServer(MovementVectorr);
+}
+
+void ADarkChamberCharacter::MoveServer_Implementation(FVector2D VectorMove)
 {
 	// add movement 
-	AddMovementInput(GetActorForwardVector(), MovementVector.Y);
-	AddMovementInput(GetActorRightVector(), MovementVector.X);
+	MovementVectorr = VectorMove;
 	GEngine->AddOnScreenDebugMessage(-1, 1, FColor::Red, "moving");
 }
 

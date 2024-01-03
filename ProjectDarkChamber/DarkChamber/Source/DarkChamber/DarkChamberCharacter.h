@@ -183,6 +183,8 @@ protected:
 	void StopSprint(const FInputActionValue& Value);
 
 	UPROPERTY(Replicated)
+	FVector2D MovementVectorr;
+	UPROPERTY(Replicated)
 	bool IsSprinting;
 	UPROPERTY(EditAnywhere)
 	float SprintStaminaReduceValue;
