@@ -164,11 +164,7 @@ void ADarkChamberCharacter::Tick(float DeltaSeconds)
 	{
 		PlayerHealth->CurrentStamina += SprintStaminaAddValue;
 	}
-	if (Controller != nullptr && canMove)
-	{
-		AddMovementInput(GetActorForwardVector(), MovementVectorr.Y);
-		AddMovementInput(GetActorRightVector(), MovementVectorr.X);
-	}
+	
 }
 
 
@@ -402,7 +398,11 @@ void ADarkChamberCharacter::TogleHealthAndStamina_Implementation()
 void ADarkChamberCharacter::Move(const FInputActionValue& Value)
 {
 	MovementVectorr = Value.Get<FVector2D>();
-
+	if (Controller != nullptr && canMove)
+	{
+		AddMovementInput(GetActorForwardVector(), MovementVectorr.Y);
+		AddMovementInput(GetActorRightVector(), MovementVectorr.X);
+	}
 	MoveServer(MovementVectorr);
 }
 
