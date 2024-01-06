@@ -74,8 +74,6 @@ protected:
 	void InteractWithActor();
 	UFUNCTION(BlueprintCallable, Category="Interact")
 	void ConstantLineTraceToCheckObjectsForward();
-	UFUNCTION(BlueprintCallable, Category="possess")
-	virtual void PossessedBy(AController* NewPlayerController) override;
 
 public:
 	virtual void Tick(float DeltaSeconds) override;

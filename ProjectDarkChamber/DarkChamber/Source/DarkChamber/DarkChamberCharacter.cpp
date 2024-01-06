@@ -83,6 +83,16 @@ void ADarkChamberCharacter::BeginPlay()
 {
 	// Call the base class  
 	Super::BeginPlay();
+	if (APlayerController* PlayerController = Cast<APlayerController>(Controller))
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 1, FColor::Red, "dubidubidabadaba1");
+		if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<
+			UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer()))
+		{
+			Subsystem->AddMappingContext(DefaultMappingContext, 0);
+			GEngine->AddOnScreenDebugMessage(-1, 1, FColor::Red, "dubidubidabadaba2");
+		}
+	}
 }
 
 void ADarkChamberCharacter::InteractWithActor()
@@ -137,20 +147,7 @@ void ADarkChamberCharacter::ConstantLineTraceToCheckObjectsForward()
 	}
 }
 
-void ADarkChamberCharacter::PossessedBy(AController* NewPlayerController)
-{
-	//Add Input Mapping Context
-	if (APlayerController* PlayerController = Cast<APlayerController>(NewPlayerController))
-	{
-		GEngine->AddOnScreenDebugMessage(-1, 1, FColor::Red, "dubidubidabadaba1");
-		if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<
-			UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer()))
-		{
-			Subsystem->AddMappingContext(DefaultMappingContext, 0);
-			GEngine->AddOnScreenDebugMessage(-1, 1, FColor::Red, "dubidubidabadaba2");
-		}
-	}
-}
+
 
 void ADarkChamberCharacter::Tick(float DeltaSeconds)
 {
