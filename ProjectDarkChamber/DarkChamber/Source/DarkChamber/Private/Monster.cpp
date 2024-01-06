@@ -3,7 +3,6 @@
 
 #include "Monster.h"
 #include "Monster_AIController.h"
-#include "AssetTypeActions/AssetDefinition_SoundBase.h"
 #include "BehaviorTree/BlackboardComponent.h"
 #include "DarkChamber/DarkChamberCharacter.h"
 #include "GameFramework/CharacterMovementComponent.h"
