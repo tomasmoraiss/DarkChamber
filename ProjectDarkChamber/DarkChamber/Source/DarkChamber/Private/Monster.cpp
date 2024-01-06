@@ -3,10 +3,12 @@
 
 #include "Monster.h"
 #include "Monster_AIController.h"
+#include "AssetTypeActions/AssetDefinition_SoundBase.h"
 #include "BehaviorTree/BlackboardComponent.h"
 #include "DarkChamber/DarkChamberCharacter.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Kismet/GameplayStatics.h"
+#include "Net/UnrealNetwork.h"
 
 // Sets default values
 AMonster::AMonster()
@@ -43,18 +45,29 @@ APatrolPath* AMonster::GetPatrolPath() const
 {
 	return PatrolPath;
 }
+void AMonster::OnMonsterAttack()
+{
+}
+
+void AMonster::PlayRoarSoundEffect_Implementation()
+{
+	if (!AttackRoar)
+	{
+		return;
+	}
+	GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Red, "Entering");
+	UGameplayStatics::PlaySoundAtLocation(this, AttackRoar, GetActorLocation());
+}
+
 
 int AMonster::MeleeAttack_Implementation()
 {
-	if (AttackRoar)
-	{
-		UAudioComponent* AudioComponent = UGameplayStatics::SpawnSoundAttached(AttackRoar, GetRootComponent());
-	}
 	if (const auto* Player = TargetedPlayer)
 	{
 		if (Player->PlayerHealth->ReduceHealth(AttackDamage))TargetedPlayer->PlayerDead();
 		TargetedPlayer->TakeDamage();
 	}
+	PlayRoarSoundEffect();
 	return ICombatInterface::MeleeAttack_Implementation();
 }
 
@@ -131,3 +144,7 @@ void AMonster::SetStopFleeFromFire()
 		}
 	}
 }
+
+
+
+

@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "CameraObserver.h"
 #include "PatrolPath.h"
 #include "BehaviorTree/BehaviorTree.h"
 #include "GameFramework/Character.h"
@@ -14,7 +15,7 @@
 
 
 UCLASS()
-class DARKCHAMBER_API AMonster : public ACharacter, public ICombatInterface, public ITrapDamageInterface
+class DARKCHAMBER_API AMonster : public ACharacter, public ICombatInterface, public ITrapDamageInterface, public ICameraObserver
 {
 	GENERATED_BODY()
 
@@ -57,9 +58,15 @@ public:
 	ADarkChamberCharacter* TargetedPlayer;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Melee Attack", meta = (AllowPrivateAccess = "true"))
-		int AttackDamage;
+	int AttackDamage;
 
 	bool bIsStunned;
+
+	
+	virtual void OnMonsterAttack() override;
+
+	UFUNCTION(NetMulticast, Reliable)
+	void PlayRoarSoundEffect();
 
 private:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AI", meta = (AllowPrivateAccess = "true"))
@@ -67,7 +74,7 @@ private:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AI", meta = (AllowPrivateAccess = "true"))
 	APatrolPath* PatrolPath;
-	
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Sound effect", meta = (AllowPrivateAccess = "true"))
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Sound Effects", meta = (AllowPrivateAccess = "true"))
 	USoundBase* AttackRoar;
 };

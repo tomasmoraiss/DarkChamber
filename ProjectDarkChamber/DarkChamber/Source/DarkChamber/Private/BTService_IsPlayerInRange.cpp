@@ -19,17 +19,28 @@ void UBTService_IsPlayerInRange::OnBecomeRelevant(UBehaviorTreeComponent& OwnerC
 {
 	auto const * const Controller = Cast<AMonster_AIController>(OwnerComp.GetAIOwner());
 	auto * const Monster = Cast<AMonster>(Controller->GetPawn());
-	auto * const Player = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0);
-	Monster->TargetedPlayer = Cast<ADarkChamberCharacter>(Player);
-	//Write true or false to the blackboard key depending on whether or not the player is in range
-	OwnerComp.GetBlackboardComponent()->SetValueAsBool(GetSelectedBlackboardKey(), Monster->GetDistanceTo(Monster->TargetedPlayer) <= MeleeRange);
-	if(Monster->GetDistanceTo(Monster->TargetedPlayer) <= MeleeRange)
+	TArray<AActor*> PlayerCharacters;
+	UGameplayStatics::GetAllActorsOfClass(GetWorld(), ADarkChamberCharacter::StaticClass(), PlayerCharacters);
+
+	// Iterate through all players and check if any are in range
+	bool IsAnyPlayerInRange = false;
+	for (AActor* Player : PlayerCharacters)
 	{
-		OwnerComp.GetBlackboardComponent()->SetValueAsBool(GetSelectedBlackboardKey(), true);
-	}else
-	{
-		OwnerComp.GetBlackboardComponent()->SetValueAsBool(GetSelectedBlackboardKey(), false);
+		auto* PlayerCharacter = Cast<ADarkChamberCharacter>(Player);
+		if (PlayerCharacter && Monster)
+		{
+			float DistanceToPlayer = Monster->GetDistanceTo(PlayerCharacter);
+			if (DistanceToPlayer <= MeleeRange)
+			{
+				IsAnyPlayerInRange = true;
+				break; // No need to check further, at least one player is in range
+			}
+		}
 	}
+
+	// Write true or false to the blackboard key based on whether any player is in range
+	OwnerComp.GetBlackboardComponent()->SetValueAsBool(GetSelectedBlackboardKey(), IsAnyPlayerInRange);
+
 	
 	Super::OnBecomeRelevant(OwnerComp, NodeMemory);
 }
