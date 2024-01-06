@@ -2,6 +2,6 @@
 	"BuildId": "66ad9c07-52ea-4cd0-bb50-0c3b3162516d",
 	"Modules": 
 	{
-		"MatchFinder": "UnrealEditor-MatchFinder-0003.dll"
+		"MatchFinder": "UnrealEditor-MatchFinder.dll"
 	}
 }
