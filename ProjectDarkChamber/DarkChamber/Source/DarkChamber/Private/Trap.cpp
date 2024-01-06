@@ -165,7 +165,7 @@ void ATrap::SetTrapItemVisible(int n)
 		Batery->SetVisibility(true);
 		break;
 	case 3:
-		TeslaCoil->SetVisibility(true);
+		TeslaCoil->SetVisibility(true, true);
 		break;
 	case 4:
 		GasCan->SetVisibility(true);
