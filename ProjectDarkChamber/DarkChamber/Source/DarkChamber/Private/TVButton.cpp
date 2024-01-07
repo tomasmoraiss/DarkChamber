@@ -37,6 +37,14 @@ void ATVButton::Interact(AActor* ActorInteracting)
 	}
 }
 
+void ATVButton::OnMonsterAttack()
+{
+	
+	ToggleCamerasCaptureOFF();
+	FTimerHandle TimerHandle;
+	GetWorld()->GetTimerManager().SetTimer(TimerHandle, this, &ATVButton::ToggleCamerasCaptureON, 7.0f, false, 3);
+}
+
 void ATVButton::ActivateCamera(ASceneCapture2D* camera)
 {
 	for (int i = 0; i < Cameras.Num(); i++)
@@ -51,3 +59,23 @@ void ATVButton::ActivateCamera(ASceneCapture2D* camera)
 		}
 	}
 }
+
+void ATVButton::ToggleCamerasCaptureON()
+{
+	for (ASceneCapture2D* Camera : Cameras)
+	{
+		Camera->GetCaptureComponent2D()->bCaptureEveryFrame = true;
+	}
+}
+
+void ATVButton::ToggleCamerasCaptureOFF()
+{
+	for (ASceneCapture2D* Camera : Cameras)
+	{
+		Camera->GetCaptureComponent2D()->bCaptureEveryFrame = false;
+	}
+}
+
+
+
+

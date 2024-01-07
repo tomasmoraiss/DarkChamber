@@ -3,13 +3,14 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "CameraObserver.h"
 #include "DarkChamber/InteractInterface.h"
 #include "Engine/SceneCapture2D.h"
 #include "GameFramework/Actor.h"
 #include "TVButton.generated.h"
 
 UCLASS()
-class DARKCHAMBER_API ATVButton : public AActor, public IInteractInterface
+class DARKCHAMBER_API ATVButton : public AActor, public IInteractInterface, public ICameraObserver
 {
 	GENERATED_BODY()
 
@@ -27,7 +28,13 @@ public:
 	UPROPERTY(EditInstanceOnly, BlueprintReadOnly, Category="cameras")
 	TArray<ASceneCapture2D*> Cameras;
 	int currentCamera = 0;
-	void Interact(AActor* ActorInteracting) override;
+	virtual void Interact(AActor* ActorInteracting) override;
+	virtual void OnMonsterAttack() override;
 
 	void ActivateCamera(ASceneCapture2D* camera);
+
+private:
+	void ToggleCamerasCaptureOFF();
+	void ToggleCamerasCaptureON();
+
 };

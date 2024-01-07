@@ -29,6 +29,27 @@ void AMonster::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 }
 
+void AMonster::OnMonsterAttack()
+{
+}
+
+void AMonster::Attach(ICameraObserver* Observer)
+{
+	Observers.Add(Observer);
+}
+
+void AMonster::Detach(ICameraObserver* Observer)
+{
+}
+
+void AMonster::Notify()
+{
+	for (ICameraObserver* Observer : Observers)
+	{
+		Observer->OnMonsterAttack();
+	}
+}
+
 // Called to bind functionality to input
 void AMonster::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
@@ -44,9 +65,7 @@ APatrolPath* AMonster::GetPatrolPath() const
 {
 	return PatrolPath;
 }
-void AMonster::OnMonsterAttack()
-{
-}
+
 
 void AMonster::PlayRoarSoundEffect_Implementation()
 {
@@ -54,7 +73,6 @@ void AMonster::PlayRoarSoundEffect_Implementation()
 	{
 		return;
 	}
-	GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Red, "Entering");
 	UGameplayStatics::PlaySoundAtLocation(this, AttackRoar, GetActorLocation());
 }
 
@@ -70,9 +88,10 @@ int AMonster::MeleeAttack_Implementation()
 	return ICombatInterface::MeleeAttack_Implementation();
 }
 
-int AMonster::ThrowItem_Implementation()
+void AMonster::RoarAttack_Implementation()
 {
-	return ICombatInterface::ThrowItem_Implementation();
+	PlayRoarSoundEffect();
+	OnMonsterAttack();
 }
 
 void AMonster::FireAttack_Implementation()

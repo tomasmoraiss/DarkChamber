@@ -24,6 +24,6 @@ class DARKCHAMBER_API ICombatInterface
 public:
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Monster Attack")
 	int MeleeAttack();
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Monster Attack")
-	int ThrowItem();
+
+	virtual void RoarAttack();
 };

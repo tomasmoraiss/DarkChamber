@@ -2,6 +2,8 @@
 
 #pragma once
 
+#include <vector>
+
 #include "CoreMinimal.h"
 #include "CameraObserver.h"
 #include "PatrolPath.h"
@@ -11,6 +13,7 @@
 #include "Monster_AIController.h"
 #include "TrapDamageInterface.h"
 #include "DarkChamber/DarkChamberCharacter.h"
+#include "Engine/SceneCapture2D.h"
 #include "Monster.generated.h"
 
 
@@ -42,7 +45,9 @@ public:
 
 	//For attacking the players
 	virtual int MeleeAttack_Implementation() override;
-	virtual int ThrowItem_Implementation() override;
+
+	UFUNCTION(Server, Reliable)
+	void RoarAttack() override;
 
 	UFUNCTION(Server, Reliable)
 	void EletricAttack() override;
@@ -68,6 +73,12 @@ public:
 	UFUNCTION(NetMulticast, Reliable)
 	void PlayRoarSoundEffect();
 
+	void Attach(ICameraObserver* Observer);
+	void Detach(ICameraObserver* Observer);
+	void Notify();
+
+	
+
 private:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AI", meta = (AllowPrivateAccess = "true"))
 	UBehaviorTree* BehaviorTree;
@@ -77,4 +88,7 @@ private:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Sound Effects", meta = (AllowPrivateAccess = "true"))
 	USoundBase* AttackRoar;
+
+	TArray<ICameraObserver*> Observers;
+	TArray<ASceneCapture2D*> Cameras;
 };
