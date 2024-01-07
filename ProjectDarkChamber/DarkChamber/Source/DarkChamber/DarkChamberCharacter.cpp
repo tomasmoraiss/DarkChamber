@@ -232,12 +232,12 @@ void ADarkChamberCharacter::InteractTriggered(const FInputActionValue& Value)
 
 void ADarkChamberCharacter::InteractCanceledOrCompleted(const FInputActionValue& Value)
 {
-	//canMove = true;
+	canMove = true;
 }
 
 void ADarkChamberCharacter::InteractStarted(const FInputActionValue& Value)
 {
-	//canMove = false;
+	canMove = false;
 
 	//InteractWithActor();
 }
