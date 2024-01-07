@@ -13,6 +13,7 @@ UCLASS()
 class DARKCHAMBER_API ATVButton : public AActor, public IInteractInterface, public ICameraObserver
 {
 	GENERATED_BODY()
+	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 
 public:
 	// Sets default values for this actor's properties
@@ -27,12 +28,18 @@ public:
 	virtual void Tick(float DeltaTime) override;
 	UPROPERTY(EditInstanceOnly, BlueprintReadOnly, Category="cameras")
 	TArray<ASceneCapture2D*> Cameras;
+	UPROPERTY(ReplicatedUsing=CurrentCameraRepNotify)
 	int currentCamera = 0;
 	virtual void Interact(AActor* ActorInteracting) override;
 	virtual void OnMonsterAttack() override;
 
 	void ActivateCamera(ASceneCapture2D* camera);
 
+	UFUNCTION()
+	void CurrentCameraRepNotify();
+
+	UFUNCTION()
+	void RequestNextCamera();
 private:
 	void ToggleCamerasCaptureOFF();
 	void ToggleCamerasCaptureON();

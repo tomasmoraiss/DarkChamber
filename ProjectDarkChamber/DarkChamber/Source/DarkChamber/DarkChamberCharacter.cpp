@@ -109,7 +109,7 @@ void ADarkChamberCharacter::ConstantLineTraceToCheckObjectsForward()
 {
 	FVector Start = GetFirstPersonCameraComponent()->GetComponentLocation();
 	FVector End = Start + GetFirstPersonCameraComponent()->GetComponentRotation().Vector() * 500.0f;
-	//DrawDebugLine(GetWorld(),Start,End,FColor::Purple,false,0.1f,0,2.0f);
+	DrawDebugLine(GetWorld(), Start, End, FColor::Purple, false, 0.1f, 0, 2.0f);
 	FHitResult HitResult;
 	FCollisionQueryParams Params;
 	Params.AddIgnoredActor(this);
@@ -148,9 +148,9 @@ void ADarkChamberCharacter::ConstantLineTraceToCheckObjectsForward()
 }
 
 
-
 void ADarkChamberCharacter::Tick(float DeltaSeconds)
 {
+	Super::Tick(DeltaSeconds);
 	ConstantLineTraceToCheckObjectsForward();
 	if (IsSprinting && PlayerHealth->CurrentStamina - SprintStaminaReduceValue >= 0)
 	{
@@ -161,7 +161,6 @@ void ADarkChamberCharacter::Tick(float DeltaSeconds)
 	{
 		PlayerHealth->CurrentStamina += SprintStaminaAddValue;
 	}
-	
 }
 
 
@@ -288,7 +287,9 @@ void ADarkChamberCharacter::ServerTrowItem_Implementation()
 			ActorToThrow->DetachFromActor(rules);
 			//ActorToThrow->SetActorEnableCollision(true);
 			AItem* item = Cast<AItem>(ActorToThrow);
-			FVector direction = GetFirstPersonCameraComponent()->GetForwardVector();
+			//FVector Start = GetFirstPersonCameraComponent()->GetComponentLocation();
+			//FVector End = Start + GetFirstPersonCameraComponent()->GetComponentRotation().Vector() * 1000.0f;
+			FVector direction =GetFirstPersonCameraComponent()->GetForwardVector();
 			item->ServerThrowItem(1000, direction);
 			Inventory[CurrentlySelectedInventoryItem] = nullptr;
 		}
@@ -334,7 +335,6 @@ void ADarkChamberCharacter::TakeDamage_Implementation()
 void ADarkChamberCharacter::ActivateJumpScare_Implementation()
 {
 }
-
 
 
 //TRAP ATTACKS INTERFACE
@@ -425,9 +425,14 @@ void ADarkChamberCharacter::Look(const FInputActionValue& Value)
 		// add yaw and pitch input to controller
 		AddControllerYawInput(LookAxisVector.X);
 		AddControllerPitchInput(LookAxisVector.Y);
+		ServerLookUpdate(GetFirstPersonCameraComponent()->GetComponentRotation());
 	}
 }
 
+void ADarkChamberCharacter::ServerLookUpdate_Implementation(FRotator rotation)
+{
+	GetFirstPersonCameraComponent()->SetWorldRotation(rotation);
+}
 
 void ADarkChamberCharacter::Sprint_Implementation(const FInputActionValue& Value)
 {

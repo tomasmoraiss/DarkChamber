@@ -175,6 +175,8 @@ protected:
 	/** Called for looking input */
 
 	void Look(const FInputActionValue& Value);
+	UFUNCTION(Server, Unreliable)
+	void ServerLookUpdate(FRotator rotation);
 	UFUNCTION(Server, Reliable)
 	void Sprint(const FInputActionValue& Value);
 	UFUNCTION(Server, Reliable)

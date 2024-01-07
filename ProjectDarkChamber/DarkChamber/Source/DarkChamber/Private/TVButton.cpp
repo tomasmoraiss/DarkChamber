@@ -5,6 +5,13 @@
 
 #include "Components/SceneCaptureComponent2D.h"
 #include "DarkChamber/InteractInterface.h"
+#include "Net/UnrealNetwork.h"
+
+void ATVButton::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+	DOREPLIFETIME_CONDITION( ATVButton, currentCamera, COND_SimulatedOnly );
+}
 
 // Sets default values
 ATVButton::ATVButton()
@@ -30,16 +37,13 @@ void ATVButton::Interact(AActor* ActorInteracting)
 	IInteractInterface::Interact(ActorInteracting);
 	if (Cameras.Num() > 0)
 	{
-		if (currentCamera == Cameras.Num() - 1) currentCamera = 0;
-		else currentCamera++;
-
+		RequestNextCamera();
 		ActivateCamera(Cameras[currentCamera]);
 	}
 }
 
 void ATVButton::OnMonsterAttack()
 {
-	
 	ToggleCamerasCaptureOFF();
 	FTimerHandle TimerHandle;
 	GetWorld()->GetTimerManager().SetTimer(TimerHandle, this, &ATVButton::ToggleCamerasCaptureON, 7.0f, false, 3);
@@ -60,6 +64,17 @@ void ATVButton::ActivateCamera(ASceneCapture2D* camera)
 	}
 }
 
+void ATVButton::CurrentCameraRepNotify()
+{
+	ActivateCamera(Cameras[currentCamera]);
+	GEngine->AddOnScreenDebugMessage(-1, 1, FColor::Red, "cameraRepNotify");
+}
+
+void ATVButton::RequestNextCamera()
+{
+	currentCamera = FMath::Wrap(currentCamera+1, 0, Cameras.Num() - 1);
+}
+
 void ATVButton::ToggleCamerasCaptureON()
 {
 	for (ASceneCapture2D* Camera : Cameras)
@@ -75,7 +90,3 @@ void ATVButton::ToggleCamerasCaptureOFF()
 		Camera->GetCaptureComponent2D()->bCaptureEveryFrame = false;
 	}
 }
-
-
-
-
