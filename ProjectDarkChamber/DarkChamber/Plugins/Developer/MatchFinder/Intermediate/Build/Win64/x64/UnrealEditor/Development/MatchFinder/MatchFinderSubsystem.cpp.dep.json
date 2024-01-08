@@ -1,0 +1,22 @@
+{
+    "Version": "1.1",
+    "Data": {
+        "Source": "c:\\users\\bruno\\documents\\github\\darkchamber\\projectdarkchamber\\darkchamber\\plugins\\developer\\matchfinder\\source\\matchfinder\\private\\matchfindersubsystem.cpp",
+        "ProvidedModule": "",
+        "PCH": "c:\\users\\bruno\\documents\\github\\darkchamber\\engine\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\engine\\sharedpch.engine.shadowerrors.h.pch",
+        "Includes": [
+            "c:\\users\\bruno\\documents\\github\\darkchamber\\projectdarkchamber\\darkchamber\\plugins\\developer\\matchfinder\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\matchfinder\\definitions.matchfinder.h",
+            "c:\\users\\bruno\\documents\\github\\darkchamber\\projectdarkchamber\\darkchamber\\plugins\\developer\\matchfinder\\source\\matchfinder\\public\\matchfindersubsystem.h",
+            "c:\\users\\bruno\\documents\\github\\darkchamber\\engine\\source\\runtime\\networking\\public\\interfaces\\ipv4\\ipv4endpoint.h",
+            "c:\\users\\bruno\\documents\\github\\darkchamber\\engine\\source\\runtime\\networking\\public\\interfaces\\ipv4\\ipv4address.h",
+            "c:\\users\\bruno\\documents\\github\\darkchamber\\engine\\source\\runtime\\networking\\public\\interfaces\\ipv4\\ipv4subnetmask.h",
+            "c:\\users\\bruno\\documents\\github\\darkchamber\\engine\\source\\runtime\\sockets\\public\\socketsubsystem.h",
+            "c:\\users\\bruno\\documents\\github\\darkchamber\\engine\\source\\runtime\\sockets\\public\\addressinfotypes.h",
+            "c:\\users\\bruno\\documents\\github\\darkchamber\\projectdarkchamber\\darkchamber\\plugins\\developer\\matchfinder\\intermediate\\build\\win64\\unrealeditor\\inc\\matchfinder\\uht\\matchfindersubsystem.generated.h",
+            "c:\\users\\bruno\\documents\\github\\darkchamber\\engine\\source\\runtime\\networking\\public\\common\\tcpsocketbuilder.h",
+            "c:\\users\\bruno\\documents\\github\\darkchamber\\engine\\source\\runtime\\sockets\\public\\sockets.h"
+        ],
+        "ImportedModules": [],
+        "ImportedHeaderUnits": []
+    }
+}

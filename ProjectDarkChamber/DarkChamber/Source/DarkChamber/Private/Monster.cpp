@@ -81,7 +81,7 @@ int AMonster::MeleeAttack_Implementation()
 {
 	if (const auto* Player = TargetedPlayer)
 	{
-		if (Player->PlayerHealth->ReduceHealth(AttackDamage))TargetedPlayer->PlayerDead();
+		if (Player->PlayerHealth->ReduceHealth(AttackDamage)&&!Player->HealthCheatIsOn)TargetedPlayer->PlayerDead();
 		TargetedPlayer->TakeDamage();
 	}
 	PlayRoarSoundEffect();

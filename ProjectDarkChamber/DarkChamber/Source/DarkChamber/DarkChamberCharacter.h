@@ -139,8 +139,10 @@ public:
 	void SpawnItems(int number);
 	UFUNCTION(Server,Reliable)
 	void TogleHealthAndStamina();
-	UPROPERTY(EditAnywhere,Category="Cheats")
+	UPROPERTY(EditAnywhere,Category="Cheats",Replicated)
 	bool HealthCheatIsOn;
+	
+	
 	//ITEMS TO SPAWN REFERENCE
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta=(AllowPrivateAccess = "true"))
 	class UInputAction* ToggleGodAction;

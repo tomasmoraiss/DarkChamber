@@ -34,6 +34,7 @@ void ADarkChamberCharacter::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>
 	DOREPLIFETIME(ADarkChamberCharacter, IsSprinting);
 	DOREPLIFETIME(ADarkChamberCharacter, FirstPersonCameraComponent);
 	DOREPLIFETIME(ADarkChamberCharacter, MovementVectorr);
+	DOREPLIFETIME(ADarkChamberCharacter, HealthCheatIsOn);
 }
 
 ADarkChamberCharacter::ADarkChamberCharacter()
@@ -221,6 +222,8 @@ void ADarkChamberCharacter::SetupPlayerInputComponent(class UInputComponent* Pla
 		                                   &ADarkChamberCharacter::SpawnItems_Implementation, 2);
 		EnhancedInputComponent->BindAction(SpawnItems3Action, ETriggerEvent::Started, this,
 		                                   &ADarkChamberCharacter::SpawnItems_Implementation, 3);
+		EnhancedInputComponent->BindAction(ToggleGodAction, ETriggerEvent::Triggered, this,
+										   &ADarkChamberCharacter::TogleHealthAndStamina);
 	}
 }
 
@@ -352,7 +355,7 @@ void ADarkChamberCharacter::SetupStimulusSource()
 void ADarkChamberCharacter::PlayerDead_Implementation()
 {
 	FString CurrentLevelName = UGameplayStatics::GetCurrentLevelName(GetWorld());
-	UGameplayStatics::OpenLevel(GetWorld(), FName(*CurrentLevelName));
+	UGameplayStatics::OpenLevel(GetWorld(), FName("Level_1"));
 }
 
 void ADarkChamberCharacter::SpawnItems_Implementation(int number)
@@ -383,6 +386,7 @@ void ADarkChamberCharacter::TogleHealthAndStamina_Implementation()
 		PlayerHealth->CurrentHealth = 10000000;
 		PlayerHealth->CurrentStamina = 10000000;
 		HealthCheatIsOn = true;
+		GEngine->AddOnScreenDebugMessage(-1, 1, FColor::Red, "on");
 	}
 	else if (HealthCheatIsOn)
 	{
