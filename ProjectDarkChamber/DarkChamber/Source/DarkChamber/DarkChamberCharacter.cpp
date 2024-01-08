@@ -86,14 +86,13 @@ void ADarkChamberCharacter::BeginPlay()
 	Super::BeginPlay();
 	if (APlayerController* PlayerController = Cast<APlayerController>(Controller))
 	{
-		GEngine->AddOnScreenDebugMessage(-1, 1, FColor::Red, "dubidubidabadaba1");
 		if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<
 			UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer()))
 		{
 			Subsystem->AddMappingContext(DefaultMappingContext, 0);
-			GEngine->AddOnScreenDebugMessage(-1, 1, FColor::Red, "dubidubidabadaba2");
 		}
 	}
+	PlayerStartLocation = GetActorLocation();
 }
 
 void ADarkChamberCharacter::InteractWithActor()
@@ -223,7 +222,7 @@ void ADarkChamberCharacter::SetupPlayerInputComponent(class UInputComponent* Pla
 		EnhancedInputComponent->BindAction(SpawnItems3Action, ETriggerEvent::Started, this,
 		                                   &ADarkChamberCharacter::SpawnItems_Implementation, 3);
 		EnhancedInputComponent->BindAction(ToggleGodAction, ETriggerEvent::Triggered, this,
-										   &ADarkChamberCharacter::TogleHealthAndStamina);
+		                                   &ADarkChamberCharacter::TogleHealthAndStamina);
 	}
 }
 
@@ -251,8 +250,6 @@ void ADarkChamberCharacter::SelectInventorySlot_Implementation(int n)
 		CurrentlySelectedInventoryItem = n - 1;
 		MakeItemsInvisible(Inventory[CurrentlySelectedInventoryItem]);
 	}
-	GEngine->AddOnScreenDebugMessage(-10, 1.f, FColor::Red,
-	                                 FString::Printf(TEXT("Current Selected : %i"), CurrentlySelectedInventoryItem));
 }
 
 void ADarkChamberCharacter::HoldTrowStarted()
@@ -292,7 +289,7 @@ void ADarkChamberCharacter::ServerTrowItem_Implementation()
 			AItem* item = Cast<AItem>(ActorToThrow);
 			//FVector Start = GetFirstPersonCameraComponent()->GetComponentLocation();
 			//FVector End = Start + GetFirstPersonCameraComponent()->GetComponentRotation().Vector() * 1000.0f;
-			FVector direction =GetFirstPersonCameraComponent()->GetForwardVector();
+			FVector direction = GetFirstPersonCameraComponent()->GetForwardVector();
 			item->ServerThrowItem(1000, direction);
 			Inventory[CurrentlySelectedInventoryItem] = nullptr;
 		}
@@ -305,8 +302,6 @@ int ADarkChamberCharacter::GetavailableInventorySlot()
 	{
 		if (Inventory[i] == nullptr)
 		{
-			GEngine->AddOnScreenDebugMessage(-10, 1.f, FColor::Blue,
-			                                 FString::Printf(TEXT("available slot : %i"), i));
 			return i;
 		}
 	}
@@ -354,8 +349,10 @@ void ADarkChamberCharacter::SetupStimulusSource()
 
 void ADarkChamberCharacter::PlayerDead_Implementation()
 {
-	FString CurrentLevelName = UGameplayStatics::GetCurrentLevelName(GetWorld());
-	UGameplayStatics::OpenLevel(GetWorld(), FName("Level_1"));
+	//FString CurrentLevelName = UGameplayStatics::GetCurrentLevelName(GetWorld());
+	//UGameplayStatics::OpenLevel(GetWorld(), FName("Level_1"));
+	SetActorLocation(PlayerStartLocation);
+	PlayerHealth->CurrentHealth = 3;
 }
 
 void ADarkChamberCharacter::SpawnItems_Implementation(int number)
@@ -386,7 +383,6 @@ void ADarkChamberCharacter::TogleHealthAndStamina_Implementation()
 		PlayerHealth->CurrentHealth = 10000000;
 		PlayerHealth->CurrentStamina = 10000000;
 		HealthCheatIsOn = true;
-		GEngine->AddOnScreenDebugMessage(-1, 1, FColor::Red, "on");
 	}
 	else if (HealthCheatIsOn)
 	{
@@ -411,7 +407,6 @@ void ADarkChamberCharacter::MoveServer_Implementation(FVector2D VectorMove)
 {
 	// add movement 
 	MovementVectorr = VectorMove;
-	GEngine->AddOnScreenDebugMessage(-1, 1, FColor::Red, "moving");
 }
 
 void ADarkChamberCharacter::setCanMove_Implementation()
@@ -444,7 +439,6 @@ void ADarkChamberCharacter::Sprint_Implementation(const FInputActionValue& Value
 	if (canMove)
 	{
 		IsSprinting = true;
-		GEngine->AddOnScreenDebugMessage(-10, 1.f, FColor::Red, FString::Printf(TEXT("%f"), RunningSpeedMultiplier));
 		GetCharacterMovement()->MaxWalkSpeed = DefaultWalkingSpeed * 1.3f;
 	}
 }
@@ -466,7 +460,6 @@ void ADarkChamberCharacter::EletricAttack_Implementation()
 	canMove = false;
 	FTimerHandle TimerHandle;
 	GetWorld()->GetTimerManager().SetTimer(TimerHandle, this, &ADarkChamberCharacter::setCanMove, 5.0f, false, 5);
-	GEngine->AddOnScreenDebugMessage(-1, 1, FColor::Red, "EletricAttack");
 	if (PlayerHealth->ReduceHealth(1))PlayerDead();
 }
 
@@ -476,13 +469,11 @@ void ADarkChamberCharacter::HoleAttack_Implementation()
 	canMove = false;
 	FTimerHandle TimerHandle;
 	GetWorld()->GetTimerManager().SetTimer(TimerHandle, this, &ADarkChamberCharacter::setCanMove, 7.0f, false, 5);
-	GEngine->AddOnScreenDebugMessage(-1, 1, FColor::Red, "HoleAttack");
 }
 
 void ADarkChamberCharacter::FireAttack_Implementation()
 {
 	if (PlayerHealth->ReduceHealth(1))PlayerDead();
-	GEngine->AddOnScreenDebugMessage(-1, 1, FColor::Red, "FireAttack");
 }
 
 

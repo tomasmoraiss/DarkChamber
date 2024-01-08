@@ -195,6 +195,9 @@ protected:
 
 	void Crouchh(const FInputActionValue& Value);
 
+	UPROPERTY(Replicated)
+	FVector PlayerStartLocation;
+
 protected:
 	// APawn interface
 	virtual void SetupPlayerInputComponent(UInputComponent* InputComponent) override;
