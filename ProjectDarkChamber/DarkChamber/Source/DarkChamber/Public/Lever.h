@@ -34,7 +34,7 @@ public:
 	bool isOn;
 	
 	UPROPERTY(EditInstanceOnly,BlueprintReadOnly, Category="Variables")
-	TArray<ADoorTest*> DoorReference;
+	TArray<AActor*> DoorReference;
 
 private:
 	class UAIPerceptionStimuliSourceComponent* StimulusSource;
