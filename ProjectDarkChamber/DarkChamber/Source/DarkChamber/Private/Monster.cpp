@@ -21,6 +21,12 @@ AMonster::AMonster()
 void AMonster::BeginPlay()
 {
 	Super::BeginPlay();
+	if(!Cameras)
+	{
+		return;
+	}
+	Attach(Cameras);
+	RoarAttack_Implementation();
 }
 
 // Called every frame
@@ -31,15 +37,19 @@ void AMonster::Tick(float DeltaTime)
 
 void AMonster::OnMonsterAttack()
 {
+	if(!Cameras)
+	{
+		return;
+	}
 	Notify();
 }
 
-void AMonster::Attach(ICameraObserver* Observer)
+void AMonster::Attach(ATVButton* Observer)
 {
 	Observers.Add(Observer);
 }
 
-void AMonster::Detach(ICameraObserver* Observer)
+void AMonster::Detach(ATVButton* Observer)
 {
 }
 
@@ -91,6 +101,10 @@ int AMonster::MeleeAttack_Implementation()
 
 void AMonster::RoarAttack_Implementation()
 {
+	if(!Cameras)
+	{
+		return;
+	}
 	PlayRoarSoundEffect();
 	OnMonsterAttack();
 }
@@ -103,7 +117,6 @@ void AMonster::FireAttack_Implementation()
 		{
 			if (!AIController || !GetWorld())
 			{
-				GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Red, "No Controller");
 				return;
 			}
 			AIController->FleeFromFire(true);
@@ -121,7 +134,6 @@ void AMonster::HoleAttack_Implementation()
 	}
 	bIsStunned = true;
 	GetMovementComponent()->SetActive(false);
-	GEngine->AddOnScreenDebugMessage(-1, 1, FColor::Green, "Stunned");
 	FTimerHandle TimerHandle;
 	GetWorld()->GetTimerManager().SetTimer(TimerHandle, this, &AMonster::SetNotStunned, 7.0f, false, 7);
 }
@@ -134,7 +146,6 @@ void AMonster::EletricAttack_Implementation()
 	}
 	bIsStunned = true;
 	GetMovementComponent()->SetActive(false);
-	GEngine->AddOnScreenDebugMessage(-1, 1, FColor::Green, "Stunned");
 	FTimerHandle TimerHandle;
 	GetWorld()->GetTimerManager().SetTimer(TimerHandle, this, &AMonster::SetNotStunned, 7.0f, false, 5);
 }

@@ -23,10 +23,11 @@ UCLASS()
 class DARKCHAMBER_API AStatue : public AActor, public IInteractInterface
 {
 	GENERATED_BODY()
-
+	
 public:
 	// Sets default values for this actor's properties
 	AStatue();
+	
 
 protected:
 	// Called when the game starts or when spawned
@@ -60,8 +61,17 @@ public:
 	UFUNCTION()
 	void CheckStatueDirection();
 
+	UFUNCTION(NetMulticast, Reliable)
+	void PlaySoundEffectServer();
+
+	
+	
 private:
 	class UAIPerceptionStimuliSourceComponent* StimulusSource;
 	void SetupStimulusSource();
+	
+	UPROPERTY(EditAnywhere, Category = "Sound Effect")
+	USoundCue* SoundEffect;
+	
 	
 };

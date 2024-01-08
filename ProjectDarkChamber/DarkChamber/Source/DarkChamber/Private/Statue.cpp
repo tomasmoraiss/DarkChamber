@@ -3,7 +3,9 @@
 
 #include "Statue.h"
 
+#include "Kismet/GameplayStatics.h"
 #include "Perception/AISense_Hearing.h"
+
 
 // Sets default values
 AStatue::AStatue()
@@ -20,8 +22,17 @@ AStatue::AStatue()
 	CorrectFacingDirection = EDirection::Front;
 
 	SetupStimulusSource();
-	
 }
+
+void AStatue::PlaySoundEffectServer_Implementation()
+{
+	if(!SoundEffect)
+	{
+		return;
+	}
+	UGameplayStatics::PlaySoundAtLocation(this, SoundEffect, GetActorLocation());
+}
+
 
 // Called when the game starts or when spawned
 void AStatue::BeginPlay()
@@ -69,6 +80,8 @@ void AStatue::Interact_Implementation(AActor* ActorInteracting)
 		}
 		CheckStatueDirection();
 	}
+	PlaySoundEffectServer();
+
 }
 
 void AStatue::SetupStimulusSource()
@@ -80,3 +93,5 @@ void AStatue::SetupStimulusSource()
 		StimulusSource->RegisterWithPerceptionSystem();
 	}
 }
+
+

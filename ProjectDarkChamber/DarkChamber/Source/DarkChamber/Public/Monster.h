@@ -12,6 +12,7 @@
 #include "CombatInterface.h"
 #include "Monster_AIController.h"
 #include "TrapDamageInterface.h"
+#include "TVButton.h"
 #include "DarkChamber/DarkChamberCharacter.h"
 #include "Engine/SceneCapture2D.h"
 #include "Monster.generated.h"
@@ -73,8 +74,8 @@ public:
 	UFUNCTION(NetMulticast, Reliable)
 	void PlayRoarSoundEffect();
 
-	void Attach(ICameraObserver* Observer);
-	void Detach(ICameraObserver* Observer);
+	void Attach(ATVButton* Observer);
+	void Detach(ATVButton* Observer);
 	void Notify();
 
 	
@@ -91,5 +92,5 @@ private:
 
 	TArray<ICameraObserver*> Observers;
 	UPROPERTY(EditInstanceOnly, Category="cameras");
-	TArray<ASceneCapture2D*> Cameras;
+	ATVButton* Cameras;
 };

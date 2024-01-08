@@ -27,13 +27,12 @@ EBTNodeResult::Type UBTTask_RoarAttack::ExecuteTask(UBehaviorTreeComponent& Owne
 	}
 
 	// Implement random attack logic
-	int32 RandomAttackIndex = FMath::RandRange(1, 20); // Assuming you have 3 types of attack
+	int32 RandomAttackIndex = FMath::RandRange(1, 20);
 	
 	if(RandomAttackIndex == 5)
 	{
 		if(AMonster* MonsterActor = Cast<AMonster>(Monster))
 		{
-			RandomAttackIndex = 0;
 			MonsterActor->RoarAttack_Implementation();
 		}
 	}

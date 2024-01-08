@@ -37,17 +37,19 @@ void ATVButton::Interact(AActor* ActorInteracting)
 	IInteractInterface::Interact(ActorInteracting);
 	if (Cameras.Num() > 0)
 	{
-		RequestNextCamera();
-		ActivateCamera(Cameras[currentCamera]);
+		if(CanChangeView)
+		{
+			RequestNextCamera();
+			ActivateCamera(Cameras[currentCamera]);
+		}
 	}
 }
 
 void ATVButton::OnMonsterAttack()
 {
-	GEngine->AddOnScreenDebugMessage(-1, 1, FColor::Red, "DID");
 	ToggleCamerasCaptureOFF();
 	FTimerHandle TimerHandle;
-	GetWorld()->GetTimerManager().SetTimer(TimerHandle, this, &ATVButton::ToggleCamerasCaptureON, 7.0f, false, 3);
+	GetWorld()->GetTimerManager().SetTimer(TimerHandle, this, &ATVButton::ToggleCamerasCaptureON, 10.f, false, 10.f);
 }
 
 void ATVButton::ActivateCamera(ASceneCapture2D* camera)
@@ -78,16 +80,18 @@ void ATVButton::RequestNextCamera()
 
 void ATVButton::ToggleCamerasCaptureON()
 {
+	CanChangeView = true;
 	for (ASceneCapture2D* Camera : Cameras)
 	{
-		Camera->GetCaptureComponent2D()->bCaptureEveryFrame = true;
+		Camera->GetCaptureComponent2D()->Activate();
 	}
 }
 
 void ATVButton::ToggleCamerasCaptureOFF()
 {
+	CanChangeView = false;
 	for (ASceneCapture2D* Camera : Cameras)
 	{
-		Camera->GetCaptureComponent2D()->bCaptureEveryFrame = false;
+		Camera->GetCaptureComponent2D()->Deactivate();
 	}
 }

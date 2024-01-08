@@ -93,8 +93,6 @@ void AItem::InteractGetItem_Implementation(AActor* ActorInteracting)
 {
 	if (!IsOwned)
 	{
-		GEngine->AddOnScreenDebugMessage(-1, 1, FColor::Green, "Interact with Item");
-
 		ItemWidget->SetVisibility(false);
 		ADarkChamberCharacter* character = Cast<ADarkChamberCharacter>(ActorInteracting);
 		int ItemSlot = character->GetavailableInventorySlot();
@@ -114,10 +112,6 @@ void AItem::InteractGetItem_Implementation(AActor* ActorInteracting)
 			character->CurrentItemHeld = this;
 			MulticastAddAndDisableItem(character);
 		}
-		else
-		{
-			GEngine->AddOnScreenDebugMessage(-10, 1.f, FColor::Blue, "inventory is full");
-		}
 	}
 }
 
@@ -128,7 +122,6 @@ void AItem::MulticastAddAndEnableItem_Implementation()
 	ItemWidget->SetVisibility(true);
 	IsOwned = false;
 	this->SetActorEnableCollision(true);
-	GEngine->AddOnScreenDebugMessage(-1, 1, FColor::Purple, "DID ENABLE");
 }
 
 void AItem::MulticastAddAndDisableItem_Implementation(ADarkChamberCharacter* character)
@@ -191,7 +184,6 @@ void AItem::SetNoiseBubbleDestroy(AActor* bubble)
 void AItem::ServerThrowItem_Implementation(float force, FVector direction)
 {
 	UStaticMeshComponent* mesh = this->FindComponentByClass<UStaticMeshComponent>();
-	GEngine->AddOnScreenDebugMessage(-1, 1, FColor::Purple, "DID trow");
 	FVector location(0.f, 0.f, 400.f);
 
 	this->SetActorLocation(this->GetActorLocation() * location);

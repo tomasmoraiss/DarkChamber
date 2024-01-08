@@ -44,4 +44,5 @@ private:
 	void ToggleCamerasCaptureOFF();
 	void ToggleCamerasCaptureON();
 
+	bool CanChangeView;
 };
