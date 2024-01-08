@@ -49,7 +49,8 @@ public:
 	void OpenDoorWithStatues();
 	UFUNCTION(BlueprintNativeEvent)
 	void ChangeDoorState();
-
+	UFUNCTION(NetMulticast, Reliable)
+	void PlaySoundEffectServer();
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Variables")
 	bool isOpen;

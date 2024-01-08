@@ -49,11 +49,16 @@ void ADoorTest::OnInteractHoverEnd(AActor* ActorToInteractWith)
 	IInteractInterface::OnInteractHoverEnd(ActorToInteractWith);
 }
 
+void ADoorTest::PlaySoundEffectServer_Implementation()
+{
+	UGameplayStatics::PlaySoundAtLocation(this, OpeningSoundEffect, GetActorLocation());
+}
+
 void ADoorTest::Interact_Implementation(AActor* ActorInteracting)
 {
 	UAISense_Hearing::ReportNoiseEvent(this, GetActorLocation(), 1.f, this, 0, "Door Noise");
 	isOpen = !isOpen;
-	UGameplayStatics::PlaySoundAtLocation(this, OpeningSoundEffect, GetActorLocation());
+	PlaySoundEffectServer();
 }
 
 void ADoorTest::OpenDoorWithStatues()
@@ -67,6 +72,8 @@ void ADoorTest::OpenDoorWithStatues()
 	}
 	ChangeDoorState();
 }
+
+
 
 void ADoorTest::SetupStimulusSource()
 {
