@@ -31,6 +31,7 @@ void AMonster::Tick(float DeltaTime)
 
 void AMonster::OnMonsterAttack()
 {
+	Notify();
 }
 
 void AMonster::Attach(ICameraObserver* Observer)

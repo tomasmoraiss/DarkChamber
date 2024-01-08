@@ -16,7 +16,10 @@
             "c:\\users\\bruno\\documents\\github\\darkchamber\\engine\\source\\runtime\\sockets\\public\\addressinfotypes.h",
             "c:\\users\\bruno\\documents\\github\\darkchamber\\projectdarkchamber\\darkchamber\\plugins\\developer\\matchfinder\\intermediate\\build\\win64\\unrealeditor\\inc\\matchfinder\\uht\\matchfindersubsystem.generated.h",
             "c:\\users\\bruno\\documents\\github\\darkchamber\\projectdarkchamber\\darkchamber\\plugins\\developer\\matchfinder\\source\\matchfinder\\private\\matchfinder.cpp",
-            "c:\\users\\bruno\\documents\\github\\darkchamber\\projectdarkchamber\\darkchamber\\plugins\\developer\\matchfinder\\source\\matchfinder\\public\\matchfinder.h"
+            "c:\\users\\bruno\\documents\\github\\darkchamber\\projectdarkchamber\\darkchamber\\plugins\\developer\\matchfinder\\source\\matchfinder\\public\\matchfinder.h",
+            "c:\\users\\bruno\\documents\\github\\darkchamber\\projectdarkchamber\\darkchamber\\plugins\\developer\\matchfinder\\source\\matchfinder\\private\\matchfindersubsystem.cpp",
+            "c:\\users\\bruno\\documents\\github\\darkchamber\\engine\\source\\runtime\\networking\\public\\common\\tcpsocketbuilder.h",
+            "c:\\users\\bruno\\documents\\github\\darkchamber\\engine\\source\\runtime\\sockets\\public\\sockets.h"
         ],
         "ImportedModules": [],
         "ImportedHeaderUnits": []

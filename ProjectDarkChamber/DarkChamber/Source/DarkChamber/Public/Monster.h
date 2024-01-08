@@ -90,5 +90,6 @@ private:
 	USoundBase* AttackRoar;
 
 	TArray<ICameraObserver*> Observers;
+	UPROPERTY(EditInstanceOnly, Category="cameras");
 	TArray<ASceneCapture2D*> Cameras;
 };

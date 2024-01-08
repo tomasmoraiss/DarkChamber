@@ -44,6 +44,7 @@ void ATVButton::Interact(AActor* ActorInteracting)
 
 void ATVButton::OnMonsterAttack()
 {
+	GEngine->AddOnScreenDebugMessage(-1, 1, FColor::Red, "DID");
 	ToggleCamerasCaptureOFF();
 	FTimerHandle TimerHandle;
 	GetWorld()->GetTimerManager().SetTimer(TimerHandle, this, &ATVButton::ToggleCamerasCaptureON, 7.0f, false, 3);
@@ -67,7 +68,7 @@ void ATVButton::ActivateCamera(ASceneCapture2D* camera)
 void ATVButton::CurrentCameraRepNotify()
 {
 	ActivateCamera(Cameras[currentCamera]);
-	GEngine->AddOnScreenDebugMessage(-1, 1, FColor::Red, "cameraRepNotify");
+	
 }
 
 void ATVButton::RequestNextCamera()

@@ -35,6 +35,7 @@
 /FUNCTIONPADMIN:6
 "..\Intermediate\Build\Win64\x64\UnrealEditor\Development\Engine\SharedPCH.Engine.ShadowErrors.h.obj"
 "C:\Users\Bruno\Documents\GitHub\DarkChamber\ProjectDarkChamber\DarkChamber\Plugins\Developer\MatchFinder\Intermediate\Build\Win64\x64\UnrealEditor\Development\MatchFinder\Module.MatchFinder.cpp.obj"
+"C:\Users\Bruno\Documents\GitHub\DarkChamber\ProjectDarkChamber\DarkChamber\Plugins\Developer\MatchFinder\Intermediate\Build\Win64\x64\UnrealEditor\Development\MatchFinder\MatchFinderSubsystem.cpp.obj"
 "..\Intermediate\Build\Win64\x64\UnrealEditor\Development\Default.rc2.res"
 "..\Intermediate\Build\Win64\x64\UnrealEditor\Development\CoreUObject\UnrealEditor-CoreUObject.lib"
 "..\Intermediate\Build\Win64\x64\UnrealEditor\Development\Engine\UnrealEditor-Engine.lib"
