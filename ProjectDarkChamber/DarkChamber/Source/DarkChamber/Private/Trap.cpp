@@ -109,6 +109,17 @@ void ATrap::OnInteractHoverEnd(AActor* ActorToInteractWith)
 void ATrap::Activate()
 {
 	if (Built)Activated = !Activated;
+	ActivateBP();
+}
+
+void ATrap::ActivateBP_Implementation()
+{
+		
+}
+
+void ATrap::DeActivateBP_Implementation()
+{
+	
 }
 
 void ATrap::Build()
@@ -253,6 +264,7 @@ void ATrap::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherAct
 		else if (TrapAfterBuild == TrapAfterBuildFire)TrapAttackInterface->FireAttack();
 		else if (TrapAfterBuild == TrapAfterBuildHole)TrapAttackInterface->HoleAttack();
 		Used = true;
+		DeActivateBP();
 	}
 }
 

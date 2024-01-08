@@ -38,8 +38,12 @@ public:
 	void OnInteractHoverBegin(AActor* ActorToInteractWith) override;
 
 	void OnInteractHoverEnd(AActor* ActorToInteractWith) override;
-
+	UFUNCTION(BlueprintCallable)
 	void Activate() override;
+	UFUNCTION(BlueprintNativeEvent)
+	void ActivateBP();
+	UFUNCTION(BlueprintNativeEvent)
+	void DeActivateBP();
 
 	void Build();
 	void AddItem(AActor* ActorInteracting);
@@ -58,13 +62,13 @@ public:
 	UPROPERTY(EditInstanceOnly, meta=(MustImplement="ItemToSpawExample"))
 	int NumberWhereInventoryIs;
 	//Item that will be spawned
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite,Category="inventory")
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category="inventory")	
 	TSubclassOf<AActor> TrapAfterBuild;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="inventory")
 	TSubclassOf<AActor> TrapAfterBuildEletric;
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite,Category="inventory")
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="inventory")
 	TSubclassOf<AActor> TrapAfterBuildFire;
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite,Category="inventory")
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="inventory")
 	TSubclassOf<AActor> TrapAfterBuildHole;
 	//character instance
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, meta=(MustImplement="CharacterExample"))
@@ -94,8 +98,8 @@ public:
 	UStaticMeshComponent* GasCan;
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
 	UStaticMeshComponent* Spike;
-	
-	
+
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="BOX")
 	FVector vector;
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
@@ -103,12 +107,12 @@ public:
 
 	UFUNCTION()
 	virtual void OnOverlapBegin(class UPrimitiveComponent* OverlappedComp, class AActor* OtherActor,
-	                    class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep,
-	                    const FHitResult& SweepResult);
+	                            class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep,
+	                            const FHitResult& SweepResult);
 
 	UFUNCTION()
 	virtual void OnOverlapEnd(class UPrimitiveComponent* OverlappedComp, class AActor* OtherActor,
-	                  class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
+	                          class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
 
 	UFUNCTION()
 	virtual void EletricAttack();
