@@ -25,6 +25,9 @@ public:
 	                    class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep,
 	                    const FHitResult& SweepResult);
 
+	UPROPERTY()
+	bool canScare = true;
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;

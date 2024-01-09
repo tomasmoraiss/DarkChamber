@@ -44,8 +44,9 @@ void AJumpScarableObject::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AA
                                          UPrimitiveComponent* OtherComp,
                                          int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	if (OtherActor && (OtherActor != this) && OtherComp)
+	if (OtherActor && (OtherActor != this) && OtherComp && canScare)
 	{
+		canScare = false;
 		ADarkChamberCharacter* character;
 		character = Cast<ADarkChamberCharacter>(OtherActor);
 		character->ActivateJumpScare();
