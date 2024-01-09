@@ -81,17 +81,9 @@ void ATVButton::RequestNextCamera()
 void ATVButton::ToggleCamerasCaptureON()
 {
 	CanChangeView = true;
-	for (ASceneCapture2D* Camera : Cameras)
-	{
-		Camera->GetCaptureComponent2D()->Activate();
-	}
 }
 
 void ATVButton::ToggleCamerasCaptureOFF()
 {
 	CanChangeView = false;
-	for (ASceneCapture2D* Camera : Cameras)
-	{
-		Camera->GetCaptureComponent2D()->Deactivate();
-	}
 }
